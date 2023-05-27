@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer base {
+  .left__ContentBtn{
+    @apply w-full transition hover:bg-slate-100 hover:text-slate-900 flex items-center justify-center py-4;
+  }
+  .left__ContentBtn .left__Icon{
+    @apply text-[2.5rem] text-center;
+  }
+
+  /* POS TABLE */
+  .pos__Table tr{
+    @apply border-b border-slate-100;
+  }
+
+  .pos__Table td, .pos__Table th{
+    @apply w-[40%] pb-3 pt-2 px-3;
+  }
+
+  .pos__Table td:first-child{
+    @apply font-semibold;
+  }
+}
+
+/* SCROLL BAR WIDTH & COLOR */
+.scroll__width::-webkit-scrollbar {
+    width: 0.5em;
+  }
+   
+  .scroll__width::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+   
+  .scroll__width::-webkit-scrollbar-thumb {
+    background-color: slategrey;
+    outline: 1px solid slategrey;
+  }

@@ -1,0 +1,80 @@
+ <section className='w-[65vw] h-[100%] left-[10vw] bg-slate-100 fixed'>
+        <section className='fixed h-auto w-[65vw] flex flex-col items-center justify-center'>
+          <div className='h-[15vh] w-full bg-white mb-6 shadow-lg '>
+            PosMainHeader
+          </div>
+          {/* Barcode */}
+          <form className='h-[12vh] mb-6 w-full flex justify-center'>
+            <div className='bg-white w-[96%] shadow-lg flex justify-center items-center'>
+              <input type='text' placeholder='Scan Code'
+              className='shadow appearance-none border rounded w-[94%] text-lg py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
+            </div>   
+          </form>
+          {/* Name */}
+          <form className='hidden shadow-lg mb-8 w-[90%] flex justify-center h-auto bg-white p-4'>
+              <input type='text' placeholder='Search by Name'
+              className='shadow appearance-none border rounded rounded-l rounded-r-none w-[85%] py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
+              <button className='w-[15%] flex justify-center items-center border border-l-0 rounded-r rounded-l-none hover:border-l hover:border-slate-300 transition-all hover:text-slate-500'>
+                <BsSearch className='text-xl text-gray-700' />
+              </button>
+          </form>
+
+          <section className='w-[96%] text-left flex  justify-center  bg-white'>
+            <table class="table-fixed w-full text-left text-xl pos__Table">
+              <thead>
+                <tr className='w-full'>
+                  <th className='w-[55%]'>Name</th>
+                  <th className='w-[15%]'>Unit Price</th>
+                  <th className='w-[15%]'>Quantity</th>
+                  <th className='w-[15%]'>Total Price</th>
+                  <th className='w-[5%]'></th>
+                </tr>
+              </thead>
+            </table>
+          </section>
+          
+        </section>
+        <section className='fixed top-[40vh] w-[65vw] h-[60vh] flex justify-center overflow-y-scroll scroll__width'>
+          <section className='w-[96%] text-left '>
+          <table class="table-fixed w-full pt-4 text-left text-xl pos__Table">
+              
+                <tr className='w-full'>
+                  <th className='w-[55%]'></th>
+                  <th className='w-[15%]'></th>
+                  <th className='w-[15%]'></th>
+                  <th className='w-[15%]'></th>
+                  <th className='w-[5%]'></th>
+                </tr>
+            </table>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+           <p>e</p>
+              hkjh
+          </section>
+        </section>
+
+    </section>
