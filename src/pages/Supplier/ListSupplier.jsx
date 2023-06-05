@@ -2,7 +2,8 @@ import { AiFillEdit, AiFillEye, AiFillDelete } from 'react-icons/ai'
 import { BsChevronDoubleLeft, BsChevronDoubleRight } from 'react-icons/bs'
 import PosLeftContent from '../../components/PosLeftContent'
 
-function ListUser() {
+
+function ListSupplier() {
   return (
    <section className='bg-slate-100 h-auto w-full overflow-hidden'>
       <div className='container h-[100vh] mx-auto max-w-screen-2xl lg:px-0 px-4 flex justify-start items-center'>
@@ -13,7 +14,7 @@ function ListUser() {
                <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg pr-[0.5rem]'>
                   <div className='w-[96%] flex justify-between items-center'>
                      <div className=''>
-                        <h1 className='font-bold text-xl'> User List Page </h1>
+                        <h1 className='font-bold text-xl'> Supplier List Page </h1>
                      </div>
                      <div className=''>
                            <h2 className='font-semibold text-xl'>User: Mark Chovava</h2>
@@ -45,7 +46,7 @@ function ListUser() {
                         </div>
                         <button 
                            className='bg-blue-500 hover:bg-blue-600 duration py-2 px-3 rounded-md text-white'>
-                           Add User
+                           Add Supplier
                         </button>
                      </div>
                   </div>
@@ -55,21 +56,21 @@ function ListUser() {
                <div className='w-full h-[7vh] bg-white flex items-end justify-center pr-[0.5rem]'>
                   <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
                      <div className='w-[30%] border-r border-slate-300 font-semibold px-3'>NAME </div>
+                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>PHONE NUMBER </div>
                      <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>EMAIL </div>
-                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>CODE </div>
                      <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>AUTHOR </div>
                      <div className='w-[10%] font-semibold px-3'>ACTIONS </div>
                   </div>
                </div>
             </section>
-            <section className='w-[89vw] h-[68vh] top-[32vh] text-black fixed overflow-y-auto scroll__width pb-8 '>
+            <section className='w-[89vw] h-[68vh] top-[32vh] text-black fixed overflow-y-auto scroll__width pb-8'>
                {/* ListStockTable */}
                <div className='w-full bg-white flex flex-col items-center justify-center text-md'>
                   {/* Table Row */}
                   <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                     <div className='w-[30%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>markchovava@gmail.com</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>12236567</div>
+                     <div className='w-[30%] border-r border-slate-300 px-3'>Delta Beverages</div>
+                     <div className='w-[20%] border-r border-slate-300 px-3'>+263 (0) 782 210021</div>
+                     <div className='w-[20%] border-r border-slate-300 px-3'>delta@gmail.com</div>
                      <div className='w-[20%] border-r border-slate-300 px-3'>Mark Chovava</div>
                      <div className='w-[10%] font-semibold px-3'> 
                      <div className='flex justify-center items-center gap-2'>
@@ -85,9 +86,9 @@ function ListUser() {
                <div className='w-full bg-white flex flex-col items-center justify-center text-md'>
                   {/* Table Row */}
                   <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                     <div className='w-[30%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>markchovava@gmail.com</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>12236567</div>
+                     <div className='w-[30%] border-r border-slate-300 px-3'>Delta Beverages</div>
+                     <div className='w-[20%] border-r border-slate-300 px-3'>+263 (0) 782 210021</div>
+                     <div className='w-[20%] border-r border-slate-300 px-3'>delta@gmail.com</div>
                      <div className='w-[20%] border-r border-slate-300 px-3'>Mark Chovava</div>
                      <div className='w-[10%] font-semibold px-3'> 
                      <div className='flex justify-center items-center gap-2'>
@@ -103,9 +104,9 @@ function ListUser() {
                <div className='w-full bg-white flex flex-col items-center justify-center text-md'>
                   {/* Table Row */}
                   <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                     <div className='w-[30%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>markchovava@gmail.com</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>12236567</div>
+                     <div className='w-[30%] border-r border-slate-300 px-3'>Delta Beverages</div>
+                     <div className='w-[20%] border-r border-slate-300 px-3'>+263 (0) 782 210021</div>
+                     <div className='w-[20%] border-r border-slate-300 px-3'>delta@gmail.com</div>
                      <div className='w-[20%] border-r border-slate-300 px-3'>Mark Chovava</div>
                      <div className='w-[10%] font-semibold px-3'> 
                      <div className='flex justify-center items-center gap-2'>
@@ -117,79 +118,9 @@ function ListUser() {
                   </div>
                   
                </div>
-               {/* ListStockTable */}
-               <div className='w-full bg-white flex flex-col items-center justify-center text-md'>
-                  {/* Table Row */}
-                  <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                     <div className='w-[30%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>markchovava@gmail.com</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>12236567</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[10%] font-semibold px-3'> 
-                     <div className='flex justify-center items-center gap-2'>
-                        <AiFillEdit className='text-xl transition text-slate-500 hover:text-green-600 hover:scale-110'/> 
-                        <AiFillEye className='text-xl transition text-slate-500 hover:text-blue-600 hover:scale-110'/>
-                        <AiFillDelete className='text-xl transition text-slate-500 hover:text-red-600 hover:scale-110'/>
-                     </div>
-                     </div>
-                  </div>
-                  
-               </div>
-               {/* ListStockTable */}
-               <div className='w-full bg-white flex flex-col items-center justify-center text-md'>
-                  {/* Table Row */}
-                  <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                     <div className='w-[30%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>markchovava@gmail.com</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>12236567</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[10%] font-semibold px-3'> 
-                     <div className='flex justify-center items-center gap-2'>
-                        <AiFillEdit className='text-xl transition text-slate-500 hover:text-green-600 hover:scale-110'/> 
-                        <AiFillEye className='text-xl transition text-slate-500 hover:text-blue-600 hover:scale-110'/>
-                        <AiFillDelete className='text-xl transition text-slate-500 hover:text-red-600 hover:scale-110'/>
-                     </div>
-                     </div>
-                  </div>
-                  
-               </div>
-               {/* ListStockTable */}
-               <div className='w-full bg-white flex flex-col items-center justify-center text-md'>
-                  {/* Table Row */}
-                  <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                     <div className='w-[30%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>markchovava@gmail.com</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>12236567</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[10%] font-semibold px-3'> 
-                     <div className='flex justify-center items-center gap-2'>
-                        <AiFillEdit className='text-xl transition text-slate-500 hover:text-green-600 hover:scale-110'/> 
-                        <AiFillEye className='text-xl transition text-slate-500 hover:text-blue-600 hover:scale-110'/>
-                        <AiFillDelete className='text-xl transition text-slate-500 hover:text-red-600 hover:scale-110'/>
-                     </div>
-                     </div>
-                  </div>
-                  
-               </div>
-               {/* ListStockTable */}
-               <div className='w-full bg-white flex flex-col items-center justify-center text-md'>
-                  {/* Table Row */}
-                  <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                     <div className='w-[30%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>markchovava@gmail.com</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>12236567</div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[10%] font-semibold px-3'> 
-                     <div className='flex justify-center items-center gap-2'>
-                        <AiFillEdit className='text-xl transition text-slate-500 hover:text-green-600 hover:scale-110'/> 
-                        <AiFillEye className='text-xl transition text-slate-500 hover:text-blue-600 hover:scale-110'/>
-                        <AiFillDelete className='text-xl transition text-slate-500 hover:text-red-600 hover:scale-110'/>
-                     </div>
-                     </div>
-                  </div>
-                  
-               </div>
-              
+
+               
+            
             </section>
          </section>
 
@@ -198,4 +129,4 @@ function ListUser() {
   )
 }
 
-export default ListUser
+export default ListSupplier

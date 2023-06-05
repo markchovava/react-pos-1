@@ -1,35 +1,11 @@
 import React from 'react'
-import { useParams } from 'react-router-dom';
-import PosLeftContent from '../../components/PosLeftContent'
+import ProductHeader from './ProductHeader'
 
 
-function ViewProduct() {
-   const { id } = useParams()
-   console.log(id)
-
-   useEffect( () => {
-      const getProduct = async () => {
-         const result = await AxiosClient.get(`product/${id}`)
-         .then((response) => {
-            console.log(response.data)
-            productDispatch({
-               type: ACTION.SEARCH_PRODUCT,
-               payload: response.data,
-            })
-            setIsSubmit(false)
-         })   
-         }
-      handleSearch()  
-   
-   }, []);
-
+function ProductMainContent() {
 
   return (
-   <section className='bg-slate-100 h-auto w-full overflow-hidden'>
-   <div className='container h-[100vh] mx-auto max-w-screen-2xl lg:px-0 px-4 flex justify-start items-center'>
-     <PosLeftContent />
-     
-     <section className='w-[90vw] h-[100vh] left-[10vw] bg-slate-100 fixed'>
+   <section className='w-[90vw] h-[100vh] left-[10vw] bg-slate-100 fixed'>
       {/* ProductHeader */}
       <section className='w-[90vw] h-[25vh] left-[10vw] bg-slate-100 fixed'>
          {/* Title and User Name */}
@@ -77,31 +53,29 @@ function ViewProduct() {
                   </div>
                </div>
                <div className='flex items-center justify-start mb-7'>
-         <label className='w-[20%] font-semibold text-slate-900'>Stock:</label>
-         <div className='text-xl rounded-md outline-none px-3 w-[70%]'>
-            34
-         </div>
-         </div>
-         <div className='flex items-center justify-start mb-7'>
-            <label className='w-[20%] font-semibold text-slate-900'>Brand:</label>
-            <div className='text-xl rounded-md outline-none px-3 w-[70%]'>
-               Shweppes
+                  <label className='w-[20%] font-semibold text-slate-900'>Stock:</label>
+                  <div className='text-xl rounded-md outline-none px-3 w-[70%]'>
+                     34
+                  </div>
+               </div>
+               <div className='flex items-center justify-start mb-7'>
+                  <label className='w-[20%] font-semibold text-slate-900'>Brand:</label>
+                  <div className='text-xl rounded-md outline-none px-3 w-[70%]'>
+                     Shweppes
+                  </div>
+               </div>
+               <div className='flex items-center justify-start mb-7'>
+                  <label className='w-[20%] font-semibold text-slate-900'>Category:</label>
+                  <div className='text-xl rounded-md outline-none px-3 w-[70%]'>
+                     Drink, Grocery, Hydrates
+                  </div>
+               </div>
             </div>
          </div>
-         <div className='flex items-center justify-start mb-7'>
-            <label className='w-[20%] font-semibold text-slate-900'>Category:</label>
-            <div className='text-xl rounded-md outline-none px-3 w-[70%]'>
-               Drink, Grocery, Hydrates
-            </div>
-         </div>
-      </div>
-   </div>
    
       </section>
-   </section>
-   </div>
    </section>
   )
 }
 
-export default ViewProduct
+export default ProductMainContent

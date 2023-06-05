@@ -1,27 +1,12 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
 import PosLeftContent from '../../components/PosLeftContent'
+import ProductMainContent from '../../components/ProductMainContent'
 
 
-function ViewProduct() {
+function ViewProduct1() {
    const { id } = useParams()
    console.log(id)
-
-   useEffect( () => {
-      const getProduct = async () => {
-         const result = await AxiosClient.get(`product/${id}`)
-         .then((response) => {
-            console.log(response.data)
-            productDispatch({
-               type: ACTION.SEARCH_PRODUCT,
-               payload: response.data,
-            })
-            setIsSubmit(false)
-         })   
-         }
-      handleSearch()  
-   
-   }, []);
 
 
   return (
@@ -77,25 +62,25 @@ function ViewProduct() {
                   </div>
                </div>
                <div className='flex items-center justify-start mb-7'>
-         <label className='w-[20%] font-semibold text-slate-900'>Stock:</label>
-         <div className='text-xl rounded-md outline-none px-3 w-[70%]'>
-            34
-         </div>
-         </div>
-         <div className='flex items-center justify-start mb-7'>
-            <label className='w-[20%] font-semibold text-slate-900'>Brand:</label>
-            <div className='text-xl rounded-md outline-none px-3 w-[70%]'>
-               Shweppes
+                  <label className='w-[20%] font-semibold text-slate-900'>Stock:</label>
+                  <div className='text-xl rounded-md outline-none px-3 w-[70%]'>
+                     34
+                  </div>
+               </div>
+               <div className='flex items-center justify-start mb-7'>
+                  <label className='w-[20%] font-semibold text-slate-900'>Brand:</label>
+                  <div className='text-xl rounded-md outline-none px-3 w-[70%]'>
+                     Shweppes
+                  </div>
+               </div>
+               <div className='flex items-center justify-start mb-7'>
+                  <label className='w-[20%] font-semibold text-slate-900'>Category:</label>
+                  <div className='text-xl rounded-md outline-none px-3 w-[70%]'>
+                     Drink, Grocery, Hydrates
+                  </div>
+               </div>
             </div>
          </div>
-         <div className='flex items-center justify-start mb-7'>
-            <label className='w-[20%] font-semibold text-slate-900'>Category:</label>
-            <div className='text-xl rounded-md outline-none px-3 w-[70%]'>
-               Drink, Grocery, Hydrates
-            </div>
-         </div>
-      </div>
-   </div>
    
       </section>
    </section>
@@ -104,4 +89,4 @@ function ViewProduct() {
   )
 }
 
-export default ViewProduct
+export default ViewProduct1
