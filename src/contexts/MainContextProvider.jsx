@@ -1,7 +1,7 @@
-import React, { createContext, useContext, useEffect, useReducer } from 'react'
-import { redirect } from "react-router-dom";
+import React, { createContext, useContext, useEffect, useState, useReducer } from 'react'
+import { redirect, useParams } from "react-router-dom";
 import AxiosClient from '../axios/axiosClient';
-import { ACTION, initialState, productReducer } from '../reducers/ProductReducer';
+import { ACTION, initialState, productReducer, productViewReducer, productViewInitialState } from '../reducers/ProductReducer';
 
 
 
@@ -11,7 +11,12 @@ export const MainContext = createContext()
 function MainContextProvider({ children }) {
 
    const [productState, productDispatch] = useReducer(productReducer, initialState)
+   const [productViewState, productViewDispatch] = useReducer(productViewReducer, productViewInitialState)
 
+   /* Get Single Product */
+   const { id } = useParams()
+   console.log("id: " + id)
+   /*  */
    useEffect(() => {
       async function fetchProducts() {
          try{
@@ -30,19 +35,16 @@ function MainContextProvider({ children }) {
       fetchProducts()
   }, []);
 
-  
-
-
-
-
-
-
-
    
+
+
    return (
       <MainContext.Provider value={{ 
          productState, 
-         productDispatch }}>
+         productDispatch,
+         productViewState, 
+         productViewDispatch,
+          }}>
       { children }
       </MainContext.Provider>
     )

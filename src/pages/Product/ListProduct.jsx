@@ -125,8 +125,10 @@ function ListProduct() {
                         <div className='w-[20%] border-r border-slate-300 px-3'>{product.quantity}</div>
                         <div className='w-[20%] border-r border-slate-300 px-3'>${(product.unit_price / 100).toFixed(2)}</div>
                         <div className='w-[10%] font-semibold flex justify-center items-center gap-3'>
-                          <AiFillEdit className='text-xl transition text-slate-800 hover:text-green-600 hover:scale-110'/> 
-                          <Link to={`/product/${product.id}`}>
+                          <Link to={`/product/edit/${product.id}`}>
+                            <AiFillEdit className='text-xl transition text-slate-800 hover:text-green-600 hover:scale-110'/> 
+                          </Link>
+                          <Link to={`/product/view/${product.id}`}>
                             <AiFillEye className='text-xl transition text-slate-800 hover:text-blue-600 hover:scale-110'/>
                           </Link>
                           <AiFillDelete className='text-xl transition text-slate-800 hover:text-red-600 hover:scale-110'/>

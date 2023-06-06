@@ -3,7 +3,6 @@ import PosPage from './pages/Pos/PosPage'
 import ListProduct from './pages/Product/ListProduct'
 import AddProduct from './pages/Product/AddProduct'
 import ViewProduct from './pages/Product/ViewProduct'
-import ViewProduct1 from './pages/Product/ViewProduct1'
 import ListStock from './pages/Stock/ListStock'
 import AddStock from './pages/Stock/AddStock'
 import ListPrice from './pages/Price/ListPrice'
@@ -23,6 +22,7 @@ import UserSale from './pages/Sales/UserSale'
 import MonthSale from './pages/Sales/MonthSale'
 import DaySale from './pages/Sales/DaySale'
 import StockOrder from './pages/StockOrder/StockOrder'
+import EditProduct from './pages/Product/EditProduct'
 
 
 function App() {
@@ -45,8 +45,8 @@ function App() {
         {/*  */}
         <Route path='/product' element={<ListProduct />} />
         <Route path='/product/add' element={<AddProduct />} />
-        <Route path='/product/:id' element={<ViewProduct />} />
-        <Route path='/product/view' element={<ViewProduct1 />} />
+        <Route path='/product/view/:id' element={<ViewProduct />} />
+        <Route path='/product/edit/:id' element={<EditProduct />} />
         {/* Sales */}
         <Route path='/sales/daily' element={<DaySale />} />
         <Route path='/sales/monthly' element={<MonthSale />} />

@@ -1,3 +1,4 @@
+
 export const ACTION = {
     FETCH_PRODUCT: 'FETCH_PRODUCT',
     SEARCH_PRODUCT: 'SEARCH_PRODUCT',
@@ -27,13 +28,58 @@ export const productReducer = (state, action) => {
             return {
                 products: action.payload
             }
-       case ACTION.REMOVE_PRODUCT:
-           return 
-       case ACTION.UPDATE_PRODUCT:
-           return 
-       case ACTION.DELETE_PRODUCT:
-           return 
-       default:
+        case 'UPDATE_PRODUCT':
+            return {
+                ...state,
+                products: state.products.map((item) => {
+                if (item.id === action.payload.id) {
+                    return {
+                    ...item,
+                    ...action.payload,
+                    };
+                }
+                return item;
+                }),
+            };
+        case 'SINGLE_PRODUCT':
+                return {
+                    products: state.products.filter((item) => item.id === action.payload.id),
+                    //...state,
+                  
+                };
+        case 'DELETE_PRODUCT':
+                return {
+                  ...state,
+                  products: state.products.filter((item) => item.id !== action.payload.id),
+                };
+        default:
            return state;
    }
+}
+
+
+
+export const productViewInitialState = {}
+
+  export const productViewReducer = (state, action) => {
+    switch(action.type){
+        case 'PRODUCT_VIEW':
+           return  {
+            product: action.payload
+       }
+       default:
+           return state;
+    }
+}
+
+
+export const getProduct = async () => {
+    const result = await AxiosClient.get(`product/${id}`)
+    .then((response) => {
+        console.log(response.data)
+        productViewDispatch({
+            type: 'PRODUCT_VIEW',
+            payload: response.data,
+        })    
+    })   
 }
