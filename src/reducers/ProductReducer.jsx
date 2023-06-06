@@ -43,9 +43,7 @@ export const productReducer = (state, action) => {
             };
         case 'SINGLE_PRODUCT':
                 return {
-                    products: state.products.filter((item) => item.id === action.payload.id),
-                    //...state,
-                  
+                    products: state.products.filter((item) => item.id === action.payload.id),    
                 };
         case 'DELETE_PRODUCT':
                 return {

@@ -56,11 +56,11 @@ function AddProduct() {
     <section className='bg-slate-100 h-auto w-full overflow-hidden'>
       <form 
       onSubmit={(e) => { e.preventDefault();
-        console.log(e.target.name.value)
-        console.log(e.target.barcode.value)
-        console.log(e.target.quantity.value)
-        console.log(e.target.unit_price.value)
-        console.log(e.target.brand.value)
+        //console.log(e.target.name.value)
+        //console.log(e.target.barcode.value)
+        //console.log(e.target.quantity.value)
+        //console.log(e.target.unit_price.value)
+        //console.log(e.target.brand.value)
        addProduct({
           name: e.target.name.value,
           barcode: e.target.barcode.value,
@@ -113,9 +113,9 @@ function AddProduct() {
                   <label className='w-[25%] font-semibold text-slate-900'>
                     Description:
                   </label>
-                  <textarea name='description'
+                  <input name='description'
                   className='border border-slate-400 rounded-md outline-none py-2 px-3 w-[70%]' 
-                  placeholder='Enter Barcode here...'></textarea>
+                  placeholder='Enter Description...'/>
                 </div>
                 <div className='flex items-center justify-start mb-6'>
                   <label className='w-[25%] font-semibold text-slate-900'>

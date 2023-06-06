@@ -20,24 +20,50 @@ function ListProduct() {
   const searchRef = useRef(null)
   const [searchName, setSearchName] = useState('')
   const [isSubmit, setIsSubmit] = useState(false)
-  
- 
+  const [isDelete, setIsDelete] = useState(false)
+  const [deleteId, setDeleteId] = useState(null)
+  console.log(deleteId)
+   
+  const handleDelete = async () => {
+    let a = confirm(`Are you sure?`)
+    if( a ){
+      const result = await AxiosClient.delete(`product/${deleteId}`)
+      .then((response) => {
+        console.log(response.data)
+        productDispatch({
+          type: 'DELETE_PRODUCT',
+          payload: {id:deleteId}
+        })
+      })
+      alert('Deleted successful...')   
+    }
+  }
+
+  const handleSearch = async () => {
+    const result = await AxiosClient.get(`product/?search=${searchName}`)
+      .then((response) => {
+        console.log(response.data)
+        productDispatch({
+          type: ACTION.SEARCH_PRODUCT,
+            payload: response.data,
+        })
+        setIsSubmit(false)
+      })   
+  }
+
   useEffect( () => {
-    if( isSubmit == true){
-      const handleSearch = async () => {
-        const result = await AxiosClient.get(`product/?search=${searchName}`)
-          .then((response) => {
-            console.log(response.data)
-            productDispatch({
-              type: ACTION.SEARCH_PRODUCT,
-                payload: response.data,
-            })
-            setIsSubmit(false)
-          })   
-        }
+    if(isDelete == true){
+      handleDelete()
+      setIsDelete(false)
+      setDeleteId(null) 
+    }
+  }, [deleteId])
+
+  useEffect( () => {
+    if( isSubmit == true){ 
       handleSearch()  
     }
-    }, [isSubmit]);
+  }, [isSubmit]);
 
 
   return (
@@ -131,7 +157,14 @@ function ListProduct() {
                           <Link to={`/product/view/${product.id}`}>
                             <AiFillEye className='text-xl transition text-slate-800 hover:text-blue-600 hover:scale-110'/>
                           </Link>
-                          <AiFillDelete className='text-xl transition text-slate-800 hover:text-red-600 hover:scale-110'/>
+                          <button 
+                            onClick={() => {
+                              setIsDelete(true)
+                              setDeleteId(product.id) 
+                            }}>
+                            <AiFillDelete className='text-xl transition text-slate-800 hover:text-red-600 hover:scale-110'/>
+                          </button>
+                          
                         </div>
                     </div>
                 ))}
