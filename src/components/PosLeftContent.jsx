@@ -17,16 +17,16 @@ function PosLeftContent() {
           <button title='Dashboard' className='left__ContentBtn'>
             <AiFillDashboard className='left__Icon'/>
           </button>
+          <button title='Product' className='left__ContentBtn'>
+            <Link to='/product'>
+              <BsFillCartCheckFill className='left__Icon'/>
+            </Link>
+          </button>
           <button title='Sales' className='left__ContentBtn'>
             <BsBarChartFill className='left__Icon'/>
           </button>
           <button title='Stock' className='left__ContentBtn'>
             <BiPackage className='left__Icon'/>
-          </button>
-          <button title='Product' className='left__ContentBtn'>
-            <Link to='/product'>
-              <BsFillCartCheckFill className='left__Icon'/>
-            </Link>
           </button>
           <button title='Till' className='left__ContentBtn'>
             <FaDesktop className='left__Icon'/>
@@ -38,7 +38,9 @@ function PosLeftContent() {
             <AiFillDatabase className='left__Icon'/>
           </button>
           <button title='Settings' className='left__ContentBtn'>
-            <AiFillSetting className='left__Icon'/>
+            <Link to='/settings'>
+              <AiFillSetting className='left__Icon'/>
+            </Link>
           </button>
         </div>
     </section>

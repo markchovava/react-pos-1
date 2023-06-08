@@ -23,6 +23,8 @@ import MonthSale from './pages/Sales/MonthSale'
 import DaySale from './pages/Sales/DaySale'
 import StockOrder from './pages/StockOrder/StockOrder'
 import EditProduct from './pages/Product/EditProduct'
+import SettingPage from './pages/Setting/SettingPage'
+import CurrencyPage from './pages/Setting/CurrencyPage'
 
 
 function App() {
@@ -63,6 +65,9 @@ function App() {
         {/*  */}
         <Route path='/price' element={<ListPrice />} />
         <Route path='/price/edit' element={<EditPrice />} />
+        {/* Setting */}
+        <Route path='/settings' element={<SettingPage />} />
+        <Route path='/settings/currency' element={<CurrencyPage />} />
       </Routes> 
     </>
   )
