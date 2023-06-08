@@ -1,13 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react'
-import PosMainContentHeader from './PosMainContentHeader'
-import PosMainContentSearch from './PosMainContentSearch'
-import PosMainContentProductTitle from './PosMainContentProductTitle'
-import PosMainContentTable from './PosMainContentTable'
 import { ImCancelCircle } from 'react-icons/im'
 import { AiFillDelete } from 'react-icons/ai'
-import { MainContextState } from '../contexts/MainContextProvider'
-/* import {BsSearch } from 'react-icons/bs'
-import { AiFillDelete } from 'react-icons/ai' */
+import { MainContextState } from '../../../contexts/MainContextProvider'
+
+
 
 
 function PosMainContent() {
@@ -17,10 +13,6 @@ function PosMainContent() {
   const quantityRef = useRef()
   const [inputData, setInputData] = useState(1);
 
-  const calculateSubTotal = () => {
-    const totalPrice = posState.products.reduce((acc, item) => acc + item.price, 0);
-    return totalPrice;
-  };
 
   const setInputUnique = (itemId, value) => {
     const newList = posState.products.map((item) => {

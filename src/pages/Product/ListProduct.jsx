@@ -12,7 +12,6 @@ import { MainContextState } from '../../contexts/MainContextProvider'
 import AxiosClient from '../../axios/axiosClient'
 /*  */
 import PosLeftContent from '../../components/PosLeftContent'
-import { ACTION } from '../../reducers/ProductReducer'
 
 
 function ListProduct() {
@@ -44,7 +43,7 @@ function ListProduct() {
       .then((response) => {
         console.log(response.data)
         productDispatch({
-          type: ACTION.SEARCH_PRODUCT,
+          type: 'SEARCH_PRODUCT',
             payload: response.data,
         })
         setIsSubmit(false)

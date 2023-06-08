@@ -1,7 +1,7 @@
 import React from 'react'
 import PosLeftContent from '../../components/PosLeftContent'
-import PosMainContent from '../../components/PosMainContent'
-import PosRightContent from '../../components/PosRightContent'
+import PosMainContent from './components/PosMainContent'
+import PosRightContent from './components/PosRightContent'
 
 function PosPage() {
   return (

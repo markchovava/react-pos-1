@@ -4,7 +4,6 @@ import ProductHeader from '../../components/ProductHeader'
 import PosLeftContent from '../../components/PosLeftContent'
 import AxiosClient from '../../axios/axiosClient';
 import { MainContextState } from '../../contexts/MainContextProvider';
-import { ACTION } from '../../reducers/ProductReducer';
 import { Link, useNavigate } from 'react-router-dom';
 /* Toast */
 import { toast } from 'react-toastify';
@@ -27,7 +26,7 @@ function AddProduct() {
         const result = await AxiosClient.post('product/', product)
         .then((response) => {
               productDispatch({
-              type: ACTION.ADD_PRODUCT,
+              type: 'ADD_PRODUCT',
               payload: response.data
               });
           })

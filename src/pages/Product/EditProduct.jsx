@@ -37,10 +37,7 @@ function EditProduct() {
     setInputData({ ...inputData, [e.target.name]: e.target.value });
   };
 
-  
 
-
-  
 
   /* UPDATE PRODUCT */
   async function updateProduct(product) {
