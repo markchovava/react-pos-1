@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { MainContextState } from '../../contexts/MainContextProvider'
 
 
-function DaySale() {
+function DaySaleUSD() {
    const {salesState, salesDispatch} = MainContextState()
    console.log('SALE CONT')
    console.log(salesState.sales)
@@ -157,4 +157,4 @@ function DaySale() {
   )
 }
 
-export default DaySale
+export default DaySaleUSD

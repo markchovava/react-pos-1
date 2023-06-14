@@ -34,18 +34,18 @@ function SettingPage() {
                   <section className='w-[96%] h-[80vh] my-[5vh] mx-auto'>
                      <div className='grid grid-cols-5'>
                         <Link to='/settings/currency'>
-                           <div className='bg-purple-600 hover:bg-purple-700 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
-                              <BsCurrencyDollar className='text-[5rem] text-white' />
-                              <div className='text-xl text-white font-semibold p-2 mx-auto text-center'>
+                           <div className='border border-blue-500 hover:border-blue-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
+                              <BsCurrencyDollar className='text-[5rem] text-blue-500 hover:text-blue-600' />
+                              <div className='text-xl text-blue-500 hover:text-blue-600 font-semibold p-2 mx-auto text-center'>
                                  Currency Conversion
                               </div>
                            </div>
                         </Link>
-                        <div className='bg-green-600 hover:bg-green-700 transition cursor-pointer flex flex-col items-center justify-center gap-3 py-8'>
-                           <MdPermIdentity className='text-[5rem] text-white' />
-                           <div className='text-xl text-white font-semibold p-2 mx-auto text-center'>Permissions and Roles</div>
+                        <div className='border border-green-600 hover:border-green-700 transition cursor-pointer flex flex-col items-center justify-center gap-3 py-8'>
+                           <MdPermIdentity className='text-[5rem] text-green-500' />
+                           <div className='text-xl text-green-600 font-semibold p-2 mx-auto text-center'>Permissions and Roles</div>
                         </div>
-                        <div className='bg-cyan-600 hover:bg-cyan-700 transition cursor-pointer flex flex-col items-center justify-center gap-3 py-8'>
+                        <div className='bg-green-500 hover:bg-green-600 transition cursor-pointer flex flex-col items-center justify-center gap-3 py-8'>
                            <FaCalculator className='text-[5rem] text-white'/>
                            <div className='text-xl text-white font-semibold p-2 mx-auto text-center'>Calculations</div>
                         </div>

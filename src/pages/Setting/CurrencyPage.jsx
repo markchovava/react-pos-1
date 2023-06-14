@@ -1,11 +1,69 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
+/* NOTIFICATIONS */
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+/*  */
 import PosLeftContent from '../../components/PosLeftContent'
+import { MainContextState } from '../../contexts/MainContextProvider'
+import { useState } from 'react'
+import AxiosClient from '../../axios/axiosClient'
 
 function CurrencyPage() {
+  const {posState, zwlRate, setZwlRate, posDispatch } = MainContextState()
+  const navigate = useNavigate(); 
+  const zwl = zwlRate
+  console.log('ZWL: ' + zwl)
+  const [inputData, setInputData] = useState({
+    rate: zwl / 100
+  });
+  console.log('Rate: ' + zwlRate)
+  console.log('Input: ' + inputData.rate)
+  /* Making Input field editable */
+  const handleChange = (e) => {
+    setInputData({ ...inputData, [e.target.name]: e.target.value });
+  }
+
+   /* UPDATE PRODUCT */
+  async function updateCurrency(data) {
+    try{
+        const result = await AxiosClient.put(`currency/1/`, data)
+        .then((response) => {
+            //console.log(response.data)
+            setZwlRate(response.data.rate)
+          })
+          .then(() => {
+          navigate('/settings/currency', 
+              toast.success('Currency Updated successfully', {
+              position: "top-right",
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: "light",
+            })
+          );
+        })
+      } catch (error) {
+          console.error(`Error: ${error}`)
+      }    
+  }
+
+
   return (
    <section className='bg-slate-100 h-auto w-full overflow-hidden'>
       <form 
-      onSubmit={ (e) => { e.preventDefault() } }
+      onSubmit={ (e) => { 
+        e.preventDefault()
+        console.log(e.target.rate.value)
+        updateCurrency({
+           name: 'ZWL',
+           rate: Number(e.target.rate.value) * 100,
+           user_id : null
+        })  
+      }}
       className='container h-[100vh] mx-auto max-w-screen-2xl lg:px-0 px-4 flex justify-start items-center'>
         <PosLeftContent />
         <section className='w-[90vw] h-[100vh] left-[10vw] bg-slate-100 fixed'>
@@ -45,9 +103,13 @@ function CurrencyPage() {
                   <label className='w-[25%] font-semibold text-slate-900'>
                     Rate:
                   </label>
-                  <input name='number'
-                  className='border border-slate-400 rounded-md outline-none py-2 px-3 w-[70%]' 
-                  placeholder='Enter Description...'/>
+                  <input 
+                    type='number'
+                    name="rate"
+                    onChange={handleChange}
+                    value={inputData.rate}
+                    className='border border-slate-400 rounded-md outline-none py-2 px-3 w-[70%]' 
+                  placeholder='Enter Amount...'/>
                 </div>
          
                
@@ -68,6 +130,7 @@ function CurrencyPage() {
 
 
       </form>
+      <ToastContainer />
     </section>
   )
 }

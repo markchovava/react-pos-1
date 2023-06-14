@@ -5,13 +5,13 @@ import { Link } from 'react-router-dom'
 import { MainContextState } from '../../contexts/MainContextProvider'
 
 
-function DaySale() {
+function MonthSaleUSD() {
    const {salesState, salesDispatch} = MainContextState()
    console.log('SALE CONT')
    console.log(salesState.sales)
     /* TRANSFORM THE DATA */
   const newData = salesState.sales.map((item) => {
-   return {...item, created_at: item.created_at.slice(0, 10)};
+   return {...item, created_at: item.created_at.slice(0, 7)};
  });
  console.log(newData)
  // SORT BY created_at
@@ -78,7 +78,7 @@ function DaySale() {
             <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg pr-[0.5rem]'>
                <div className='w-[96%] flex justify-between items-center'>
                   <div className=''>
-                     <h1 className='font-bold text-xl'> Daily USD Sales Page </h1>
+                     <h1 className='font-bold text-xl'> Daily ZWL Sales Page </h1>
                   </div>
                   <div className=''>
                         <h2 className='font-semibold text-xl'>User: Mark Chovava</h2>
@@ -157,4 +157,4 @@ function DaySale() {
   )
 }
 
-export default DaySale
+export default MonthSaleUSD

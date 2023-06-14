@@ -2,7 +2,7 @@ export const posInit = (posInitialState) => {
     const result = {
         ...posInitialState, 
         mode: 'SearchByBarcode', 
-        currency: 'USD',
+        currency: {  ...posInitialState.currency, name: 'USD' },
         products: []
     }
     return result
@@ -11,7 +11,6 @@ export const posInit = (posInitialState) => {
 
 export const posInitialState = {
    mode: '',
-   currency: '',
    products: [],
  };
 
@@ -23,11 +22,6 @@ export const posReducer = (state, action) => {
             ...state,
             mode: action.payload
          }
-    case 'CHANGE_CURRENCY':
-         return {
-            ...state,
-            mode: action.payload
-         }
        case 'ADD_PRODUCT':
             const distinctItems = [...new Set(state.products.concat(action.payload))]
             return {
@@ -35,14 +29,10 @@ export const posReducer = (state, action) => {
                 products: distinctItems,
             };
        case 'SINGLE_PRODUCT_QUANTITY':
-            console.log(state.products)
             return {
                 ...state,
                 products: state.products.filter((item) => {
                     if(item.id === action.payload.id) {
-                        console.log('quantity_sold: ' + action.payload.quantity_sold)
-                        console.log('item quantity_sold: ' + item.quantity_sold)
-                        console.log('Sent total_price: ' + (action.payload.quantity_sold * item.unit_price))
                         item.quantity_sold = Number(action.payload.quantity_sold)
                         item.total_price = item.quantity_sold * item.unit_price
                         return item
@@ -76,10 +66,57 @@ export const posReducer = (state, action) => {
         case 'REMOVE_PRODUCT':
                 return {
                   ...state,
-                  products: state.products.filter((item) => item.id !== action.payload.id),
+                  products: [],
                 };
         default:
            return state;
    }
+}
+
+
+
+export const currencyInitialState = {
+    currency: {},
+    dbcurrency: {}
+  };
+
+export const currencyReducer = (state, action) => {
+    switch(action.type){
+     case 'CHANGE_CURRENCY':
+         return {
+            ...state,
+             currency: action.payload
+          }
+    case 'UPDATE_CURRENCY':
+         return {
+            ...state,
+            dbcurrency: state.currency.filter((item) => {
+                 if(item.id === action.payload.id){
+                     item.rate=action.payload
+                     return item
+                 } else {
+                     return item
+                 }
+             })
+         }
+    default:
+        return state;
+    }
+ }
+
+
+export const paymentInitialSate = {
+    method: ''
+}
+
+export const paymentReducer = (state, action) => {
+    switch(action.type){
+        case 'PAYMENT_METHOD':
+            return {
+                method: action.payload
+            }
+        default:
+            return state;
+    }
 }
 

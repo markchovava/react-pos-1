@@ -25,6 +25,15 @@ import StockOrder from './pages/StockOrder/StockOrder'
 import EditProduct from './pages/Product/EditProduct'
 import SettingPage from './pages/Setting/SettingPage'
 import CurrencyPage from './pages/Setting/CurrencyPage'
+import ListSale from './pages/Sales/ListSale'
+import SalesPage from './pages/Sales/SalesPage'
+import CurrentSale from './pages/Sales/CurrentSale'
+import ProductSale from './pages/Sales/ProductSale'
+import TestPage from './pages/TestPage'
+import DaySaleUSD from './pages/Sales/DaySaleUSD'
+import DaySaleZWL from './pages/Sales/DaySaleZWL'
+import MonthSaleUSD from './pages/Sales/MonthSaleUSD'
+import MonthSaleZWL from './pages/Sales/MonthSaleZWL'
 
 
 function App() {
@@ -50,8 +59,13 @@ function App() {
         <Route path='/product/view/:id' element={<ViewProduct />} />
         <Route path='/product/edit/:id' element={<EditProduct />} />
         {/* Sales */}
-        <Route path='/sales/daily' element={<DaySale />} />
-        <Route path='/sales/monthly' element={<MonthSale />} />
+        <Route path='/sales' element={<SalesPage />} />
+        <Route path='/sales/daily/usd' element={<DaySaleUSD />} />
+        <Route path='/sales/daily/zwl' element={<DaySaleZWL />} />
+        <Route path='/sales/product' element={<ProductSale />} />
+        <Route path='/sales/feed' element={<CurrentSale />} />
+        <Route path='/sales/monthly/usd' element={<MonthSaleUSD />} />
+        <Route path='/sales/monthly/zwl' element={<MonthSaleZWL />} />
         <Route path='/sales/user' element={<UserSale />} />
         {/* SalesOrder */}
         <Route path='/sales/order/daily' element={<DaySaleOrder />} />
@@ -68,6 +82,7 @@ function App() {
         {/* Setting */}
         <Route path='/settings' element={<SettingPage />} />
         <Route path='/settings/currency' element={<CurrencyPage />} />
+        <Route path='/test' element={<TestPage />} />
       </Routes> 
     </>
   )

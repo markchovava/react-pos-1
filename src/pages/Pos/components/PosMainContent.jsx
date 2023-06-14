@@ -7,12 +7,11 @@ import { MainContextState } from '../../../contexts/MainContextProvider'
 
 
 function PosMainContent() {
-  const {posState, posDispatch, productState, productDispatch} = MainContextState()
+  const {posState, posDispatch, zwlRate, currencyState, currencyDispatch, productState} = MainContextState()
   const [searchResults, setSearchResults] = useState([])
   const searchRef = useRef()
   const quantityRef = useRef()
-  const [inputData, setInputData] = useState(1);
-
+  const [inputData, setInputData] = useState(0);
 
   const setInputUnique = (itemId, value) => {
     const newList = posState.products.map((item) => {
@@ -23,19 +22,23 @@ function PosMainContent() {
     });
     setInputData(newList)
   };
-
-  
-  
-
+  /* CHANGING MODE */
   const handleMode = (mode) => {
     posDispatch({type: 'CHANGE_MODE', payload: mode})
     console.log(mode)
   }
+  /* CHANGE CURRENCY */
   const handleCurrency = (currency) => {
-    posDispatch({type: 'CHANGE_CURRENCY', payload: currency})
-    console.log(currency)
+    let rate;
+    if(currency == 'ZWL'){
+      rate = zwlRate
+    } else if(currency == 'USD'){
+      rate = 1
+    }
+    currencyDispatch({type: 'CHANGE_CURRENCY', payload: {name: currency , rate: rate}})
+   
   }
-
+  /* SEARCH PRODUCT USING NAME */
   const handleSearch = (search) => {
     //console.log(search)
     const searchData = productState.products.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()));
@@ -48,8 +51,8 @@ function PosMainContent() {
     }
     
   }
-
-
+  console.log(currencyState.currency.name)
+  console.log(currencyState.currency.rate)
 
 
   return (
@@ -63,6 +66,11 @@ function PosMainContent() {
                 <h1 className='font-bold text-xl'>POS PAGE </h1></div>
                 <div className=''>
                     <h2 className='font-semibold text-xl'>Operator: Mark Chovava</h2>
+                </div>
+                <div className='text-xl font-semibold'>
+                  Rate:
+                  <span className='ml-2 text-blue-800'>
+                  1 : {(zwlRate / 100).toFixed(2)}</span>
                 </div>
                 <div className='flex items-center justify-between gap-3'>
                     <select 
@@ -161,12 +169,17 @@ function PosMainContent() {
             posState.products.map((item, i) => (
               <div key={i} className='w-[96%] h-[100%] flex items-center justify-start  border-y border-slate-400 py-2 text-md'>
                 <div className='w-[35%] border-r border-slate-900 px-3'>{item.name}</div>
-                <div className='w-[20%] border-r border-slate-900 px-3'> ${(item.unit_price / 100).toFixed(2)} </div>
+                <div className='w-[20%] border-r border-slate-900 px-3'> 
+                  ${ currencyState.currency.name == 'ZWL' ?
+                    (((currencyState.currency.rate / 100) * item.unit_price) / 100).toFixed(2)
+                    : (item.unit_price / 100).toFixed(2)
+                    } 
+                </div>
                 <div className='w-[20%] border-r border-slate-900 px-3'>
                     <input 
                         type="number"
                         ref={quantityRef}
-                        value={ item.value ? item.value : 1}
+                        value={ item.value}
                         name='quantity_sold'
                         onChange={(e) => {
                           console.log(item.name + ': ' + e.target.value)
@@ -176,7 +189,13 @@ function PosMainContent() {
                         min={1} 
                         className='w-[80%] border-none outline-none p-2'/>
                 </div>
-                <div className='w-[20%] border-r border-slate-900 px-3'>${(item?.total_price / 100).toFixed(2)}</div>
+                <div className='w-[20%] border-r border-slate-900 px-3'>
+                  ${ currencyState.currency.name == 'ZWL' ?
+                    (((currencyState.currency.rate / 100) * item?.total_price) / 100).toFixed(2)
+                    : 
+                    (item?.total_price / 100).toFixed(2)
+                    }
+                </div>
                 <div className='w-[5%] font-semibold px-3'> 
                   <AiFillDelete 
                     onClick={() => posDispatch({type: 'REMOVE_PRODUCT', payload: {id: item.id }})}

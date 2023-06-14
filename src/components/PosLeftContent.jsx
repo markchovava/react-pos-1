@@ -23,7 +23,9 @@ function PosLeftContent() {
             </Link>
           </button>
           <button title='Sales' className='left__ContentBtn'>
-            <BsBarChartFill className='left__Icon'/>
+            <Link to='/sales'>
+              <BsBarChartFill className='left__Icon'/>
+            </Link>
           </button>
           <button title='Stock' className='left__ContentBtn'>
             <BiPackage className='left__Icon'/>

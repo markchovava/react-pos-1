@@ -3,33 +3,43 @@ import { MainContextState } from '../../../contexts/MainContextProvider';
 
 
 function PosRightContent() {
-  const {posState} = MainContextState()
+  const {posState, zwlRate, currencyState} = MainContextState()
   const [amount, setAmount] = useState(0)
   const amountRef = useRef()
 
-  const calculateGrandTotal = () => {
-    const grandtotal = posState.products.reduce((acc, item) => acc + item.total_price, 0);
-    return grandtotal;
-  };
-  const calculateSubTotal = () => {
-    const subtotal = calculateGrandTotal() - calculateTax();
-    return subtotal;
-  };
-
-  const calculateTax = () => {
-    const tax = (15 / 100) * calculateGrandTotal();
-    return tax;
-  }
-
-  const calculateChange = () => {
-    const change = (amount * 100) - calculateGrandTotal();
-    return change;
-  }
-
-  const calculateOwing = () => {
-    const owing = calculateGrandTotal() - (amount * 100);
-    return owing;
-  }
+    /* GRANDTOTAL */
+    const calculateGrandTotal = () => {
+      const calculateGrandTotal = posState.products.reduce((acc, item) => acc + item.total_price, 0);
+      let grandtotal;
+      if(currencyState.currency.name == 'ZWL'){
+        grandtotal = (currencyState.currency.rate / 100) * calculateGrandTotal
+      } else{
+        grandtotal = calculateGrandTotal
+      }
+      return grandtotal;
+    };
+    /* SUBTOTAL */
+    const calculateSubTotal = () => {
+      const subtotal = calculateGrandTotal() - calculateTax();
+      return subtotal;
+    };
+    /* TAX */
+    const calculateTax = () => {
+      const tax = (15 / 100) * calculateGrandTotal();
+      return tax;
+    }
+    /* CHANGE */
+    const calculateChange = () => {
+      const change = (amount * 100) - calculateGrandTotal();
+      return change;
+    }
+    /* OWING */
+    const calculateOwing = () => {
+      const owing = calculateGrandTotal() - (amount * 100);
+      return owing;
+    }
+  
+  
 
 
   return (

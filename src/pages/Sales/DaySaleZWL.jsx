@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { MainContextState } from '../../contexts/MainContextProvider'
 
 
-function DaySale() {
+function DaySaleZWL() {
    const {salesState, salesDispatch} = MainContextState()
    console.log('SALE CONT')
    console.log(salesState.sales)
@@ -46,7 +46,7 @@ function DaySale() {
      let sales_grandtotal = 0;
      let quantity_total = 0;
      group.reduce((acc, curr) => {
-         if(curr.currency == 'USD'){
+         if(curr.currency == 'ZWL'){
             sales_grandtotal  += curr.grandtotal;
             quantity_total += curr.quantity_total;
             //return sales_grandtotal;
@@ -78,7 +78,7 @@ function DaySale() {
             <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg pr-[0.5rem]'>
                <div className='w-[96%] flex justify-between items-center'>
                   <div className=''>
-                     <h1 className='font-bold text-xl'> Daily USD Sales Page </h1>
+                     <h1 className='font-bold text-xl'> Daily ZWL Sales Page </h1>
                   </div>
                   <div className=''>
                         <h2 className='font-semibold text-xl'>User: Mark Chovava</h2>
@@ -135,7 +135,7 @@ function DaySale() {
                      <div className='w-[20%] border-r border-slate-300 px-3'>{item.created_at}</div>
                      <div className='w-[20%] border-r border-slate-300 px-3'>{item.quantity_total} </div>
                      <div className='w-[20%] border-r border-slate-300 px-3'>${(item.grandtotal / 100).toFixed(2)} </div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'> USD</div>
+                     <div className='w-[20%] border-r border-slate-300 px-3'> ZWL</div>
                      <div className='w-[20%] border-r border-slate-300 px-3'> 
                      <Link to=''>
                          <AiFillEye className='text-xl transition text-slate-800 hover:text-blue-600 hover:scale-110'/>
@@ -157,4 +157,4 @@ function DaySale() {
   )
 }
 
-export default DaySale
+export default DaySaleZWL
