@@ -135,7 +135,7 @@ function MonthSaleUSD() {
                      <div className='w-[20%] border-r border-slate-300 px-3'>{item.created_at}</div>
                      <div className='w-[20%] border-r border-slate-300 px-3'>{item.quantity_total} </div>
                      <div className='w-[20%] border-r border-slate-300 px-3'>${(item.grandtotal / 100).toFixed(2)} </div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'> USD</div>
+                     <div className='w-[20%] border-r border-slate-300 px-3'> USD </div>
                      <div className='w-[20%] border-r border-slate-300 px-3'> 
                      <Link to=''>
                          <AiFillEye className='text-xl transition text-slate-800 hover:text-blue-600 hover:scale-110'/>

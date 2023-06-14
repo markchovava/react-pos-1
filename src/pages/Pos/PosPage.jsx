@@ -14,10 +14,11 @@ function PosPage() {
   const currencyRef = useRef()
   const [searchResults, setSearchResults] = useState([])
   const searchRef = useRef()
+  const scanRef = useRef()
   const quantityRef = useRef()
   const [inputData, setInputData] = useState(0);
+  const [scanInput, setScanInput] = useState()
 
-  console.log(parseInt(0.97))
 
   const setInputUnique = (itemId, value) => {
     const newList = posState.products.map((item) => {
@@ -49,11 +50,44 @@ function PosPage() {
     const searchData = productState.products.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()));
     if(search){
       setSearchResults(searchData)
+      console.log(searchData)
     }else if(!search){
       setSearchResults([])
     }
-    
   }
+   /* SEARCH PRODUCT USING BARCODE */
+   const handleScan = (search) => {
+    setScanInput(search)
+    if(search){
+      console.log(productState.products)
+      /* if(!Number.isInteger(search)){
+        alert('The input is not a number...')
+      } */
+      const scanData = productState.products.filter((item) => item.barcode == search);
+      console.log(scanData[0])
+      if(scanData[0]){
+        posDispatch({
+          type: 'ADD_PRODUCT', 
+           payload: {
+            id: scanData[0].id,
+            product_id: scanData[0].id,
+            product_name: scanData[0].name,
+            quantity: scanData[0].quantity,
+            quantity_sold: 1,
+            currency: currencyRef.current.value,
+            unit_price: scanData[0].unit_price,
+            total_price: scanData[0].unit_price
+        }})
+        scanRef.current.value = '' 
+        setScanInput('')
+      } else{
+        alert('Not found.')
+        scanRef.current.value = ''
+      }
+    } else if(!search){
+      console.log('The input is empty...')
+    }
+  } 
   /* GRANDTOTAL */
   const calculateGrandTotal = () => {
     const calculateGrandTotal = posState.products.reduce((acc, item) => acc + item.total_price, 0);
@@ -156,14 +190,14 @@ function PosPage() {
           {/* PosMainContent */}
           <section className='w-[65vw] h-[100vh] left-[10vw] bg-slate-100 fixed'>
               {/* PosMainContentTop */}
-              <section className='fixed w-[65vw] h-[37vh] border-b border-black '>
+              <section className='fixed z-0 w-[65vw] h-[37vh] border-b border-black '>
                 {/* PosMainContentHeader */}
                 <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg'>
                     <div className='w-[96%] flex justify-between items-center'>
                         <div className=''>
                         <h1 className='font-bold text-xl'>POS PAGE </h1></div>
                         <div className=''>
-                            <h2 className='font-semibold text-xl'>Operator: Mark Chovava</h2>
+                            <h2 className='font-semibold text-xl'>Operator: Username</h2>
                         </div>
                         <div className='text-xl font-semibold'>
                           Rate:
@@ -195,7 +229,7 @@ function PosPage() {
                   
                   {/* SEARCHBYNAME */}
                   { posState.mode == 'SearchByName' && (
-                    <form className='h-[12vh] w-full flex justify-center'>
+                    <form onSubmit={(e) => e.preventDefault()} className='h-[12vh] w-full flex justify-center'>
                       <div className='relative bg-white w-[96%] shadow-lg flex flex-col justify-center items-center'>
                         <input type='text' 
                           name='searchname'
@@ -204,31 +238,27 @@ function PosPage() {
                           placeholder='Search by name...'
                           autoFocus={posState.mode == 'SearchByName' && true}
                           className='shadow appearance-none border rounded w-[94%] text-lg py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
-                        <div className={`${searchResults.length == 0 ? 'hidden' : 'absolute top-[110%] w-[100%] z-10 bg-slate-50 shadow-md'} `}>
+                        <div className={`${searchResults.length == 0 ? 'hidden' : 'absolute top-[110%] w-[100%] z-20 bg-slate-50 shadow-md'} `}>
                           { searchResults.length > 0 &&
-                            searchResults.map((item) => (
-                              <div className='w-[94%] mx-auto py-3 px-2 my-2 cursor-pointer hover:bg-slate-100 hover:text-black text-slate-800' 
-                                key={item.id}
+                            searchResults.map((item, i) => (
+                              <div className='w-[94%] z-20 mx-auto py-3 px-2 my-1 cursor-pointer hover:bg-slate-100 hover:text-black text-slate-800' 
+                                key={i}
                                 onClick={() => {
-                                  item.quantity_sold = 1
-                                  item.total_price = item.unit_price * item.quantity_sold
                                   posDispatch({
-                                      type: 'ADD_PRODUCT', 
-                                      payload: {
-                                        id: item.id,
-                                        product_id: item.id,
-                                        product_name: item.name,
-                                        quantity: item.quantity,
-                                        quantity_sold: 1,
-                                        currency: currencyRef.current.value,
-                                        unit_price: item.unit_price,
-                                        total_price: item.unit_price
-                                      }
+                                    type: 'ADD_PRODUCT', 
+                                    payload: {
+                                      id: item.id,
+                                      product_id: item.id,
+                                      product_name: item.name,
+                                      quantity: item.quantity,
+                                      quantity_sold: 1,
+                                      currency: currencyRef.current.value,
+                                      unit_price: item.unit_price,
+                                      total_price: item.unit_price
+                                    }
                                 })
-                                  console.log(posState.products)
                                   searchRef.current.value = ''
-                                  setSearchResults([])
-                                  
+                                  setSearchResults([])  
                                 }}>
                                 {item.name}
                               </div>
@@ -238,11 +268,14 @@ function PosPage() {
                     </form>
                   )}
                   { posState.mode == 'SearchByBarcode' && (
-                    <form className='h-[12vh] w-full flex justify-center'>
+                    <form className='h-[12vh] w-full flex justify-center' onSubmit={(e) => e.preventDefault()}>
                       <div className='bg-white w-[96%] shadow-lg flex justify-center items-center'>
-                        <input type='text' 
+                        <input type='number' 
                           name='scanmode'
+                          value={scanInput}
+                          onChange={(e) => handleScan(e.target.value)} 
                           autoFocus={posState.mode == 'SearchByBarcode' && true}
+                          ref={scanRef}
                           placeholder='Search by Code...'
                           className='shadow appearance-none border rounded w-[94%] text-lg py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
                       </div>   
@@ -262,7 +295,7 @@ function PosPage() {
                 </div>
               </section>
               {/* PosMainContentBottom */}
-              <section className='w-[65vw] top-[37vh] h-[63vh] fixed overflow-y-auto scroll__width py-3'>
+              <section className='w-[65vw] top-[37vh] h-[63vh] fixed z-0 overflow-y-auto scroll__width py-3'>
                 {/* PosMainContentTable */}  
                 <div className='w-full h-auto '>
                   <div className='flex flex-col justify-center items-center'>
@@ -270,7 +303,10 @@ function PosPage() {
 
                     posState.products.map((item, i) => (
                       <div key={i} className='w-[96%] h-[100%] flex items-center justify-start  border-y border-slate-400 py-2 text-md'>
-                        <div className='w-[35%] border-r border-slate-900 px-3'>{item.product_name}</div>
+                        <div className='w-[35%] border-r border-slate-900 px-3'>
+                          {item.product_name}
+                          <small className='block font-semibold text-red-600'>Stock: {item.quantity}</small>
+                        </div>
                         <div className='w-[20%] border-r border-slate-900 px-3'> 
                           ${ currencyState.currency.name == 'ZWL' ?
                             (((currencyState.currency.rate / 100) * item.unit_price) / 100).toFixed(2)
@@ -300,7 +336,7 @@ function PosPage() {
                         </div>
                         <div className='w-[5%] font-semibold px-3'> 
                           <AiFillDelete 
-                            onClick={() => posDispatch({type: 'REMOVE_PRODUCT', payload: {id: item.id }})}
+                            onClick={() => posDispatch({type: 'DELETE_PRODUCT', payload: {id: item.id }})}
                             className='hover:text-red-500 transition text-lg' />
                         </div>
                     </div>

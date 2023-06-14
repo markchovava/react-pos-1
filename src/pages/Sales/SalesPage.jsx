@@ -34,17 +34,17 @@ function SalesPage() {
                <div className='w-full h-[100%]'>
                   <section className='w-[96%] h-[80vh] my-[5vh] mx-auto'>
                      <div className='grid grid-cols-5'>
-                        <Link to='/sales/product'>
+                        {/* <Link to='/sales/product'>
                            <div className='border-x border-y border-green-500 hover:border-green-600 text-green-500 hover:text-green-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
                               <TbBrandProducthunt className='text-[5rem]' />
                               <div className='text-xl font-semibold p-2 mx-auto text-center'>
                                 Product Sales
                               </div>
                            </div>
-                        </Link>
+                        </Link> */}
                        
                         <Link to='/sales/daily/usd'>
-                           <div className='border-t border-b border-r border-pink-500 hover:border-pink-600 text-pink-500 hover:text-pink-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
+                           <div className='border-t border-b border-x border-pink-500 hover:border-pink-600 text-pink-500 hover:text-pink-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
                               <FaCalendarDay className='text-[5rem]' />
                               <div className='text-xl font-semibold p-2 mx-auto text-center'>
                                  Daily USD Sales
@@ -75,14 +75,14 @@ function SalesPage() {
                             </div>
                           </div>
                         </Link>
-                        <Link to='/sales/user'>
+                        {/* <Link to='/sales/user'>
                           <div className='border-t border-b border-r border-red-500 hover:border-red-600 text-red-500 hover:text-red-600 transition cursor-pointer flex flex-col items-center justify-center gap-3 py-8'>
                             <FaRegUser className='text-[5rem] '/>
                             <div className='text-xl font-semibold p-2 mx-auto text-center'>
                               User Sales
                             </div>
                           </div>
-                        </Link>
+                        </Link> */}
                      </div>
                   </section>
                </div>

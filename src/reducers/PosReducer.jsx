@@ -23,10 +23,19 @@ export const posReducer = (state, action) => {
             mode: action.payload
          }
        case 'ADD_PRODUCT':
-            const distinctItems = [...new Set(state.products.concat(action.payload))]
+            const existingProduct = state.products.find((product) => product.product_id === action.payload.product_id);
+            console.log(action.payload)
+            console.log(state.products)
+            if (!existingProduct) {
+                state.products.push(action.payload);
+            } else if(existingProduct){
+                existingProduct.quantity_sold += action.payload.quantity_sold
+                existingProduct.total_price = existingProduct.quantity_sold * existingProduct.unit_price
+            }
             return {
                 ...state,
-                products: distinctItems,
+                products: state.products
+
             };
        case 'SINGLE_PRODUCT_QUANTITY':
             return {
@@ -41,11 +50,15 @@ export const posReducer = (state, action) => {
                     }
                 })
             }
-    
        case 'SEARCH_PRODUCT':
             return {
                 products: action.payload
             }
+        case 'DELETE_PRODUCT':
+            return {
+                ...state,
+                products: state.products.filter((item) => item.id !== action.payload.id),
+            };
         case 'UPDATE_PRODUCT':
             return {
                 ...state,
