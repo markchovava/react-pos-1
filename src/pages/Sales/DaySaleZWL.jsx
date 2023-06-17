@@ -137,7 +137,7 @@ function DaySaleZWL() {
                      <div className='w-[20%] border-r border-slate-300 px-3'>${(item.grandtotal / 100).toFixed(2)} </div>
                      <div className='w-[20%] border-r border-slate-300 px-3'> ZWL</div>
                      <div className='w-[20%] border-r border-slate-300 px-3'> 
-                     <Link to=''>
+                     <Link to={`/sales/daily/product/zwl/${item.created_at}`}>
                          <AiFillEye className='text-xl transition text-slate-800 hover:text-blue-600 hover:scale-110'/>
                      </Link>
                   </div>

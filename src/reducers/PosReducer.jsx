@@ -16,13 +16,13 @@ export const posInitialState = {
 
 
 export const posReducer = (state, action) => {
-   switch(action.type){
-    case 'CHANGE_MODE':
-         return {
-            ...state,
-            mode: action.payload
-         }
-       case 'ADD_PRODUCT':
+    switch(action.type){
+        case 'CHANGE_MODE':
+            return {
+                ...state,
+                mode: action.payload
+            }
+        case 'ADD_PRODUCT':
             const existingProduct = state.products.find((product) => product.product_id === action.payload.product_id);
             console.log(action.payload)
             console.log(state.products)
@@ -36,13 +36,14 @@ export const posReducer = (state, action) => {
                 ...state,
                 products: state.products
 
-            };
-       case 'SINGLE_PRODUCT_QUANTITY':
+            }
+        case 'SINGLE_PRODUCT_QUANTITY':
             return {
                 ...state,
                 products: state.products.filter((item) => {
                     if(item.id === action.payload.id) {
                         item.quantity_sold = Number(action.payload.quantity_sold)
+                        item.stock = item.quantity - action.payload.quantity_sold
                         item.total_price = item.quantity_sold * item.unit_price
                         return item
                     }else{
@@ -50,7 +51,7 @@ export const posReducer = (state, action) => {
                     }
                 })
             }
-       case 'SEARCH_PRODUCT':
+        case 'SEARCH_PRODUCT':
             return {
                 products: action.payload
             }

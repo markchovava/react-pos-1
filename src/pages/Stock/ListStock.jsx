@@ -1,9 +1,12 @@
 import { AiFillEdit, AiFillEye, AiFillDelete } from 'react-icons/ai'
 import { BsChevronDoubleLeft, BsChevronDoubleRight } from 'react-icons/bs'
 import PosLeftContent from '../../components/PosLeftContent'
+import { MainContextState } from '../../contexts/MainContextProvider'
 
 
 function ListStock() {
+   const {productState, productDispatch} = MainContextState()
+   const stockData = productState.products ? productState.products : null;
    
   return (
    <section className='bg-slate-100 h-auto w-full overflow-hidden'>
@@ -56,166 +59,38 @@ function ListStock() {
                {/* ListStockTableTitle */}
                <div className='w-full h-[7vh] bg-white flex items-end justify-center pr-[0.5rem]'>
                   <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                     <div className='w-[40%] border-r border-slate-300 font-semibold px-3'>PRODUCT NAME</div>
-                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>STOCK</div>
-                     <div className='w-[30%] border-r border-slate-300 font-semibold px-3'>AUTHOR</div>
-                     <div className='w-[10%] font-semibold px-3'>ACTIONS </div>
+                     <div className='w-[30%] border-r border-slate-300 font-semibold px-3'> PRODUCT NAME </div>
+                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'> STOCK </div>
+                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'> STOCK PRICE </div>
+                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'> AUTHOR </div>
+                     <div className='w-[10%] font-semibold px-3'> ACTIONS </div>
                   </div>
                </div>
             </section>
-            <section className='w-[89vw] h-[68vh] top-[32vh] text-black fixed overflow-y-auto scroll__width pb-8 '>
+            <section className='w-[89vw] h-[68vh] top-[32vh] text-black fixed overflow-y-auto scroll__width pb-8'>
                {/* ListStockTable */}
                <div className='w-full bg-white flex flex-col items-center justify-center text-md'>
                   {/* Table Row */}
-                  <div className='w-[96%] border border-slate-300 bg-white py-2 flex justify-center items-center'>
-                     <div className='w-[40%] border-r border-slate-300 px-3'> 
-                        Mazowe Orange Crush by Shweppes
-                     </div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>34</div>
-                     <div className='w-[30%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>
-                        <div className='flex justify-center items-center gap-2'>
-                           <AiFillEdit className='text-xl transition text-slate-500 hover:text-green-600 hover:scale-110'/> 
-                           <AiFillEye className='text-xl transition text-slate-500 hover:text-blue-600 hover:scale-110'/>
-                           <AiFillDelete className='text-xl transition text-slate-500 hover:text-red-600 hover:scale-110'/>
+                  {stockData.map((item) => (
+                     <div className='w-[96%] border border-slate-300 bg-white py-2 flex justify-center items-center'>
+                        <div className='w-[30%] border-r border-slate-300 px-3'> 
+                           {item.name}
+                        </div>
+                        <div className='w-[20%] border-r border-slate-300 px-3'>
+                           {item.quantity}
+                        </div>
+                        <div className='w-[20%] border-r border-slate-300 px-3'>
+                           ${((item.unit_price / 100) * item.quantity).toFixed(2)}
+                        </div>
+                        <div className='w-[20%] border-r border-slate-300 px-3'>Username</div>
+                        <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>
+                           <div className='flex justify-center items-center gap-2'>
+                              <AiFillEdit className='text-xl transition text-slate-500 hover:text-green-600 hover:scale-110'/> 
+                           </div>
                         </div>
                      </div>
-                  </div>
-                  {/* Table Row */}
-                  <div className='w-[96%] border border-slate-300 bg-white py-2 flex justify-center items-center'>
-                     <div className='w-[40%] border-r border-slate-300 px-3'> 
-                        Mazowe Orange Crush by Shweppes
-                     </div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>34</div>
-                     <div className='w-[30%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>
-                        <div className='flex justify-center items-center gap-2'>
-                           <AiFillEdit className='text-xl transition text-slate-500 hover:text-green-600 hover:scale-110'/> 
-                           <AiFillEye className='text-xl transition text-slate-500 hover:text-blue-600 hover:scale-110'/>
-                           <AiFillDelete className='text-xl transition text-slate-500 hover:text-red-600 hover:scale-110'/>
-                        </div>
-                     </div>
-                  </div>
-                  {/* Table Row */}
-                  <div className='w-[96%] border border-slate-300 bg-white py-2 flex justify-center items-center'>
-                     <div className='w-[40%] border-r border-slate-300 px-3'> 
-                        Mazowe Orange Crush by Shweppes
-                     </div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>34</div>
-                     <div className='w-[30%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>
-                        <div className='flex justify-center items-center gap-2'>
-                           <AiFillEdit className='text-xl transition text-slate-500 hover:text-green-600 hover:scale-110'/> 
-                           <AiFillEye className='text-xl transition text-slate-500 hover:text-blue-600 hover:scale-110'/>
-                           <AiFillDelete className='text-xl transition text-slate-500 hover:text-red-600 hover:scale-110'/>
-                        </div>
-                     </div>
-                  </div>
-                  {/* Table Row */}
-                  <div className='w-[96%] border border-slate-300 bg-white py-2 flex justify-center items-center'>
-                     <div className='w-[40%] border-r border-slate-300 px-3'> 
-                        Mazowe Orange Crush by Shweppes
-                     </div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>34</div>
-                     <div className='w-[30%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>
-                        <div className='flex justify-center items-center gap-2'>
-                           <AiFillEdit className='text-xl transition text-slate-500 hover:text-green-600 hover:scale-110'/> 
-                           <AiFillEye className='text-xl transition text-slate-500 hover:text-blue-600 hover:scale-110'/>
-                           <AiFillDelete className='text-xl transition text-slate-500 hover:text-red-600 hover:scale-110'/>
-                        </div>
-                     </div>
-                  </div>
-                  {/* Table Row */}
-                  <div className='w-[96%] border border-slate-300 bg-white py-2 flex justify-center items-center'>
-                     <div className='w-[40%] border-r border-slate-300 px-3'> 
-                        Mazowe Orange Crush by Shweppes
-                     </div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>34</div>
-                     <div className='w-[30%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>
-                        <div className='flex justify-center items-center gap-2'>
-                           <AiFillEdit className='text-xl transition text-slate-500 hover:text-green-600 hover:scale-110'/> 
-                           <AiFillEye className='text-xl transition text-slate-500 hover:text-blue-600 hover:scale-110'/>
-                           <AiFillDelete className='text-xl transition text-slate-500 hover:text-red-600 hover:scale-110'/>
-                        </div>
-                     </div>
-                  </div>
-                  {/* Table Row */}
-                  <div className='w-[96%] border border-slate-300 bg-white py-2 flex justify-center items-center'>
-                     <div className='w-[40%] border-r border-slate-300 px-3'> 
-                        Mazowe Orange Crush by Shweppes
-                     </div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>34</div>
-                     <div className='w-[30%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>
-                        <div className='flex justify-center items-center gap-2'>
-                           <AiFillEdit className='text-xl transition text-slate-500 hover:text-green-600 hover:scale-110'/> 
-                           <AiFillEye className='text-xl transition text-slate-500 hover:text-blue-600 hover:scale-110'/>
-                           <AiFillDelete className='text-xl transition text-slate-500 hover:text-red-600 hover:scale-110'/>
-                        </div>
-                     </div>
-                  </div>
-                  {/* Table Row */}
-                  <div className='w-[96%] border border-slate-300 bg-white py-2 flex justify-center items-center'>
-                     <div className='w-[40%] border-r border-slate-300 px-3'> 
-                        Mazowe Orange Crush by Shweppes
-                     </div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>34</div>
-                     <div className='w-[30%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>
-                        <div className='flex justify-center items-center gap-2'>
-                           <AiFillEdit className='text-xl transition text-slate-500 hover:text-green-600 hover:scale-110'/> 
-                           <AiFillEye className='text-xl transition text-slate-500 hover:text-blue-600 hover:scale-110'/>
-                           <AiFillDelete className='text-xl transition text-slate-500 hover:text-red-600 hover:scale-110'/>
-                        </div>
-                     </div>
-                  </div>
-                  {/* Table Row */}
-                  <div className='w-[96%] border border-slate-300 bg-white py-2 flex justify-center items-center'>
-                     <div className='w-[40%] border-r border-slate-300 px-3'> 
-                        Mazowe Orange Crush by Shweppes
-                     </div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>34</div>
-                     <div className='w-[30%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>
-                        <div className='flex justify-center items-center gap-2'>
-                           <AiFillEdit className='text-xl transition text-slate-500 hover:text-green-600 hover:scale-110'/> 
-                           <AiFillEye className='text-xl transition text-slate-500 hover:text-blue-600 hover:scale-110'/>
-                           <AiFillDelete className='text-xl transition text-slate-500 hover:text-red-600 hover:scale-110'/>
-                        </div>
-                     </div>
-                  </div>
-                  {/* Table Row */}
-                  <div className='w-[96%] border border-slate-300 bg-white py-2 flex justify-center items-center'>
-                     <div className='w-[40%] border-r border-slate-300 px-3'> 
-                        Mazowe Orange Crush by Shweppes
-                     </div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>34</div>
-                     <div className='w-[30%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>
-                        <div className='flex justify-center items-center gap-2'>
-                           <AiFillEdit className='text-xl transition text-slate-500 hover:text-green-600 hover:scale-110'/> 
-                           <AiFillEye className='text-xl transition text-slate-500 hover:text-blue-600 hover:scale-110'/>
-                           <AiFillDelete className='text-xl transition text-slate-500 hover:text-red-600 hover:scale-110'/>
-                        </div>
-                     </div>
-                  </div>
-                  {/* Table Row */}
-                  <div className='w-[96%] border border-slate-300 bg-white py-2 flex justify-center items-center'>
-                     <div className='w-[40%] border-r border-slate-300 px-3'> 
-                        Mazowe Orange Crush by Shweppes
-                     </div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>34</div>
-                     <div className='w-[30%] border-r border-slate-300 px-3'>Mark Chovava</div>
-                     <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>
-                        <div className='flex justify-center items-center gap-2'>
-                           <AiFillEdit className='text-xl transition text-slate-500 hover:text-green-600 hover:scale-110'/> 
-                           <AiFillEye className='text-xl transition text-slate-500 hover:text-blue-600 hover:scale-110'/>
-                           <AiFillDelete className='text-xl transition text-slate-500 hover:text-red-600 hover:scale-110'/>
-                        </div>
-                     </div>
-                  </div>  
+                  ))}
+                  
                </div>
             </section>
          </section>

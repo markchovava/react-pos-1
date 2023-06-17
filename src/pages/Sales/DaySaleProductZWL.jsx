@@ -1,10 +1,59 @@
 import { BsChevronDoubleLeft, BsChevronDoubleRight } from 'react-icons/bs'
 import PosLeftContent from '../../components/PosLeftContent'
-import { AiFillEye } from 'react-icons/ai'
-import { Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import { MainContextState } from '../../contexts/MainContextProvider'
 
 
-function ProductSale() {
+function DaySaleProductZWL() {
+  const {salesItemState, salesItemDispatch} = MainContextState()
+  const { date } = useParams()
+  //console.log(salesItemState.items)
+
+  const getProductByDate = () => {
+    return salesItemState.items.filter((item) => item.created_at.slice(0, 10) === date );
+  }
+  const sortedData = getProductByDate().sort((a, b) => {
+    return 1
+  })
+   /* generate the group */
+  function groupItems(array, property) {
+    return array.reduce(function(groups, item) { 
+        var name = item[property]
+        var group = groups[name] || (groups[name] = []);
+        group.push(item);
+        return groups;
+    }, { });
+  }
+  /* Gets the lists with the groups */
+  const getGroupItemList = () =>{
+    var groups = groupItems(sortedData, 'product_name');
+    let str = "[";
+    for(var key in groups) {
+      var group = groups[key];
+      /* Calculate grandtotal  */
+      let item_total_price = 0;
+      let quantity_total = 0;
+      let unit_price = 0;
+      group.reduce((acc, curr) => {
+          if(curr.currency == 'USD'){
+            item_total_price  += curr.total_price;
+            quantity_total += curr.quantity_sold;
+            unit_price = curr.unit_price;
+            //return sales_grandtotal;
+          }
+      }, 0);
+      let quantity = quantity_total ? quantity_total : 0;
+      let item_total  = item_total_price  ? item_total_price  : 0;
+      str += '{"product_name": "' + key + '", "unit_price": ' + unit_price + ', "total_price": ' + item_total_price + ', "quantity_total": ' +  quantity + '},'
+    } 
+    let strObj = str.substring(0, str.length - 1) + "]";
+    //let strObj = str.substring(0, str.length - 1);
+    strObj = JSON.parse(strObj)
+    return strObj;
+  }
+
+  const items = getGroupItemList()
+  console.log(items)
 
 
   return (
@@ -17,10 +66,10 @@ function ProductSale() {
               <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg pr-[0.5rem]'>
                   <div className='w-[96%] flex justify-between items-center'>
                     <div className=''>
-                        <h1 className='font-bold text-xl'> Product Current Sales Page </h1>
+                        <h1 className='font-bold text-xl'> Product Daily Sales Page: {date} </h1>
                     </div>
                     <div className=''>
-                          <h2 className='font-semibold text-xl'>User: Mark Chovava</h2>
+                          <h2 className='font-semibold text-xl'>User: Name</h2>
                     </div>
                   </div>
               </div>
@@ -56,11 +105,10 @@ function ProductSale() {
               <div className='w-full h-[7vh] bg-white flex items-end justify-center pr-[0.5rem]'>
                   {/* Table Row */}
                   <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                    <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>PRODUCT NAME </div>
-                    <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>QUANTITY </div>
-                    <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>TOTAL PRICE </div>
-                    <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>PAYMENT METHOD</div>
-                    <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>ACTION</div>
+                    <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>PRODUCT NAME </div>
+                    <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>QUANTITY </div>
+                    <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>TOTAL PRICE </div>
+                    <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>CURRENCY</div>
                   </div>
               </div>
             </section>
@@ -68,29 +116,16 @@ function ProductSale() {
               {/* ListStockTable */}
               <div className='w-full bg-white flex flex-col items-center justify-center text-md'>
                   {/* Table Row */}
-                  <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                    <div className='w-[20%] border-r border-slate-300 px-3'>Mango </div>
-                    <div className='w-[20%] border-r border-slate-300 px-3'>100 </div>
-                    <div className='w-[20%] border-r border-slate-300 px-3'>$200.00 </div>
-                    <div className='w-[20%] border-r border-slate-300 px-3'> USD</div>
-                    <div className='w-[20%] border-r border-slate-300 px-3'> 
-                        <Link to=''>
-                            <AiFillEye className='text-xl transition text-slate-800 hover:text-blue-600 hover:scale-110'/>
-                        </Link>
-                    </div>
-                  </div>   
-                  {/* Table Row */}
-                  <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                    <div className='w-[20%] border-r border-slate-300 px-3'>Mango </div>
-                    <div className='w-[20%] border-r border-slate-300 px-3'>100 </div>
-                    <div className='w-[20%] border-r border-slate-300 px-3'>$200.00 </div>
-                    <div className='w-[20%] border-r border-slate-300 px-3'> USD</div>
-                    <div className='w-[20%] border-r border-slate-300 px-3'> 
-                        <Link to=''>
-                            <AiFillEye className='text-xl transition text-slate-800 hover:text-blue-600 hover:scale-110'/>
-                        </Link>
-                    </div>
-                  </div>   
+                  {items.map((item, i) => (
+                    <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
+                      <div className='w-[25%] border-r border-slate-300 px-3'>{item.product_name} </div>
+                      <div className='w-[25%] border-r border-slate-300 px-3'>{item.quantity_total} </div>
+                      <div className='w-[25%] border-r border-slate-300 px-3'>{(item.total_price / 100).toFixed(2)} </div>
+                      <div className='w-[25%] border-r border-slate-300 px-3'> USD</div>
+                    </div>   
+                  ))}
+                 
+                  
                 
               </div>
               
@@ -103,4 +138,4 @@ function ProductSale() {
   )
 }
 
-export default ProductSale
+export default DaySaleProductZWL

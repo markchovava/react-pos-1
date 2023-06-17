@@ -19,21 +19,20 @@ import DaySaleOrder from './pages/SalesOrder/DaySaleOrder'
 import MonthSaleOrder from './pages/SalesOrder/MonthSaleOrder'
 import UserSaleOrder from './pages/SalesOrder/UserSaleOrder'
 import UserSale from './pages/Sales/UserSale'
-import MonthSale from './pages/Sales/MonthSale'
-import DaySale from './pages/Sales/DaySale'
 import StockOrder from './pages/StockOrder/StockOrder'
 import EditProduct from './pages/Product/EditProduct'
 import SettingPage from './pages/Setting/SettingPage'
 import CurrencyPage from './pages/Setting/CurrencyPage'
-import ListSale from './pages/Sales/ListSale'
 import SalesPage from './pages/Sales/SalesPage'
-import CurrentSale from './pages/Sales/CurrentSale'
-import ProductSale from './pages/Sales/ProductSale'
-import TestPage from './pages/TestPage'
 import DaySaleUSD from './pages/Sales/DaySaleUSD'
 import DaySaleZWL from './pages/Sales/DaySaleZWL'
 import MonthSaleUSD from './pages/Sales/MonthSaleUSD'
 import MonthSaleZWL from './pages/Sales/MonthSaleZWL'
+import DaySaleProductUSD from './pages/Sales/DaySaleProductUSD'
+import DaySaleProductZWL from './pages/Sales/DaySaleProductZWL'
+
+import TestPage from './pages/TestPage'
+
 
 
 function App() {
@@ -62,8 +61,8 @@ function App() {
         <Route path='/sales' element={<SalesPage />} />
         <Route path='/sales/daily/usd' element={<DaySaleUSD />} />
         <Route path='/sales/daily/zwl' element={<DaySaleZWL />} />
-        <Route path='/sales/product' element={<ProductSale />} />
-        <Route path='/sales/feed' element={<CurrentSale />} />
+        <Route path='/sales/daily/product/usd/:date' element={<DaySaleProductUSD />} />
+        <Route path='/sales/daily/product/zwl/:date' element={<DaySaleProductZWL />} />
         <Route path='/sales/monthly/usd' element={<MonthSaleUSD />} />
         <Route path='/sales/monthly/zwl' element={<MonthSaleZWL />} />
         <Route path='/sales/user' element={<UserSale />} />

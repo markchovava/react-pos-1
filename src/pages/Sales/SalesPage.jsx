@@ -42,7 +42,7 @@ function SalesPage() {
                               </div>
                            </div>
                         </Link> */}
-                       
+                     
                         <Link to='/sales/daily/usd'>
                            <div className='border-t border-b border-x border-pink-500 hover:border-pink-600 text-pink-500 hover:text-pink-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
                               <FaCalendarDay className='text-[5rem]' />

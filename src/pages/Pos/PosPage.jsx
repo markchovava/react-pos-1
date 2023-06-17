@@ -6,9 +6,8 @@ import { MainContextState } from '../../contexts/MainContextProvider'
 import AxiosClient from '../../axios/axiosClient'
 
 function PosPage() {
-  const {posState, posDispatch, zwlRate, currencyState, salesDispatch,
-        currencyDispatch, productState, paymentState, 
-        paymentDispatch} = MainContextState()
+  const {posState, posDispatch, productState, productDispatch, zwlRate, currencyState, 
+        salesDispatch, currencyDispatch, paymentState, paymentDispatch} = MainContextState()
   const [amount, setAmount] = useState(0)
   const amountRef = useRef()
   const currencyRef = useRef()
@@ -18,6 +17,7 @@ function PosPage() {
   const quantityRef = useRef()
   const [inputData, setInputData] = useState(0);
   const [scanInput, setScanInput] = useState()
+  const [isSubmit, setIsSubmit] = useState(false)
 
 
   const setInputUnique = (itemId, value) => {
@@ -73,6 +73,7 @@ function PosPage() {
             product_id: scanData[0].id,
             product_name: scanData[0].name,
             quantity: scanData[0].quantity,
+            stock: scanData[0].quantity - 1,
             quantity_sold: 1,
             currency: currencyRef.current.value,
             unit_price: scanData[0].unit_price,
@@ -125,12 +126,15 @@ function PosPage() {
     return owing;
   }
 
+  const calculateStock = () => {}
+
   const processPos =  async (data) => {
     let items;
     if(posState.products.length > 1) {
       items = posState.products.map((item) => ({
         product_id: parseInt(item.id),
         product_name: item.product_name,
+        stock: item.stock,
         currency: currencyRef.current.value,
         quantity_sold: parseInt(item.quantity_sold),
         unit_price: parseInt(item.unit_price),
@@ -252,11 +256,12 @@ function PosPage() {
                                       product_name: item.name,
                                       quantity: item.quantity,
                                       quantity_sold: 1,
+                                      stock: item.quantity - 1,
                                       currency: currencyRef.current.value,
                                       unit_price: item.unit_price,
                                       total_price: item.unit_price
                                     }
-                                })
+                                  })
                                   searchRef.current.value = ''
                                   setSearchResults([])  
                                 }}>
@@ -305,7 +310,7 @@ function PosPage() {
                       <div key={i} className='w-[96%] h-[100%] flex items-center justify-start  border-y border-slate-400 py-2 text-md'>
                         <div className='w-[35%] border-r border-slate-900 px-3'>
                           {item.product_name}
-                          <small className='block font-semibold text-red-600'>Stock: {item.quantity}</small>
+                          <small className='block font-semibold text-red-600'>Stock: {item.stock}</small>
                         </div>
                         <div className='w-[20%] border-r border-slate-900 px-3'> 
                           ${ currencyState.currency.name == 'ZWL' ?
@@ -323,7 +328,14 @@ function PosPage() {
                                   console.log(item.name + ': ' + e.target.value)
                                   posDispatch({type: 'SINGLE_PRODUCT_QUANTITY', payload:{id: item.id, quantity_sold: e.target.value}})
                                   setInputUnique(item.id, e.target.value)
+                                  if(isSubmit == true){
+                                    productDispatch({
+                                      type: 'UPDATE_PRODUCT_QUANTITY',
+                                      payload: {id: item.id, stock: item.stock}
+                                    })
+                                    setIsSubmit(false)
                                   }}
+                                }
                                 min={1} 
                                 className='w-[80%] border-none outline-none p-2'/>
                         </div>
@@ -463,7 +475,10 @@ function PosPage() {
                 <div className='flex justify-between gap-2'>
                   <button 
                     className='w-full text-center py-3 border border-slate-100 hover:border-white bg-[#ff0000] hover:bg-slate-900 transition rounded-lg'
-                    onClick={() => processPos()}>
+                    onClick={() => {
+                      processPos()
+                      setIsSubmit(true)
+                    }}>
                     Proceed
                   </button>
                 </div>

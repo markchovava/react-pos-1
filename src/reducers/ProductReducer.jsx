@@ -30,7 +30,20 @@ export const productReducer = (state, action) => {
                 }
                 return item;
                 }),
-            };
+            }
+        case 'UPDATE_PRODUCT_QUANTITY':
+            return {
+                ...state,
+                products: state.products.filter((item) => {
+                    if(item.id === action.payload.id) {
+                        console.log(action.payload.stock)
+                        item.quantity = action.payload.stock
+                        return item
+                    }else{
+                        return item
+                    }
+                })
+            }
         case 'SINGLE_PRODUCT':
                 return {
                     products: state.products.filter((item) => item.id === action.payload.id),    

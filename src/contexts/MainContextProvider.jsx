@@ -6,6 +6,7 @@ import { posInitialState, posReducer, posInit, currencyInitialState, currencyRed
    paymentInitialSate, paymentReducer} 
        from '../reducers/PosReducer';
 import { salesInitialState, salesReducer } from '../reducers/SalesReducer';
+import { salesItemInitialState, salesItemReducer } from '../reducers/SalesItemReducer';
 
 
 
@@ -19,6 +20,7 @@ function MainContextProvider({ children }) {
    const [ currencyState, currencyDispatch ] = useReducer(currencyReducer, currencyInitialState)
    const [paymentState, paymentDispatch] = useReducer(paymentReducer, paymentInitialSate)
    const [salesState, salesDispatch] = useReducer(salesReducer, salesInitialState)
+   const [salesItemState, salesItemDispatch] = useReducer(salesItemReducer, salesItemInitialState)
    const [zwlRate, setZwlRate] = useState('')
   
    
@@ -40,6 +42,7 @@ function MainContextProvider({ children }) {
       fetchProducts()
   }, []);
 
+  /* GET ALL SALES */
   useEffect(() => {
    async function fetchSales() {
       try{
@@ -56,6 +59,29 @@ function MainContextProvider({ children }) {
       }   
    }
    fetchSales()
+}, []);
+
+
+ /* GET ALL SALES ITEMS */
+ useEffect(() => {
+   async function fetchSalesItems() {
+      try{
+         const result = await AxiosClient.get('salesitem/')
+         .then((response) => {
+            console.log('Sales Items: *******')
+            console.log(response.data)
+            console.log('**************')
+            salesItemDispatch({
+               type: 'FETCH_SALES_ITEMS',
+               payload: response.data,
+            })  
+          })
+      } catch (error) {
+         console.error(`Error: ${error}`)
+      }   
+   }
+
+   fetchSalesItems()
 }, []);
 
 
@@ -90,7 +116,9 @@ function MainContextProvider({ children }) {
          paymentState, 
          paymentDispatch,
          salesState, 
-         salesDispatch
+         salesDispatch,
+         salesItemState, 
+         salesItemDispatch
       }}>
       { children }
       </MainContext.Provider>
