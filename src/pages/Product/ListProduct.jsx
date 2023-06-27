@@ -64,7 +64,7 @@ function ListProduct() {
         console.log(response.data)
         productDispatch({
           type: 'SEARCH_PRODUCT',
-            payload: response.data,
+            payload: response.data.results,
         })
         setIsSubmit(false)
       })   
