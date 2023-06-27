@@ -21,7 +21,27 @@ function ListProduct() {
   const [isSubmit, setIsSubmit] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [deleteId, setDeleteId] = useState(null)
-  console.log(deleteId)
+
+  /* FETCH ALL PRODUCTS */
+  async function fetchProducts() {
+    try{
+       const result = await AxiosClient.get('product/')
+       .then((response) => {
+            productDispatch({
+             type: 'FETCH_PRODUCT',
+             payload: response.data,
+             })  
+             console.log('PRODUCTS:') 
+             console.log(response.data)  
+        })
+    } catch (error) {
+       console.error(`Error: ${error}`)
+    }   
+  }
+  /* SIDE EFFECTS */
+  useEffect(() => {     
+    fetchProducts()
+  }, []);
    
   const handleDelete = async () => {
     let a = confirm(`Are you sure?`)

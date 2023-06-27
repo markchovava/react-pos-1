@@ -2,11 +2,34 @@ import { AiFillEdit, AiFillEye, AiFillDelete } from 'react-icons/ai'
 import { BsChevronDoubleLeft, BsChevronDoubleRight } from 'react-icons/bs'
 import PosLeftContent from '../../components/PosLeftContent'
 import { MainContextState } from '../../contexts/MainContextProvider'
+import { useEffect } from 'react'
+import AxiosClient from '../../axios/axiosClient'
 
 
 function ListStock() {
    const {productState, productDispatch} = MainContextState()
-   const stockData = productState.products ? productState.products : null;
+    /* FETCH ALL PRODUCTS */
+  async function fetchProducts() {
+      try{
+         const result = await AxiosClient.get('product/')
+         .then((response) => {
+            productDispatch({
+               type: 'FETCH_PRODUCT',
+               payload: response.data.results,
+               })  
+               console.log('PRODUCTS:') 
+               console.log(response.data)  
+         })
+      } catch (error) {
+         console.error(`Error: ${error}`)
+      }   
+   }
+   /* SIDE EFFECTS */
+   useEffect(() => {     
+      fetchProducts()
+   }, []);
+   
+   const products = productState.products ? productState.products : null;
    
   return (
    <section className='bg-slate-100 h-auto w-full overflow-hidden'>
@@ -48,10 +71,6 @@ function ListStock() {
                            <BsChevronDoubleRight />
                            </div>
                         </div>
-                        <button 
-                           className='bg-blue-500 hover:bg-blue-600 duration py-2 px-3 rounded-md text-white'>
-                           Add Product Stock
-                        </button>
                      </div>
                   </div>
                </div>
@@ -71,8 +90,8 @@ function ListStock() {
                {/* ListStockTable */}
                <div className='w-full bg-white flex flex-col items-center justify-center text-md'>
                   {/* Table Row */}
-                  {stockData.map((item) => (
-                     <div className='w-[96%] border border-slate-300 bg-white py-2 flex justify-center items-center'>
+                  {products.map((item, i) => (
+                     <div key={i} className='w-[96%] border border-slate-300 bg-white py-2 flex justify-center items-center'>
                         <div className='w-[30%] border-r border-slate-300 px-3'> 
                            {item.name}
                         </div>

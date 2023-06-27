@@ -1,59 +1,28 @@
 import { BsChevronDoubleLeft, BsChevronDoubleRight } from 'react-icons/bs'
 import PosLeftContent from '../../components/PosLeftContent'
-import { useParams } from 'react-router-dom'
-import { MainContextState } from '../../contexts/MainContextProvider'
+import { useEffect, useState } from 'react'
+import AxiosClient from '../../axios/axiosClient'
 
 
 function DaySaleProductZWL() {
-  const {salesItemState, salesItemDispatch} = MainContextState()
-  const { date } = useParams()
-  //console.log(salesItemState.items)
-
-  const getProductByDate = () => {
-    return salesItemState.items.filter((item) => item.created_at.slice(0, 10) === date );
-  }
-  const sortedData = getProductByDate().sort((a, b) => {
-    return 1
-  })
-   /* generate the group */
-  function groupItems(array, property) {
-    return array.reduce(function(groups, item) { 
-        var name = item[property]
-        var group = groups[name] || (groups[name] = []);
-        group.push(item);
-        return groups;
-    }, { });
-  }
-  /* Gets the lists with the groups */
-  const getGroupItemList = () =>{
-    var groups = groupItems(sortedData, 'product_name');
-    let str = "[";
-    for(var key in groups) {
-      var group = groups[key];
-      /* Calculate grandtotal  */
-      let item_total_price = 0;
-      let quantity_total = 0;
-      let unit_price = 0;
-      group.reduce((acc, curr) => {
-          if(curr.currency == 'USD'){
-            item_total_price  += curr.total_price;
-            quantity_total += curr.quantity_sold;
-            unit_price = curr.unit_price;
-            //return sales_grandtotal;
-          }
-      }, 0);
-      let quantity = quantity_total ? quantity_total : 0;
-      let item_total  = item_total_price  ? item_total_price  : 0;
-      str += '{"product_name": "' + key + '", "unit_price": ' + unit_price + ', "total_price": ' + item_total_price + ', "quantity_total": ' +  quantity + '},'
-    } 
-    let strObj = str.substring(0, str.length - 1) + "]";
-    //let strObj = str.substring(0, str.length - 1);
-    strObj = JSON.parse(strObj)
-    return strObj;
-  }
-
-  const items = getGroupItemList()
-  console.log(items)
+  
+  const [sales, setSales] = useState({})
+   /* FETCH ALL SALES */
+  useEffect(() => { 
+     async function fetchSales() {
+         try{
+           const result = await AxiosClient.get('salesitem/daily/product/zwl')
+           .then((response) => {
+               // console.log(response.data.results)
+               setSales(response.data)
+            })
+         } catch (error) {
+           console.error(`Error: ${error}`)
+         }   
+     }
+     fetchSales()
+   }, []);
+   console.log(sales)
 
 
   return (
@@ -66,7 +35,7 @@ function DaySaleProductZWL() {
               <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg pr-[0.5rem]'>
                   <div className='w-[96%] flex justify-between items-center'>
                     <div className=''>
-                        <h1 className='font-bold text-xl'> Product Daily Sales Page: {date} </h1>
+                        <h1 className='font-bold text-xl'> Product Daily Sales Page: ZWL</h1>
                     </div>
                     <div className=''>
                           <h2 className='font-semibold text-xl'>User: Name</h2>
@@ -101,14 +70,15 @@ function DaySaleProductZWL() {
                   </div>
               </div>
               </div>
-              {/* ListStockTableTitle */}
-              <div className='w-full h-[7vh] bg-white flex items-end justify-center pr-[0.5rem]'>
+               {/* ListStockTableTitle */}
+               <div className='w-full h-[7vh] bg-white flex items-end justify-center pr-[0.5rem]'>
                   {/* Table Row */}
                   <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                    <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>PRODUCT NAME </div>
-                    <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>QUANTITY </div>
-                    <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>TOTAL PRICE </div>
-                    <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>CURRENCY</div>
+                    <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>PRODUCT NAME </div>
+                    <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>DATE </div>
+                    <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>QUANTITY </div>
+                    <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>TOTAL PRICE </div>
+                    <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>CURRENCY</div>
                   </div>
               </div>
             </section>
@@ -116,19 +86,17 @@ function DaySaleProductZWL() {
               {/* ListStockTable */}
               <div className='w-full bg-white flex flex-col items-center justify-center text-md'>
                   {/* Table Row */}
-                  {items.map((item, i) => (
+                  { sales?.results &&
+                    sales?.results.map((item, i) => (
                     <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                      <div className='w-[25%] border-r border-slate-300 px-3'>{item.product_name} </div>
-                      <div className='w-[25%] border-r border-slate-300 px-3'>{item.quantity_total} </div>
-                      <div className='w-[25%] border-r border-slate-300 px-3'>{(item.total_price / 100).toFixed(2)} </div>
-                      <div className='w-[25%] border-r border-slate-300 px-3'> USD</div>
+                      <div className='w-[20%] border-r border-slate-300 px-3'>{item.product_name} </div>
+                      <div className='w-[20%] border-r border-slate-300 px-3'>{item.created_at.slice(0, 10)} </div>
+                      <div className='w-[20%] border-r border-slate-300 px-3'>{item.quantity_sold ? item.quantity_sold : 0} </div>
+                      <div className='w-[20%] border-r border-slate-300 px-3'>{(item.total_price / 100).toFixed(2)} </div>
+                      <div className='w-[20%] border-r border-slate-300 px-3'> {item.currency} </div>
                     </div>   
                   ))}
-                 
-                  
-                
               </div>
-              
 
             </section>
         </section>

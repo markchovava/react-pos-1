@@ -2,72 +2,28 @@ import { BsChevronDoubleLeft, BsChevronDoubleRight } from 'react-icons/bs'
 import PosLeftContent from '../../components/PosLeftContent'
 import { AiFillEye } from 'react-icons/ai'
 import { Link } from 'react-router-dom'
-import { MainContextState } from '../../contexts/MainContextProvider'
+import { useEffect, useState } from 'react'
+import AxiosClient from '../../axios/axiosClient'
 
 
 function MonthSaleUSD() {
-   const {salesState, salesDispatch} = MainContextState()
-   console.log('SALE CONT')
-   console.log(salesState.sales)
-    /* TRANSFORM THE DATA */
-  const newData = salesState.sales.map((item) => {
-   return {...item, created_at: item.created_at.slice(0, 7)};
- });
- console.log(newData)
- // SORT BY created_at
- const sortedData = newData.sort((a, b) => {
-   //if(a.created_at < b.created_at){
-   //  return -1
-   //}
-   //if(a.created_at > b.created_at){
-   //  return 1
-   //}
-   //return 0
-   return -1
- })
- //console.log('SORTED')
- //console.log(sortedData)
- /* generate the group */
- function groupItems(array, property) {
-   return array.reduce(function(groups, item) { 
-       var name = item[property]
-       var group = groups[name] || (groups[name] = []);
-       group.push(item);
-       return groups;
-   }, { });
- }
- /* Gets the lists with the groups */
- const getGroupItemList = () =>{
-   var groups = groupItems(sortedData, 'created_at');
-   let str = "[";
-   for(var key in groups) {
-     var group = groups[key];
-     /* Calculate grandtotal  */
-     let sales_grandtotal = 0;
-     let quantity_total = 0;
-     group.reduce((acc, curr) => {
-         if(curr.currency == 'USD'){
-            sales_grandtotal  += curr.grandtotal;
-            quantity_total += curr.quantity_total;
-            //return sales_grandtotal;
-         }
-     }, 0);
-     let quantity = quantity_total ? quantity_total : 0;
-     let grandtotal  = sales_grandtotal  ? sales_grandtotal  : 0;
-     str += '{"created_at": "' + key + '", "grandtotal": ' + grandtotal + ', "quantity_total": ' +  quantity + '},'
-   } 
-   let strObj = str.substring(0, str.length - 1) + "]";
-   //let strObj = str.substring(0, str.length - 1);
-   strObj = JSON.parse(strObj)
-   return strObj;
- }
+   const [sales, setSales] = useState({})
+   /* FETCH ALL SALES */
+   useEffect(() => { 
+     async function fetchSales() {
+         try{
+           const result = await AxiosClient.get('sales/monthly/usd')
+           .then((response) => {
+               // console.log(response.data.results)
+               setSales(response.data)
+            })
+         } catch (error) {
+           console.error(`Error: ${error}`)
+         }   
+     }
+     fetchSales()
+   }, []);
 
-
- console.log(getGroupItemList())
-
-
-
-   
   return (
    <section className='bg-slate-100 h-auto w-full overflow-hidden'>
    <div className='container h-[100vh] mx-auto max-w-screen-2xl lg:px-0 px-4 flex justify-start items-center'>
@@ -129,13 +85,13 @@ function MonthSaleUSD() {
             {/* ListStockTable */}
             <div className='w-full bg-white flex flex-col items-center justify-center text-md'>
                {/* Table Row */}  
-               { getGroupItemList() != false &&
-                  getGroupItemList().map((item, i) => (
+               { sales?.results &&
+                  sales?.results.map((item, i) => (
                   <div key={i} className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>{item.created_at}</div>
+                     <div className='w-[20%] border-r border-slate-300 px-3'>{ item.created_at.slice(0, 7) }</div>
                      <div className='w-[20%] border-r border-slate-300 px-3'>{item.quantity_total} </div>
                      <div className='w-[20%] border-r border-slate-300 px-3'>${(item.grandtotal / 100).toFixed(2)} </div>
-                     <div className='w-[20%] border-r border-slate-300 px-3'> USD </div>
+                     <div className='w-[20%] border-r border-slate-300 px-3'> {item.currency} </div>
                      <div className='w-[20%] border-r border-slate-300 px-3'> 
                      <Link to=''>
                          <AiFillEye className='text-xl transition text-slate-800 hover:text-blue-600 hover:scale-110'/>

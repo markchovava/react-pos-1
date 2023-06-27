@@ -1,12 +1,13 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { ImCancelCircle } from 'react-icons/im'
 import { AiFillDelete } from 'react-icons/ai'
 import PosLeftContent from '../../components/PosLeftContent'
 import { MainContextState } from '../../contexts/MainContextProvider'
 import AxiosClient from '../../axios/axiosClient'
+import { Link } from 'react-router-dom'
 
 function PosPage() {
-  const {posState, posDispatch, productState, productDispatch, zwlRate, currencyState, 
+  const {posState, posDispatch, productState, productDispatch, zwlRate, setZwlRate, currencyState, 
         salesDispatch, currencyDispatch, paymentState, paymentDispatch} = MainContextState()
   const [amount, setAmount] = useState(0)
   const amountRef = useRef()
@@ -18,6 +19,41 @@ function PosPage() {
   const [inputData, setInputData] = useState(0);
   const [scanInput, setScanInput] = useState()
   const [isSubmit, setIsSubmit] = useState(false)
+
+  /* FETCH ALL PRODUCTS */
+  async function fetchProducts() {
+    try{
+       const result = await AxiosClient.get('product/')
+       .then((response) => {
+            productDispatch({
+             type: 'FETCH_PRODUCT',
+             payload: response.data,
+             })  
+             console.log('PRODUCTS:') 
+             console.log(response.data)  
+        })
+    } catch (error) {
+       console.error(`Error: ${error}`)
+    }   
+  }
+  /* GET ZWL RATE */
+  async function getZwlRate() {
+    try{
+       const result = await AxiosClient.get('currency/1/')
+       .then((response) => {
+          setZwlRate(response.data.rate)   
+          //console.log('ZWL RATE:')
+          //console.log(response.data)
+       })
+    } catch (error) {
+       console.error(`Error: ${error}`)
+    }   
+ }
+  /* SIDE EFFECTS */
+  useEffect(() => {     
+    fetchProducts()
+    getZwlRate()
+  }, []);
 
 
   const setInputUnique = (itemId, value) => {
@@ -201,7 +237,9 @@ function PosPage() {
                         <div className=''>
                         <h1 className='font-bold text-xl'>POS PAGE </h1></div>
                         <div className=''>
-                            <h2 className='font-semibold text-xl'>Operator: Username</h2>
+                            <h2 className='font-semibold text-xl'>
+                              Operator: <Link to='/test'>Username</Link>
+                            </h2>
                         </div>
                         <div className='text-xl font-semibold'>
                           Rate:

@@ -24,84 +24,43 @@ function MainContextProvider({ children }) {
    const [zwlRate, setZwlRate] = useState('')
   
    
-   /* PRODUCTS */
-   useEffect(() => {
-      async function fetchProducts() {
-         try{
-            const result = await AxiosClient.get('product/')
-            .then((response) => {
-                 productDispatch({
-                  type: 'FETCH_PRODUCT',
-                  payload: response.data,
-                  })    
-             })
-         } catch (error) {
-            console.error(`Error: ${error}`)
-         }   
-      }
-      fetchProducts()
-  }, []);
-
-  /* GET ALL SALES */
-  useEffect(() => {
-   async function fetchSales() {
+   /* FETCH ALL PRODUCTS */
+   /* async function fetchProducts() {
       try{
-         const result = await AxiosClient.get('sales/')
+         const result = await AxiosClient.get('product/')
          .then((response) => {
-              salesDispatch({
-               type: 'FETCH_SALES',
+              productDispatch({
+               type: 'FETCH_PRODUCT',
                payload: response.data,
                })  
-               //console.log(response.data) 
+               console.log('PRODUCTS:') 
+               console.log(response.data)  
           })
       } catch (error) {
          console.error(`Error: ${error}`)
       }   
-   }
-   fetchSales()
-}, []);
-
-
- /* GET ALL SALES ITEMS */
- useEffect(() => {
-   async function fetchSalesItems() {
+   } */
+   /* GET ZWL RATE */
+   async function getZwlRate() {
       try{
-         const result = await AxiosClient.get('salesitem/')
+         const result = await AxiosClient.get('currency/1/')
          .then((response) => {
-            console.log('Sales Items: *******')
+            setZwlRate(response.data.rate)   
+            console.log('ZWL RATE:')
             console.log(response.data)
-            console.log('**************')
-            salesItemDispatch({
-               type: 'FETCH_SALES_ITEMS',
-               payload: response.data,
-            })  
-          })
+         })
       } catch (error) {
          console.error(`Error: ${error}`)
       }   
    }
-
-   fetchSalesItems()
-}, []);
-
-
-  /* GET ZWL RATE */
-   useEffect(() => {
-      async function getZwlRate() {
-         try{
-            const result = await AxiosClient.get('currency/1/')
-            .then((response) => {
-               console.log(response.data.rate)
-               setZwlRate(response.data.rate)   
-            })
-         } catch (error) {
-            console.error(`Error: ${error}`)
-         }   
-      }
-      getZwlRate()
-   }, []);
-
    
+   /* SIDE EFFECTS */
+   useEffect(() => {     
+      //fetchProducts()
+      getZwlRate()
+  }, []);
+
+
 
    return (
       <MainContext.Provider value={{ 

@@ -10,15 +10,12 @@ import { useState } from 'react'
 import AxiosClient from '../../axios/axiosClient'
 
 function CurrencyPage() {
-  const {posState, zwlRate, setZwlRate, posDispatch } = MainContextState()
+  const {zwlRate, setZwlRate} = MainContextState()
   const navigate = useNavigate(); 
-  const zwl = zwlRate
-  console.log('ZWL: ' + zwl)
+  const zwl = zwlRate;
   const [inputData, setInputData] = useState({
     rate: zwl / 100
   });
-  console.log('Rate: ' + zwlRate)
-  console.log('Input: ' + inputData.rate)
   /* Making Input field editable */
   const handleChange = (e) => {
     setInputData({ ...inputData, [e.target.name]: e.target.value });
