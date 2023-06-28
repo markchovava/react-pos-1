@@ -7,6 +7,7 @@ import { posInitialState, posReducer, posInit, currencyInitialState, currencyRed
        from '../reducers/PosReducer';
 import { salesInitialState, salesReducer } from '../reducers/SalesReducer';
 import { salesItemInitialState, salesItemReducer } from '../reducers/SalesItemReducer';
+import { stockInitialState, stockReducer } from '../reducers/StockReducer';
 
 
 
@@ -22,6 +23,7 @@ function MainContextProvider({ children }) {
    const [salesState, salesDispatch] = useReducer(salesReducer, salesInitialState)
    const [salesItemState, salesItemDispatch] = useReducer(salesItemReducer, salesItemInitialState)
    const [zwlRate, setZwlRate] = useState('')
+    const [stockState, stockDispatch] = useReducer(stockReducer, stockInitialState)
   
    
    /* FETCH ALL PRODUCTS */
@@ -77,7 +79,9 @@ function MainContextProvider({ children }) {
          salesState, 
          salesDispatch,
          salesItemState, 
-         salesItemDispatch
+         salesItemDispatch,
+         stockState, 
+         stockDispatch
       }}>
       { children }
       </MainContext.Provider>

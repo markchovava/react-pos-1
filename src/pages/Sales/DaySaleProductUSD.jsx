@@ -1,29 +1,47 @@
 import { useEffect, useState } from 'react'
-import { BsChevronDoubleLeft, BsChevronDoubleRight } from 'react-icons/bs'
+import axios from 'axios'
+import { Link } from 'react-router-dom'
+import { AiFillEye, AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai'
 import PosLeftContent from '../../components/PosLeftContent'
-import { useParams } from 'react-router-dom'
-import AxiosClient from '../../axios/axiosClient'
-
 
 function DaySaleProductUSD() {
   
+  const baseURL = 'http://127.0.0.1:8000/salesitem/daily/product/usd'
   const [sales, setSales] = useState({})
-   /* FETCH ALL SALES */
-   useEffect(() => { 
-     async function fetchSales() {
-         try{
-           const result = await AxiosClient.get('salesitem/daily/product/usd')
-           .then((response) => {
-               // console.log(response.data.results)
-               setSales(response.data)
-            })
-         } catch (error) {
-           console.error(`Error: ${error}`)
-         }   
-     }
+  /* PAGINATION */
+  const [nextURL, setNextURL] = useState()
+  const [prevURL, setPrevURL] = useState()
+  async function paginationHandler(url) {
+     try{
+        const result = await axios.get(url)
+        .then((response) => {
+           setSales(response.data)
+           setPrevURL(response.data.previous)
+           setNextURL(response.data.next)
+        })
+     } catch (error) {
+        console.error(`Error: ${error}`)
+     }     
+  }
+  /* END OF PAGINATION LOGIC */
+  
+  /* FETCH ALL SALES */
+  useEffect(() => { 
+    async function fetchSales() {
+      try{
+        const result = await axios.get(baseURL)
+        .then((response) => {
+          setSales(response.data)
+          setPrevURL(response.data.previous)
+          setNextURL(response.data.next)
+        })
+      } catch (error) {
+        console.error(`Error: ${error}`)
+      }   
+    }
      fetchSales()
-   }, []);
-   console.log(sales)
+  }, []);
+  
 
 
   return (
@@ -53,18 +71,20 @@ function DaySaleProductUSD() {
                     </div>
                     <div className='flex items-center justify-between gap-4'>
                         <div className='flex items-center justify-between'>
-                          <div className='py-2 px-2 hover:scale-125 cursor-pointer hover:text-blue-600'>
-                          <BsChevronDoubleLeft />
-                          </div>
-                          <div className='py-2 px-2 font-semibold transition-all hover:scale-125 cursor-pointer hover:text-blue-600'>
-                          1
-                          </div>
-                          <div className='py-2 px-2 font-semibold transition-all hover:scale-125 cursor-pointer hover:text-blue-600'>
-                          2
-                          </div>
-                          <div className='py-2 px-2 transition-all hover:scale-125 cursor-pointer hover:text-blue-600'>
-                          <BsChevronDoubleRight />
-                          </div>
+                          {prevURL &&
+                              <div className='py-2 px-2 transition-all hover:scale-110 cursor-pointer hover:text-blue-600'>
+                                <button id={prevURL} onClick={() => paginationHandler(prevURL)} className='flex gap-2 items-center'>
+                                    <AiOutlineArrowLeft /> Previous
+                                </button>
+                              </div>
+                          }
+                          {nextURL &&
+                              <div className='py-2 px-2 transition-all hover:scale-110 cursor-pointer hover:text-blue-600'>
+                                <button id={nextURL} onClick={() => paginationHandler(nextURL)} className='flex gap-2 items-center'>
+                                    Next <AiOutlineArrowRight />
+                                </button>
+                              </div>
+                          }
                         </div>
                     
                     </div>

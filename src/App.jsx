@@ -31,6 +31,7 @@ import MonthSaleZWL from './pages/Sales/MonthSaleZWL'
 import DaySaleProductUSD from './pages/Sales/DaySaleProductUSD'
 import DaySaleProductZWL from './pages/Sales/DaySaleProductZWL'
 import Test from './pages/Test'
+import EditStock from './pages/Stock/EditStock'
 
 
 
@@ -61,7 +62,7 @@ function App() {
         <Route path='/product/edit/:id' element={<EditProduct />} />
         {/* Sales */}
         <Route path='/sales' element={<SalesPage />} />
-        <Route path='/sales/daily/usd' element={<DaySaleUSD />} />
+        <Route path='/sales/daily/usd/' element={<DaySaleUSD />} />
         <Route path='/sales/daily/zwl' element={<DaySaleZWL />} />
         <Route path='/sales/daily/product/usd' element={<DaySaleProductUSD />} />
         <Route path='/sales/daily/product/zwl' element={<DaySaleProductZWL />} />
@@ -74,7 +75,7 @@ function App() {
         <Route path='/sales/order/user' element={<UserSaleOrder />} />
         {/* Stock */}
         <Route path='/stock' element={<ListStock />} />
-        <Route path='/stock/add' element={<AddStock />} />
+        <Route path='/stock/edit/:id' element={<EditStock />} />
         {/* Stock Order */}
         <Route path='/stock/order' element={<StockOrder />} />
         {/*  */}

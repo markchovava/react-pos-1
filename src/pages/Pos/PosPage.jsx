@@ -27,10 +27,10 @@ function PosPage() {
        .then((response) => {
             productDispatch({
              type: 'FETCH_PRODUCT',
-             payload: response.data,
+             payload: response.data.results,
              })  
              console.log('PRODUCTS:') 
-             console.log(response.data)  
+             console.log(response.data.results)  
         })
     } catch (error) {
        console.error(`Error: ${error}`)
@@ -230,7 +230,7 @@ function PosPage() {
           {/* PosMainContent */}
           <section className='w-[65vw] h-[100vh] left-[10vw] bg-slate-100 fixed'>
               {/* PosMainContentTop */}
-              <section className='fixed z-0 w-[65vw] h-[37vh] border-b border-black '>
+              <section className='fixed z-10 w-[65vw] h-[37vh] border-b border-black '>
                 {/* PosMainContentHeader */}
                 <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg'>
                     <div className='w-[96%] flex justify-between items-center'>
@@ -363,7 +363,7 @@ function PosPage() {
                                 value={item.quantity_sold}
                                 name='quantity_sold'
                                 onChange={(e) => {
-                                  console.log(item.name + ': ' + e.target.value)
+                                  //console.log(item.name + ': ' + e.target.value)
                                   posDispatch({type: 'SINGLE_PRODUCT_QUANTITY', payload:{id: item.id, quantity_sold: e.target.value}})
                                   setInputUnique(item.id, e.target.value)
                                   if(isSubmit == true){

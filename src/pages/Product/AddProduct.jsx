@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { IoMdAddCircleOutline } from 'react-icons/io'
-import ProductHeader from '../../components/ProductHeader'
 import PosLeftContent from '../../components/PosLeftContent'
 import AxiosClient from '../../axios/axiosClient';
 import { MainContextState } from '../../contexts/MainContextProvider';
@@ -8,9 +7,8 @@ import { Link, useNavigate } from 'react-router-dom';
 /* Toast */
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useReducer } from 'react';
-import { productCategoryInitialstate, productCategoryReducer } from '../../reducers/ProductCategoryReducer';
-import { productBrandInitialstate, productBrandReducer } from '../../reducers/ProductBrandReducer';
+
+
 
 
 function AddProduct() {
@@ -18,9 +16,7 @@ function AddProduct() {
   const [dbCategory, setDbCategory] = useState([])
   const navigate = useNavigate();
 
-  const [productCategoryState, productCategoryDispatch] = useReducer(productCategoryReducer , productCategoryInitialstate)
-  //console.log(productCategoryState)
-  
+
   async function addProduct(product) {
     try{
         const result = await AxiosClient.post('product/', product)
@@ -80,7 +76,7 @@ function AddProduct() {
                     <h1 className='font-bold text-xl'> Add Product Page </h1>
                   </div>
                   <div className=''>
-                        <h2 className='font-semibold text-xl'>User: Mark Chovava</h2>
+                        <h2 className='font-semibold text-xl'>User:</h2>
                   </div>
               </div>
             </div>
@@ -88,7 +84,7 @@ function AddProduct() {
             <div className='w-full h-[15vh]  shadow-lg flex justify-center items-end pr-[1rem]'>
               <div className='w-full h-[10vh] bg-white flex justify-center'>
                   <div className='w-[96%] flex justify-between items-end pb-2'>
-                    <h1 className='text-4xl font-bold'>Edit Product</h1>
+                    <h1 className='text-4xl font-bold'>Add Product</h1>
                     <Link to='/product'>
                       <button className='px-3 py-2 bg-green-500 hover:bg-green-600 text-white rounded-md'>
                         View All
@@ -179,23 +175,7 @@ function AddProduct() {
               <div className='border-b border-slate-500 mx-6'></div>
               <div className='mb-1'></div>
               <div className='border-b border-slate-500 mx-6'></div>
-              {/* Brand */}
-              <div className='w-full h-auto px-6 my-8'>
-                <div className='font-semibold'>
-                  <p className='text-sm mb-2'>Category Name:</p>
-                  <div className='flex items-center flex-col justify-between'>
-                    <input 
-                      type="text"
-                      name="category" 
-                      placeholder='Add category Name...'
-                      className='w-[100%] text-black px-3 py-2 border-none outline-none rounded-md'/>
-                  </div>
-                </div>
-              </div>
-              {/* BORDER */}
-              <div className='border-b border-slate-500 mx-6'></div>
-              <div className='mb-1'></div>
-              <div className='border-b border-slate-500 mx-6'></div>
+             
              
               
           </div>

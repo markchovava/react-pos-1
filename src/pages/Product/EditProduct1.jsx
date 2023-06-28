@@ -1,62 +1,60 @@
 import React, {useReducer, useEffect, useState, useRef } from 'react'
+import axios from 'axios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { IoMdAddCircleOutline } from 'react-icons/io'
-import ProductHeader from '../../components/ProductHeader'
 import PosLeftContent from '../../components/PosLeftContent'
-import AxiosClient from '../../axios/axiosClient';
 import { MainContextState } from '../../contexts/MainContextProvider';
 /* Toast */
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { productCategoryInitialstate, productCategoryReducer } from '../../reducers/ProductCategoryReducer';
-import { productBrandInitialstate, productBrandReducer } from '../../reducers/ProductBrandReducer';
+import AxiosClient from '../../axios/axiosClient';
+
 
 
 function EditProduct() {
-
-  const {productState, productDispatch, productViewState, productViewDispatch} = MainContextState()
-  const navigate = useNavigate(); 
-  const brandRef = useRef(null)
-  const [brand, setBrand] = useState('')
-  const [brandList, setBrandList] = useState([])
-  const [productBrandState, productBrandDispatch] = useReducer(productBrandReducer, productBrandInitialstate)
-  /* Get Single Product */
   const { id } = useParams()
+  const navigate = useNavigate(); 
+  const { productDispatch } = MainContextState()
+  const [product, setProduct] = useState()
+  
 
-  // get the product based on the id
-  const product = productState.products.find((product) => {
-    return productState.products.filter((product) => product.id === parseInt(id))
-  })
-
-  //console.log(productState.products)
-  console.log(product)
-   /* GET PRODUCT */
-   /* useEffect( () => {
-    try {
-      const getProduct = async () => {
-        const result = await AxiosClient.get(`product/${id}`)
+  useEffect(() => { 
+    async function getProduct() {
+      try{
+        const result = await axios.get(`http://127.0.0.1:8000/product/${parseInt(id)}/`)
         .then((response) => {
-            console.log(response.data)
-            productViewDispatch({
-              type: 'PRODUCT_VIEW',
-              payload: response.data,
-            })      
-        })   
-      }
-      getProduct()  
-    } catch(error) {
-      console.error(`Error: ${error}`)
-    }
-  }, []) */
+          setProduct(response.data)
+        })
+      } catch (error) {
+        console.error(`Error: ${error}`)
+      }   
+    }    
+    getProduct()
+  }, []); 
  
+  const [inputData, setInputData] = useState({
+    name: product.name,
+    description: product.description,
+    barcode: product.barcode,
+    quantity: product.quantity,
+    unit_price: product.unit_price,
+    brand: product.brand
+  });
+
+  /* Makin Input field editable */
+  const handleChange = (e) => {
+    setInputData({ ...inputData, [e.target.name]: e.target.value });
+  };
+  
+  
   /* UPDATE PRODUCT */
   async function updateProduct(product) {
     try{
-        const result = await AxiosClient.patch(`product/${id}`, product)
+        const result = await AxiosClient.put(`product/${id}/`, product)
         .then((response) => {
+              console.log(response.data)
               productDispatch({
-              type: PRODUCT_UPDATE,
-              payload: response.data
+              type: 'UPDATE_PRODUCT',
+              payload: response.data 
             });
           })
           .then(() => {
@@ -77,46 +75,21 @@ function EditProduct() {
           console.error(`Error: ${error}`)
       }    
   }
- 
-  /* GET BRANDS */
-  useEffect(() => {
-    async function getBrand() {
-      console.log(brand)
-      if(brand != ''){
-        const result = await AxiosClient.get(`brand/?search=${brand}`)
-        .then((response) => {
-          if(response.data){
-            setBrandList(response.data)
-            console.log(response.data)
-          } else{
-            console.log('Not found')
-          }
-        })
-      }
-    }
-    getBrand() 
-  }, [brand])
 
-  //console.log(productViewState) 
-  //console.log(product) 
   return (
     <section className='bg-slate-100 h-auto w-full overflow-hidden'>
       <form 
-      onSubmit={(e) => { e.preventDefault();
-        console.log(e.target.name.value)
-        console.log(e.target.barcode.value)
-        console.log(e.target.quantity.value)
-        console.log(e.target.unit_price.value)
-        console.log(productBrandState.id)
-       // updateProduct({
-          //name: e.target.name.value,
-          //barcode: e.target.barcode.value,
-          //quantity: e.target.quantity.value,
-          //unit_price: e.target.unit_price.value,
-          //category: productCategoryState,
-          //brand_id: productBrandState.id
-       // });
-      }} className='container h-[100vh] mx-auto max-w-screen-2xl lg:px-0 px-4 flex justify-start items-center'>
+        onSubmit={(e) => { e.preventDefault();
+          updateProduct({
+            name: e.target.name.value ? e.target.name.value : '',
+            description: e.target.description.value ? e.target.description.value : '',
+            barcode: e.target.barcode.value ? e.target.barcode.value : '',
+            quantity: e.target.quantity.value ? e.target.quantity.value : '',
+            unit_price: e.target.unit_price.value ? e.target.unit_price.value : '',
+            brand: e.target.brand.value ? e.target.brand.value : ''
+        });
+      }}
+      className='container h-[100vh] mx-auto max-w-screen-2xl lg:px-0 px-4 flex justify-start items-center'>
         <PosLeftContent />
         <section className='w-[65vw] h-[100vh] left-[10vw] bg-slate-100 fixed'>
           {/* ProductHeader */}
@@ -152,37 +125,58 @@ function EditProduct() {
               <div className='py-8'>
                 <div className='flex items-center justify-start mb-6'>
                   <label className='w-[25%] font-semibold text-slate-900'>Product Name:</label>
-                  <input type="text" name="name"
-                  value={product ? product.name : 'No Name added'}
-                  className='border border-slate-400 rounded-md outline-none py-2 px-3 w-[70%]' 
-                  placeholder='Write Product Name...'/>
+                  <input 
+                    type="text" 
+                    name="name"
+                    onChange={handleChange}
+                    value={inputData.name}
+                    className='border border-slate-400 rounded-md outline-none py-2 px-3 w-[70%]' 
+                    placeholder='Write Product Name...'/>
+                </div>
+                <div className='flex items-center justify-start mb-6'>
+                  <label className='w-[25%] font-semibold text-slate-900'>
+                    Description:
+                  </label>
+                  <input 
+                    type="text" 
+                    name="description"
+                    onChange={handleChange}
+                    value={inputData.description}
+                    className='border border-slate-400 rounded-md outline-none py-2 px-3 w-[70%]' 
+                    placeholder='Write Description here...' />
                 </div>
                 <div className='flex items-center justify-start mb-6'>
                   <label className='w-[25%] font-semibold text-slate-900'>
                     Barcode:
                   </label>
-                  <input type="number" name='barcode'
-                  value={product ? product.barcode : 'No barcode added'}
-                  className='border border-slate-400 rounded-md outline-none py-2 px-3 w-[70%]' 
-                  placeholder='Enter Barcode here...'/>
+                  <input type="number" 
+                    name='barcode'
+                    onChange={handleChange}
+                    value={inputData.barcode}
+                    className='border border-slate-400 rounded-md outline-none py-2 px-3 w-[70%]' 
+                    placeholder='Enter Barcode here...'/>
                 </div>
                 <div className='flex items-center justify-start mb-6'>
                   <label className='w-[25%] font-semibold text-slate-900'>
                     Product Stock:
                   </label>
-                  <input type="number" name='quantity'
-                  value={product ? product.quantity : 'No stock available'}
-                  className='border border-slate-400 rounded-md outline-none py-2 px-3 w-[70%]' 
-                  placeholder='Enter Quantity Here...'/>
+                  <input type="number"
+                    onChange={handleChange} 
+                    name='quantity'
+                    value={inputData.quantity}
+                    className='border border-slate-400 rounded-md outline-none py-2 px-3 w-[70%]' 
+                    placeholder='Enter Quantity Here...'/>
                 </div>
                 <div className='flex items-center justify-start mb-6'>
                   <label className='w-[25%] font-semibold text-slate-900'>
                     Unit Price:
                   </label>
-                  <input type="number" name='unit_price'
-                  value={product ? product.unit_price : 'No Unit Price'}
-                  className='border border-slate-400 rounded-md outline-none py-2 px-3 w-[70%]' 
-                  placeholder='Enter Unit Price Here...'/>
+                  <input type="number" 
+                    onChange={handleChange}
+                    name='unit_price'
+                    value={inputData.unit_price}
+                    className='border border-slate-400 rounded-md outline-none py-2 px-3 w-[70%]' 
+                    placeholder='Enter Unit Price Here...'/>
                 </div>
                 <div className='flex items-center justify-start mb-6'>
                   <div className='w-[70%] ml-[25%]'>
@@ -200,8 +194,8 @@ function EditProduct() {
         {/* ProductRightContent */}
         <section 
           className='w-[24vw] h-[100%] right-0 bg-slate-900 text-white fixed overflow-y-scroll scroll__width '>
-   
-          <div className='w-full pt-8'>
+  
+          <div className='w-full pt-[4rem]'>
               {/* BORDER */}
               <div className='border-b border-slate-500 mx-6 h-[.5rem]'></div>
               <div className='mb-1'></div>
@@ -213,29 +207,11 @@ function EditProduct() {
                   <div className='flex items-center flex-col justify-between'>
                     <input 
                       type="text"
-                      ref={brandRef}
+                      onChange={handleChange}
                       name="brand" 
-                      value={ product.brand ? product.brand.name : ''}
-                      onChange={e => setBrand(e.target.value)}
+                      value={inputData.brand}
                       placeholder='Add Brand Name...'
                       className='w-[100%] text-black px-3 py-2 border-none outline-none rounded-md'/>
-                      <div className='w-full text-left pt-2'>
-                      { brand == '' ? '' :
-                        brandList ? 
-                        brandList.map((b) => (
-                          <div 
-                          key={b.id}
-                          onClick={() => {
-                            setBrand('')
-                            setBrandList('') 
-                            brandRef.current.value = b.name
-                            productBrandDispatch({type: 'PRODUCT_BRAND_SELECT', payload: b})
-                          }}
-                          className='px-3 py-1 my-1 cursor-pointer hover:text-blue-100'>{b.name}</div>
-                        )) :
-                        ''
-                      }  
-                      </div> 
                   </div>
                 </div>
               </div>
@@ -243,7 +219,7 @@ function EditProduct() {
               <div className='border-b border-slate-500 mx-6'></div>
               <div className='mb-1'></div>
               <div className='border-b border-slate-500 mx-6'></div>
-              
+            
               
           </div>
 
