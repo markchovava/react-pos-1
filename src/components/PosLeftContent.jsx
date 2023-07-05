@@ -33,7 +33,9 @@ function PosLeftContent() {
             </Link>
           </button>
           <button title='Till' className='left__ContentBtn'>
-            <FaDesktop className='left__Icon'/>
+            <Link to='/stock'>
+              <FaDesktop className='left__Icon'/>
+            </Link>
           </button>
           <button title='Reports' className='left__ContentBtn'>
             <TbReport className='left__Icon'/>
