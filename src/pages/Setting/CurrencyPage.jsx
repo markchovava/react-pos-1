@@ -1,4 +1,4 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 /* NOTIFICATIONS */
 import { ToastContainer, toast} from 'react-toastify';
@@ -6,12 +6,25 @@ import 'react-toastify/dist/ReactToastify.css';
 /*  */
 import PosLeftContent from '../../components/PosLeftContent'
 import { MainContextState } from '../../contexts/MainContextProvider'
-import { useState } from 'react'
 import AxiosClient from '../../axios/axiosClient'
+import LogoutBtn from '../../components/LogoutBtn';
+import CurrentUser from '../../components/CurrentUser';
+
+
 
 function CurrencyPage() {
-  const {zwlRate, setZwlRate} = MainContextState()
-  const navigate = useNavigate(); 
+  const {getToken, zwlRate, setZwlRate} = MainContextState()
+  const navigate = useNavigate();
+  /* CHECK AUTHENTICATION */  
+  const token = getToken();
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `JWT ${token}`
+  };
+  if(!token){
+     return navigate('/login');
+  } 
+  
   const zwl = zwlRate;
   const [inputData, setInputData] = useState({
     rate: zwl / 100
@@ -23,10 +36,10 @@ function CurrencyPage() {
 
    /* UPDATE PRODUCT */
   async function updateCurrency(data) {
+    console.log(data)
     try{
-        const result = await AxiosClient.put(`currency/1/`, data)
+        const result = await AxiosClient.put(`currency/1/`, data, {headers})
         .then((response) => {
-            //console.log(response.data)
             setZwlRate(response.data.rate)
           })
           .then(() => {
@@ -44,7 +57,14 @@ function CurrencyPage() {
           );
         })
       } catch (error) {
-          console.error(`Error: ${error}`)
+          console.log(`ERROR:`)
+          console.error(`${error}`)
+          console.error(`response data`)
+          console.log(error.response.data);
+          console.log(`Response status`);
+          console.log(error.response.status);
+          console.log('response headers');
+          console.log(error.response.headers);
       }    
   }
 
@@ -54,7 +74,6 @@ function CurrencyPage() {
       <form 
       onSubmit={ (e) => { 
         e.preventDefault()
-        console.log(e.target.rate.value)
         updateCurrency({
            name: 'ZWL',
            rate: Number(e.target.rate.value) * 100,
@@ -72,8 +91,9 @@ function CurrencyPage() {
                   <div className=''>
                     <h1 className='font-bold text-xl'> Edit Currency Rate Page </h1>
                   </div>
-                  <div className=''>
-                        <h2 className='font-semibold text-xl'>User: Mark Chovava</h2>
+                  <div className='flex gap-2 items-center'>
+                    <CurrentUser />
+                    <LogoutBtn />
                   </div>
               </div>
             </div>

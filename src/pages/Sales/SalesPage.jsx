@@ -4,13 +4,24 @@ import { BiTimeFive } from 'react-icons/bi'
 import { TbBrandProducthunt } from 'react-icons/tb'
 import { MdCalendarMonth, MdPermIdentity } from 'react-icons/md'
 import { FaRegUser, FaCalendarDay, FaProductHunt } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { MainContextState } from '../../contexts/MainContextProvider'
 import AxiosClient from '../../axios/axiosClient'
+import LogoutBtn from '../../components/LogoutBtn'
+import CurrentUser from '../../components/CurrentUser'
 
 
 
 function SalesPage() {
+   /* CHECK AUTHENTICATION */
+   const {getToken} = MainContextState()
+   const navigate = useNavigate();
+   const token = getToken();
+   useEffect(()=>{
+      if(!token){
+        return navigate('/login');
+      }
+    },[token])
    
    
   return (
@@ -27,9 +38,10 @@ function SalesPage() {
                       <div className=''>
                         <h1 className='font-bold text-xl'> Sales List Page </h1>
                       </div>
-                      <div className=''>
-                            <h2 className='font-semibold text-xl'>User: Mark Chovava</h2>
-                      </div>
+                      <div className='flex gap-2 items-center'>
+                           <CurrentUser />
+                          <LogoutBtn />
+                    </div>
                   </div>
                 </div>
             </section>

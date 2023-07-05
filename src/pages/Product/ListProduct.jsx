@@ -1,17 +1,27 @@
 import React, { useRef,  useState, useEffect} from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AiFillEdit, AiFillEye, AiFillDelete, AiOutlineArrowRight, AiOutlineArrowLeft} from 'react-icons/ai'
 import { BsChevronDoubleLeft, BsChevronDoubleRight } from 'react-icons/bs'
 import { MainContextState } from '../../contexts/MainContextProvider'
 import PosLeftContent from '../../components/PosLeftContent'
+import LogoutBtn from '../../components/LogoutBtn';
+import CurrentUser from '../../components/CurrentUser';
 
 
 function ListProduct() {
   const baseURL = 'http://127.0.0.1:8000/product/'
-  const {productState, productDispatch} = MainContextState()
+  const {getToken, productState, productDispatch} = MainContextState()
+  const navigate = useNavigate();
+  const token = getToken();
+  useEffect(()=>{
+    if(!token){
+      return navigate('/login');
+    }
+  },[token])
+
   const searchRef = useRef(null)
   const [searchName, setSearchName] = useState('')
   const [isSubmit, setIsSubmit] = useState(false)
@@ -115,8 +125,9 @@ function ListProduct() {
                       <div className=''>
                         <h1 className='font-bold text-xl'> Product List Page </h1>
                       </div>
-                      <div className=''>
-                            <h2 className='font-semibold text-xl'>User: Mark Chovava</h2>
+                      <div className='flex gap-2 items-center'>
+                        <CurrentUser />
+                        <LogoutBtn />
                       </div>
                   </div>
                 </div>

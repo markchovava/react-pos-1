@@ -1,12 +1,24 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { AiFillEye, AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai'
 import PosLeftContent from '../../components/PosLeftContent'
+import { MainContextState } from '../../contexts/MainContextProvider'
+import LogoutBtn from '../../components/LogoutBtn'
 
 
 function DaySaleZWL() {
    const baseURL = 'http://127.0.0.1:8000/sales/daily/zwl'
+   /* CHECK AUTHENTICATION */
+   const {getToken} = MainContextState()
+   const navigate = useNavigate();
+   const token = getToken();
+   useEffect(()=>{
+      if(!token){
+        return navigate('/login');
+      }
+    },[token])
+  
    const [sales, setSales] = useState({})
    /* PAGINATION */
    const [nextURL, setNextURL] = useState()
@@ -54,8 +66,9 @@ function DaySaleZWL() {
                   <div className=''>
                      <h1 className='font-bold text-xl'> Daily ZWL Sales Page </h1>
                   </div>
-                  <div className=''>
-                        <h2 className='font-semibold text-xl'>User: Mark Chovava</h2>
+                  <div className='flex gap-2 items-center'>
+                     <CurrentUser />
+                     <LogoutBtn />
                   </div>
                </div>
             </div>

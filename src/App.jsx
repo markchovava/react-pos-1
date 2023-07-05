@@ -32,6 +32,7 @@ import DaySaleProductUSD from './pages/Sales/DaySaleProductUSD'
 import DaySaleProductZWL from './pages/Sales/DaySaleProductZWL'
 import Test from './pages/Test'
 import EditStock from './pages/Stock/EditStock'
+import ProfileEdit from './pages/Auth/ProfileEdit'
 
 
 
@@ -46,6 +47,7 @@ function App() {
         {/*  */}
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+        <Route path='/profile' element={<ProfileEdit />} />
         <Route path='/' element={<PosPage />} />
         {/* User */}
         <Route path='/user' element={<ListUser />} />

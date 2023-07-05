@@ -6,12 +6,20 @@ import { MainContextState } from '../../contexts/MainContextProvider';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
+import LogoutBtn from '../../components/LogoutBtn';
+import CurrentUser from '../../components/CurrentUser';
 
 
 
 function EditStock() {
   const navigate = useNavigate(); 
   const { id } = useParams()
+  /* CHECK AUTHENTICATION */
+  const {getToken} = MainContextState()
+  const token = getToken();
+  if(!token){
+     return navigate('/login');
+  }
   const [product, setProduct] = useState({})
   const [quantity, setQuantity] = useState();
  
@@ -91,8 +99,9 @@ function EditStock() {
                 <div className=''>
                   <h1 className='font-bold text-xl'> Edit Stock Page </h1>
                 </div>
-                <div className=''>
-                      <h2 className='font-semibold text-xl'>User:</h2>
+                <div className='flex gap-2 items-center'>
+                    <CurrentUser />
+                    <LogoutBtn />
                 </div>
             </div>
           </div>

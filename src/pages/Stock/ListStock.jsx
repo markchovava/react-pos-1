@@ -1,12 +1,23 @@
 import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { AiFillEdit, AiFillEye, AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai'
 import PosLeftContent from '../../components/PosLeftContent'
+import { MainContextState } from '../../contexts/MainContextProvider'
+import LogoutBtn from '../../components/LogoutBtn'
+import CurrentUser from '../../components/CurrentUser'
 
 
 function ListStock() {
-   const baseURL = 'http://127.0.0.1:8000/product/'
+   const baseURL = 'http://127.0.0.1:8000/product/';
+   /* CHECK AUTHENTICATION */
+   const {getToken} = MainContextState()
+   const navigate = useNavigate();
+   const token = getToken();
+   if(!token){
+      return navigate('/login');
+   }
+
    const [products, setProducts] = useState({})
    const [isSearch, setIsSearch] = useState(false)
    const searchRef = useRef(null)
@@ -81,9 +92,10 @@ function ListStock() {
                      <div className=''>
                         <h1 className='font-bold text-xl'> Product Stock Page </h1>
                      </div>
-                     <div className=''>
-                           <h2 className='font-semibold text-xl'>User: </h2>
-                     </div>
+                     <div className='flex gap-2 items-center'>
+                           <CurrentUser />
+                          <LogoutBtn />
+                    </div>
                   </div>
                </div>
                {/* Search and Add */}

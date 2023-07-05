@@ -8,6 +8,7 @@ import { posInitialState, posReducer, posInit, currencyInitialState, currencyRed
 import { salesInitialState, salesReducer } from '../reducers/SalesReducer';
 import { salesItemInitialState, salesItemReducer } from '../reducers/SalesItemReducer';
 import { stockInitialState, stockReducer } from '../reducers/StockReducer';
+import { authInitialstate, authReducer } from '../reducers/AuthReducer';
 
 
 
@@ -15,57 +16,39 @@ import { stockInitialState, stockReducer } from '../reducers/StockReducer';
 export const MainContext = createContext()
 
 function MainContextProvider({ children }) {
-
+   const [authUser, setAuthUser] = useState({})
    const [productState, productDispatch] = useReducer(productReducer, productInitialState)
-   const [ posState, posDispatch ] = useReducer(posReducer, posInitialState, posInit)
-   const [ currencyState, currencyDispatch ] = useReducer(currencyReducer, currencyInitialState)
+   const [posState, posDispatch ] = useReducer(posReducer, posInitialState, posInit)
+   const [currencyState, currencyDispatch ] = useReducer(currencyReducer, currencyInitialState)
    const [paymentState, paymentDispatch] = useReducer(paymentReducer, paymentInitialSate)
    const [salesState, salesDispatch] = useReducer(salesReducer, salesInitialState)
    const [salesItemState, salesItemDispatch] = useReducer(salesItemReducer, salesItemInitialState)
    const [zwlRate, setZwlRate] = useState('')
-    const [stockState, stockDispatch] = useReducer(stockReducer, stockInitialState)
+   const [stockState, stockDispatch] = useReducer(stockReducer, stockInitialState)
+
+  const setToken = (token) => {
+      localStorage.setItem('POS_ACCESS_TOKEN', token);
+      authDispatch({type: 'SET_TOKEN', payload: token}) 
+  }
   
+  const getToken = () => {
+    const token = localStorage.getItem('POS_ACCESS_TOKEN');
+    return token;
+  }
+
+  const removeToken = () => {
+    localStorage.removeItem('POS_ACCESS_TOKEN');
+    authDispatch({type: 'REMOVE_TOKEN'})
+  }
    
-   /* FETCH ALL PRODUCTS */
-   /* async function fetchProducts() {
-      try{
-         const result = await AxiosClient.get('product/')
-         .then((response) => {
-              productDispatch({
-               type: 'FETCH_PRODUCT',
-               payload: response.data,
-               })  
-               console.log('PRODUCTS:') 
-               console.log(response.data)  
-          })
-      } catch (error) {
-         console.error(`Error: ${error}`)
-      }   
-   } */
-   /* GET ZWL RATE */
-   async function getZwlRate() {
-      try{
-         const result = await AxiosClient.get('currency/1/')
-         .then((response) => {
-            setZwlRate(response.data.rate)   
-            console.log('ZWL RATE:')
-            console.log(response.data)
-         })
-      } catch (error) {
-         console.error(`Error: ${error}`)
-      }   
-   }
-   
-   /* SIDE EFFECTS */
-   useEffect(() => {     
-      //fetchProducts()
-      getZwlRate()
-  }, []);
-
-
-
+  
    return (
       <MainContext.Provider value={{ 
+         setToken,
+         getToken,
+         removeToken,
+         authUser, 
+         setAuthUser,
          productState, 
          productDispatch,
          posState, 

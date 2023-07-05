@@ -3,11 +3,22 @@ import PosLeftContent from '../../components/PosLeftContent'
 import { BsCurrencyDollar } from 'react-icons/bs'
 import { MdPermIdentity } from 'react-icons/md'
 import { FaCalculator } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { MainContextState } from '../../contexts/MainContextProvider'
+import LogoutBtn from '../../components/LogoutBtn'
+import CurrentUser from '../../components/CurrentUser'
 
 
 
 function SettingPage() {
+   /* CHECK AUTHENTICATION */
+   const {getToken} = MainContextState()
+   const navigate = useNavigate();
+   const token = getToken();
+   if(!token){
+      return navigate('/login');
+   }
+   
   return (
    <section className='bg-slate-100 h-auto w-full overflow-hidden'>
       <div className='container h-[100vh] mx-auto max-w-screen-2xl lg:px-0 px-4 flex justify-start items-center'>
@@ -22,9 +33,10 @@ function SettingPage() {
                       <div className=''>
                         <h1 className='font-bold text-xl'> Settings List Page </h1>
                       </div>
-                      <div className=''>
-                            <h2 className='font-semibold text-xl'>User: Mark Chovava</h2>
-                      </div>
+                      <div className='flex gap-2 items-center'>
+                        <CurrentUser />
+                        <LogoutBtn />
+                     </div>
                   </div>
                 </div>
             </section>

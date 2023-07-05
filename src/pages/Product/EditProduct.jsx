@@ -7,14 +7,23 @@ import { MainContextState } from '../../contexts/MainContextProvider';
 /* Toast */
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LogoutBtn from '../../components/LogoutBtn';
+import CurrentUser from '../../components/CurrentUser';
 
 
 
 function EditProduct() {
   const { id } = useParams()
   const navigate = useNavigate(); 
-  const { productDispatch } = MainContextState()
+  const { productDispatch, getToken } = MainContextState()
   const [product, setProduct] = useState()
+  const token = getToken();
+  useEffect(()=>{
+    if(!token){
+      return navigate('/login');
+    }
+  },[token])
+
   
 
   useEffect(() => { 
@@ -96,8 +105,9 @@ function EditProduct() {
                   <div className=''>
                     <h1 className='font-bold text-xl'> Edit Product Page </h1>
                   </div>
-                  <div className=''>
-                        <h2 className='font-semibold text-xl'>User: Mark Chovava</h2>
+                  <div className='flex gap-2 items-center'>
+                      <CurrentUser />
+                      <LogoutBtn />
                   </div>
               </div>
             </div>

@@ -1,12 +1,24 @@
 import { useEffect, useState } from 'react'
 import PosLeftContent from '../../components/PosLeftContent'
 import { AiFillEye, AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { MainContextState } from '../../contexts/MainContextProvider'
+import LogoutBtn from '../../components/LogoutBtn'
+import CurrentUser from '../../components/CurrentUser'
 
 
 function DaySaleUSD() {
    const baseURL = 'http://127.0.0.1:8000/sales/daily/usd'
+   const {getToken} = MainContextState()
+   const navigate = useNavigate();
+   const token = getToken();
+   useEffect(()=>{
+      if(!token){
+        return navigate('/login');
+      }
+    },[token])
+  
    const [sales, setSales] = useState({})
    /* PAGINATION */
    const [nextURL, setNextURL] = useState()
@@ -68,8 +80,9 @@ function DaySaleUSD() {
                         <div className=''>
                            <h1 className='font-bold text-xl'> Daily USD Sales Page </h1>
                         </div>
-                        <div className=''>
-                              <h2 className='font-semibold text-xl'>User: Mark Chovava</h2>
+                        <div className='flex gap-2 items-center'>
+                           <CurrentUser />
+                          <LogoutBtn />
                         </div>
                      </div>
                   </div>

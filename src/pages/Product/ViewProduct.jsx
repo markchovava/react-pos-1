@@ -2,11 +2,21 @@ import React, { useEffect, useState } from 'react'
 import AxiosClient from '../../axios/axiosClient';
 import PosLeftContent from '../../components/PosLeftContent'
 import { MainContextState } from '../../contexts/MainContextProvider';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import LogoutBtn from '../../components/LogoutBtn';
+import CurrentUser from '../../components/CurrentUser';
 
 
 function ViewProduct() {
-   const {productState, productDispatch, productViewState, productViewDispatch} = MainContextState()
+   const {getToken, productState, productDispatch, productViewState, productViewDispatch} = MainContextState()
+   const navigate = useNavigate();
+   const token = getToken();
+   useEffect(()=>{
+      if(!token){
+        return navigate('/login');
+      }
+    },[token])
+  
    /* Get Single Product */
    const { id } = useParams()
    const getProductById = () => {
@@ -30,8 +40,9 @@ function ViewProduct() {
                   <div className=''>
                      <h1 className='font-bold text-xl'> Product Details Page</h1>
                   </div>
-                  <div className=''>
-                        <h2 className='font-semibold text-xl'>User: Mark Chovava</h2>
+                  <div className='flex gap-2 items-center'>
+                     <CurrentUser />
+                     <LogoutBtn />
                   </div>
                </div>
             </div>

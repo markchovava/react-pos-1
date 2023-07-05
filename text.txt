@@ -1,0 +1,9 @@
+{
+    "first_name": "MARK",
+    "last_name": "CHOVAVA",
+    "phone_number": "+263782210021",
+    "email": "markchovava@gmail.com",
+    "password": "12345678",
+    "confirm_password": "12345678",
+    "access_level": 4
+}

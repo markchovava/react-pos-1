@@ -4,11 +4,24 @@ import { AiFillDelete } from 'react-icons/ai'
 import PosLeftContent from '../../components/PosLeftContent'
 import { MainContextState } from '../../contexts/MainContextProvider'
 import AxiosClient from '../../axios/axiosClient'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { ToastContainer,  toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import LogoutBtn from '../../components/LogoutBtn'
+import CurrentUser from '../../components/CurrentUser'
 
 function PosPage() {
-  const {posState, posDispatch, productState, productDispatch, zwlRate, setZwlRate, currencyState, 
-        salesDispatch, currencyDispatch, paymentState, paymentDispatch} = MainContextState()
+  const {getToken, posState, posDispatch, productState, productDispatch, zwlRate, 
+    setZwlRate, currencyState, salesDispatch, currencyDispatch, paymentState, 
+    paymentDispatch} = MainContextState()
+  const navigate = useNavigate();
+  const token = getToken();
+  useEffect(()=>{
+    if(!token){
+      return navigate('/login');
+    }
+  },[token])
+
   const [amount, setAmount] = useState(0)
   const amountRef = useRef()
   const currencyRef = useRef()
@@ -19,11 +32,17 @@ function PosPage() {
   const [inputData, setInputData] = useState(0);
   const [scanInput, setScanInput] = useState()
   const [isSubmit, setIsSubmit] = useState(false)
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': `JWT ${token}`
+  };
+  
+ 
 
   /* FETCH ALL PRODUCTS */
   async function fetchProducts() {
     try{
-       const result = await AxiosClient.get('product/')
+       const result = await AxiosClient.get('product/', {headers})
        .then((response) => {
             productDispatch({
              type: 'FETCH_PRODUCT',
@@ -39,11 +58,9 @@ function PosPage() {
   /* GET ZWL RATE */
   async function getZwlRate() {
     try{
-       const result = await AxiosClient.get('currency/1/')
+       const result = await AxiosClient.get('currency/1/', {headers})
        .then((response) => {
-          setZwlRate(response.data.rate)   
-          //console.log('ZWL RATE:')
-          //console.log(response.data)
+          setZwlRate(response.data.rate)  
        })
     } catch (error) {
        console.error(`Error: ${error}`)
@@ -238,7 +255,7 @@ function PosPage() {
                         <h1 className='font-bold text-xl'>POS PAGE </h1></div>
                         <div className=''>
                             <h2 className='font-semibold text-xl'>
-                              Operator: <Link to='/test'>Username</Link>
+                              <CurrentUser />
                             </h2>
                         </div>
                         <div className='text-xl font-semibold'>
@@ -264,6 +281,7 @@ function PosPage() {
                                 <option value='SearchByName'> Search Mode </option>
                             </select>
                         </div>
+                        <LogoutBtn />
                     </div>
                 </div>
                 {/* PosMainContentSearch */}
@@ -523,8 +541,8 @@ function PosPage() {
               </div>
             </div>
           </section>
-           
         </div>
+        <ToastContainer />
     </section>
   )
 }

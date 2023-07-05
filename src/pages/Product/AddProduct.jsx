@@ -7,14 +7,20 @@ import { Link, useNavigate } from 'react-router-dom';
 /* Toast */
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LogoutBtn from '../../components/LogoutBtn';
+import CurrentUser from '../../components/CurrentUser';
 
 
 
 
 function AddProduct() {
-  const {productState, productDispatch} = MainContextState()
+  const {getToken, productState, productDispatch} = MainContextState()
   const [dbCategory, setDbCategory] = useState([])
   const navigate = useNavigate();
+  const token = getToken();
+  if(!token){
+    return navigate('/login');
+  }
 
 
   async function addProduct(product) {
@@ -75,8 +81,9 @@ function AddProduct() {
                   <div className=''>
                     <h1 className='font-bold text-xl'> Add Product Page </h1>
                   </div>
-                  <div className=''>
-                        <h2 className='font-semibold text-xl'>User:</h2>
+                  <div className='flex gap-2 items-center'>
+                    <CurrentUser />
+                    <LogoutBtn />
                   </div>
               </div>
             </div>
