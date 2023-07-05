@@ -8,7 +8,7 @@ import { posInitialState, posReducer, posInit, currencyInitialState, currencyRed
 import { salesInitialState, salesReducer } from '../reducers/SalesReducer';
 import { salesItemInitialState, salesItemReducer } from '../reducers/SalesItemReducer';
 import { stockInitialState, stockReducer } from '../reducers/StockReducer';
-import { authInitialstate, authReducer } from '../reducers/AuthReducer';
+import { userInitialState, userReducer } from '../reducers/UserReducer';
 
 
 
@@ -17,6 +17,7 @@ export const MainContext = createContext()
 
 function MainContextProvider({ children }) {
    const [authUser, setAuthUser] = useState({})
+   const [userState, userDispatch] = useReducer(userReducer, userInitialState)
    const [productState, productDispatch] = useReducer(productReducer, productInitialState)
    const [posState, posDispatch ] = useReducer(posReducer, posInitialState, posInit)
    const [currencyState, currencyDispatch ] = useReducer(currencyReducer, currencyInitialState)
@@ -44,6 +45,8 @@ function MainContextProvider({ children }) {
   
    return (
       <MainContext.Provider value={{ 
+         userState, 
+         userDispatch,
          setToken,
          getToken,
          removeToken,

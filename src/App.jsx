@@ -11,6 +11,7 @@ import Login from './pages/Auth/Login'
 import Register from './pages/Auth/Register'
 import ListUser from './pages/User/ListUser'
 import AddUser from './pages/User/AddUser'
+import EditUser from './pages/User/EditUser'
 import ViewUser from './pages/User/ViewUser'
 import ViewSupplier from './pages/Supplier/ViewSupplier'
 import AddSupplier from './pages/Supplier/AddSupplier'
@@ -52,7 +53,8 @@ function App() {
         {/* User */}
         <Route path='/user' element={<ListUser />} />
         <Route path='/user/add' element={<AddUser />} />
-        <Route path='/user/view' element={<ViewUser />} />
+        <Route path='/user/edit/:id' element={<EditUser />} />
+        <Route path='/user/view/:id' element={<ViewUser />} />
         {/* Supplier */}
         <Route path='/supplier' element={<ListSupplier />} />
         <Route path='/supplier/add' element={<AddSupplier />} />

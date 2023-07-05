@@ -191,8 +191,9 @@ function ListProduct() {
                 <div className='w-full flex flex-col items-center justify-center '>
                 
                 {/* Table Row */}
-                { productState.products.map((product, i) => (
-                    <div key={i.id} className='w-[96%] border border-slate-300 bg-white py-2 flex justify-center items-center'>
+                { productState.products && 
+                  productState.products.map((product, i) => (
+                    <div key={i} className='w-[96%] border border-slate-300 bg-white py-2 flex justify-center items-center'>
                         <div className='w-[30%] border-r border-slate-300 px-3'> 
                           {product.name}
                         </div>

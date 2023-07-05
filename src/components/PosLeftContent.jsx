@@ -32,8 +32,8 @@ function PosLeftContent() {
               <BiPackage className='left__Icon'/>
             </Link>
           </button>
-          <button title='Till' className='left__ContentBtn'>
-            <Link to='/stock'>
+          <button title='Users' className='left__ContentBtn'>
+            <Link to='/user'>
               <FaDesktop className='left__Icon'/>
             </Link>
           </button>
