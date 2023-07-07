@@ -28,8 +28,7 @@ function MainContextProvider({ children }) {
    const [stockState, stockDispatch] = useReducer(stockReducer, stockInitialState)
 
   const setToken = (token) => {
-      localStorage.setItem('POS_ACCESS_TOKEN', token);
-      authDispatch({type: 'SET_TOKEN', payload: token}) 
+    localStorage.setItem('POS_ACCESS_TOKEN', token);
   }
   
   const getToken = () => {
@@ -39,7 +38,6 @@ function MainContextProvider({ children }) {
 
   const removeToken = () => {
     localStorage.removeItem('POS_ACCESS_TOKEN');
-    authDispatch({type: 'REMOVE_TOKEN'})
   }
    
   

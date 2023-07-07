@@ -6,12 +6,15 @@ import PosLeftContent from '../../components/PosLeftContent'
 import { MainContextState } from '../../contexts/MainContextProvider'
 import LogoutBtn from '../../components/LogoutBtn'
 import CurrentUser from '../../components/CurrentUser'
+import AxiosClient from '../../axios/axiosClient'
+import { ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function MonthSaleUSD() {
    const baseURL = 'http://127.0.0.1:8000/sales/monthly/usd'
    /* CHECK AUTHENTICATION */
-   const {getToken} = MainContextState()
+   const {getToken, authUser} = MainContextState()
    const navigate = useNavigate();
    const token = getToken();
    useEffect(()=>{
@@ -19,6 +22,25 @@ function MonthSaleUSD() {
         return navigate('/login');
       }
     },[token])
+
+    /* ACCESS CONTROL */
+   const accessLevel = parseInt(authUser?.access_level)
+   useEffect(() => {
+     if(accessLevel >= 3){
+       return navigate('/sales', 
+                 toast.success('You are not allowed.', {
+                 position: "top-right",
+                 autoClose: 5000,
+                 hideProgressBar: false,
+                 closeOnClick: true,
+                 pauseOnHover: true,
+                 draggable: true,
+                 progress: undefined,
+                 theme: "light",
+               })
+             );
+     }
+   }, [])
   
   const [sales, setSales] = useState({})
   /* PAGINATION */
@@ -43,7 +65,7 @@ function MonthSaleUSD() {
    useEffect(() => { 
      async function fetchSales() {
          try{
-           const result = await axios.get(baseURL)
+           const result = await AxiosClient.get(baseURL)
            .then((response) => {
                setSales(response.data)
                setPrevURL(response.data.previous)
@@ -79,8 +101,8 @@ function MonthSaleUSD() {
             <div className='w-[100%] bg-white pt-4 pb-2 flex justify-center items-center pr-[0.5rem]'>
                <div className='w-[96%] flex justify-between items-center'>
                   <div className='w-[40%]'>
-                     <input type='text' placeholder='Search by Day...' 
-                        className='w-full rounded-md px-3 py-2 text-slate-500 border border-slate-300 outline-none'/>
+                    {/*  <input type='text' placeholder='Search by Day...' 
+                        className='w-full rounded-md px-3 py-2 text-slate-500 border border-slate-300 outline-none'/> */}
                   </div>
                   <div className='flex items-center justify-between gap-4'>
                      <div className='flex items-center justify-between'>
@@ -123,7 +145,21 @@ function MonthSaleUSD() {
                { sales?.results &&
                   sales?.results.map((item, i) => (
                   <div key={i} className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                     <div className='w-[20%] border-r border-slate-300 px-3'>{ item.created_at.slice(0, 7) }</div>
+                     <div className='w-[20%] border-r border-slate-300 px-3'>
+                     { item.month == 1 && 'January'}
+                     { item.month == 2 && 'February'}
+                     { item.month == 3 && 'March'}
+                     { item.month == 4 && 'April'}
+                     { item.month == 5 && 'May'}
+                     { item.month == 6 && 'June'}
+                     { item.month == 7 && 'July'}
+                     { item.month == 8 && 'August'}
+                     { item.month == 9 && 'September'}
+                     { item.month == 10 && 'October'}
+                     { item.month == 11 && 'November'}
+                     { item.month == 12 && 'December'}
+                     {` ${item.year}`}
+                     </div>
                      <div className='w-[20%] border-r border-slate-300 px-3'>{item.quantity_total} </div>
                      <div className='w-[20%] border-r border-slate-300 px-3'>${(item.grandtotal / 100).toFixed(2)} </div>
                      <div className='w-[20%] border-r border-slate-300 px-3'> {item.currency} </div>

@@ -15,18 +15,37 @@ function EditStock() {
   const navigate = useNavigate(); 
   const { id } = useParams()
   /* CHECK AUTHENTICATION */
-  const {getToken} = MainContextState()
+  const {getToken, authUser} = MainContextState()
   const token = getToken();
   if(!token){
      return navigate('/login');
   }
+
+   /* ACCESS CONTROL */
+   const accessLevel = parseInt(authUser?.access_level)
+   useEffect(() => {
+     if(accessLevel > 3){
+       return navigate('/stock', 
+                 toast.success('You are not allowed.', {
+                 position: "top-right",
+                 autoClose: 5000,
+                 hideProgressBar: false,
+                 closeOnClick: true,
+                 pauseOnHover: true,
+                 draggable: true,
+                 progress: undefined,
+                 theme: "light",
+               })
+             );
+     }
+   }, [])
   const [product, setProduct] = useState({})
   const [quantity, setQuantity] = useState();
  
   useEffect(() => { 
     async function getProduct() {
       try{
-        const result = await axios.get(`http://127.0.0.1:8000/product/${parseInt(id)}/`)
+        const result = await AxiosClient.get(`http://127.0.0.1:8000/product/${parseInt(id)}/`)
         .then((response) => {
           setProduct(response.data)
           setQuantity(response.data.quantity)

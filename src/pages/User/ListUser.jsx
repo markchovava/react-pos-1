@@ -22,6 +22,25 @@ function ListUser() {
       }
    },[token])
 
+     /* ACCESS CONTROL */
+     const access_Level = parseInt(authUser?.access_level)
+     useEffect(() => {
+        if(access_Level >= 3){
+          return navigate('/', 
+                    toast.success('You are not allowed.', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                  })
+                );
+        }
+      }, []) 
+
    const searchRef = useRef(null)
    const [searchName, setSearchName] = useState('')
    const [isSubmit, setIsSubmit] = useState(false)

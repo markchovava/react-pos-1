@@ -6,12 +6,15 @@ import PosLeftContent from '../../components/PosLeftContent'
 import { MainContextState } from '../../contexts/MainContextProvider'
 import LogoutBtn from '../../components/LogoutBtn'
 import CurrentUser from '../../components/CurrentUser'
+import AxiosClient from '../../axios/axiosClient'
+import { ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function DaySaleProductUSD() {
-  const baseURL = 'http://127.0.0.1:8000/salesitem/daily/product/usd';
+  const baseURL = 'salesitem/daily/product/usd';
   /* CHECK AUTHENTICATION */
-  const {getToken} = MainContextState()
+  const {getToken, authUser} = MainContextState()
   const navigate = useNavigate();
   const token = getToken();
   useEffect(()=>{
@@ -19,6 +22,24 @@ function DaySaleProductUSD() {
       return navigate('/login');
     }
   },[token])
+  /* ACCESS CONTROL */
+  const accessLevel = parseInt(authUser?.access_level)
+  useEffect(() => {
+    if(accessLevel >= 2){
+      return navigate('/sales', 
+                toast.success('You are not allowed.', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              })
+            );
+    }
+  }, [])
 
   
   const [sales, setSales] = useState({})
@@ -43,9 +64,10 @@ function DaySaleProductUSD() {
   useEffect(() => { 
     async function fetchSales() {
       try{
-        const result = await axios.get(baseURL)
+        const result = await AxiosClient.get(baseURL)
         .then((response) => {
           setSales(response.data)
+          console.log(response.data)
           setPrevURL(response.data.previous)
           setNextURL(response.data.next)
         })
@@ -81,8 +103,8 @@ function DaySaleProductUSD() {
               <div className='w-[100%] bg-white pt-4 pb-2 flex justify-center items-center pr-[0.5rem]'>
                   <div className='w-[96%] flex justify-between items-center'>
                     <div className='w-[40%]'>
-                        <input type='text' placeholder='Search by Day...' 
-                          className='w-full rounded-md px-3 py-2 text-slate-500 border border-slate-300 outline-none'/>
+                        {/* <input type='text' placeholder='Search by Day...' 
+                          className='w-full rounded-md px-3 py-2 text-slate-500 border border-slate-300 outline-none'/> */}
                     </div>
                     <div className='flex items-center justify-between gap-4'>
                         <div className='flex items-center justify-between'>

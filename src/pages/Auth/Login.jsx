@@ -1,4 +1,4 @@
-import { useReducer, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { BiBarcodeReader } from 'react-icons/bi'
 import { Link, useNavigate} from 'react-router-dom';
 import AxiosClient from '../../axios/axiosClient';
@@ -10,12 +10,16 @@ import { MainContextState } from '../../contexts/MainContextProvider';
 
 function Login() {
    const navigate = useNavigate();
-   const { setToken, authDispatch } = MainContextState()
+   const { setToken, removeToken } = MainContextState()
    const [userName, setUserName] = useState('')
    const [userNameErr, setUserNameErr] = useState('')
    const [password, setPassword] = useState('')
    const [passwordErr, setPasswordErr] = useState('')
    const [errorMessage, setErrorMessage] = useState('')
+
+   useEffect(() => {
+      removeToken()
+   }, [])
 
 
    const handleValidation = () => {
@@ -52,12 +56,12 @@ function Login() {
          .then((response) => {
                console.log(response)
                console.log(response.data.access)
-               authDispatch({
+               /* authDispatch({
                   type: 'SET_TOKEN', 
                   payload: response.data.access
-               })
+               }) */
                setToken(response.data.access)
-               navigate('/', 
+               navigate('/pos', 
                   toast.success('User login Successfully', {
                      position: "top-right",
                      autoClose: 5000,

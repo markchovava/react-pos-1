@@ -1,7 +1,7 @@
 import React, { useRef,  useState, useEffect} from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
-import { ToastContainer} from 'react-toastify';
+import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AiFillEdit, AiFillEye, AiFillDelete, AiOutlineArrowRight, AiOutlineArrowLeft} from 'react-icons/ai'
 import { BsChevronDoubleLeft, BsChevronDoubleRight } from 'react-icons/bs'
@@ -9,10 +9,11 @@ import { MainContextState } from '../../contexts/MainContextProvider'
 import PosLeftContent from '../../components/PosLeftContent'
 import LogoutBtn from '../../components/LogoutBtn';
 import CurrentUser from '../../components/CurrentUser';
+import AxiosClient from '../../axios/axiosClient';
 
 
 function ListProduct() {
-  const baseURL = 'http://127.0.0.1:8000/product/'
+  const baseURL = 'product/'
   const {getToken, productState, productDispatch} = MainContextState()
   const navigate = useNavigate();
   const token = getToken();
@@ -52,7 +53,7 @@ function ListProduct() {
   /* FETCH ALL PRODUCTS */
   async function fetchProducts() {
     try{
-       const result = await axios.get(baseURL)
+       const result = await AxiosClient.get(baseURL)
        .then((response) => {
             productDispatch({
              type: 'FETCH_PRODUCT',
@@ -94,7 +95,7 @@ function ListProduct() {
 
   const handleSearch = async () => {
     console.log(searchName)
-    const result = await axios.get(`http://127.0.0.1:8000/product/?search=${searchName}`)
+    const result = await AxiosClient.get(`product/?search=${searchName}`)
       .then((response) => {
         productDispatch({
           type: 'FETCH_PRODUCT',

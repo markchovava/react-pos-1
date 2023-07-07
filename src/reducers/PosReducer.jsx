@@ -42,7 +42,7 @@ export const posReducer = (state, action) => {
                 ...state,
                 products: state.products.filter((item) => {
                     if(item.id === action.payload.id) {
-                        item.quantity_sold = Number(action.payload.quantity_sold)
+                        item.quantity_sold = Number(action.payload.quantity_sold);
                         item.stock = item.quantity - action.payload.quantity_sold
                         item.total_price = item.quantity_sold * item.unit_price
                         return item

@@ -13,7 +13,8 @@ import CurrentUser from '../../components/CurrentUser';
 
 
 function CurrencyPage() {
-  const {getToken, zwlRate, setZwlRate} = MainContextState()
+  const {getToken, authUser } = MainContextState()
+  const [inputData, setInputData] = useState(0);
   const navigate = useNavigate();
   /* CHECK AUTHENTICATION */  
   const token = getToken();
@@ -24,15 +25,58 @@ function CurrencyPage() {
   if(!token){
      return navigate('/login');
   } 
+
+   /* ACCESS CONTROL */
+   const accessLevel = parseInt(authUser?.access_level)
+  /*  useEffect(() => {
+     if(accessLevel >= 3){
+       return navigate('/sales', 
+                 toast.success('You are not allowed.', {
+                 position: "top-right",
+                 autoClose: 5000,
+                 hideProgressBar: false,
+                 closeOnClick: true,
+                 pauseOnHover: true,
+                 draggable: true,
+                 progress: undefined,
+                 theme: "light",
+               })
+             );
+     }
+   }, []) */
+
+  /* GET ZWL RATE */
+  useEffect(() => {
+
+    if(accessLevel >= 3){
+      return navigate('/settings', 
+                toast.success('You are not allowed.', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              })
+            );
+    }   
+
+    async function getZwlRate() {
+      try{
+         const result = await AxiosClient.get('currency/1/', {headers})
+         .then((response) => {
+          setInputData(() => response.data.rate / 100)  
+         })
+      } catch (error) {
+         console.error(`Error: ${error}`)
+      }   
+    }  
+    getZwlRate()
+  }, []);
   
-  const zwl = zwlRate;
-  const [inputData, setInputData] = useState({
-    rate: zwl / 100
-  });
-  /* Making Input field editable */
-  const handleChange = (e) => {
-    setInputData({ ...inputData, [e.target.name]: e.target.value });
-  }
+
 
    /* UPDATE PRODUCT */
   async function updateCurrency(data) {
@@ -123,8 +167,8 @@ function CurrencyPage() {
                   <input 
                     type='number'
                     name="rate"
-                    onChange={handleChange}
-                    value={inputData.rate}
+                    onChange={(e) => setInputData(e.target.value)}
+                    value={inputData}
                     className='border border-slate-400 rounded-md outline-none py-2 px-3 w-[70%]' 
                   placeholder='Enter Amount...'/>
                 </div>

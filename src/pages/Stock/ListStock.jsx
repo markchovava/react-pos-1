@@ -6,10 +6,11 @@ import PosLeftContent from '../../components/PosLeftContent'
 import { MainContextState } from '../../contexts/MainContextProvider'
 import LogoutBtn from '../../components/LogoutBtn'
 import CurrentUser from '../../components/CurrentUser'
+import AxiosClient from '../../axios/axiosClient'
 
 
 function ListStock() {
-   const baseURL = 'http://127.0.0.1:8000/product/';
+   const baseURL = 'product/';
    /* CHECK AUTHENTICATION */
    const {getToken} = MainContextState()
    const navigate = useNavigate();
@@ -44,7 +45,7 @@ function ListStock() {
    useEffect(() => { 
       async function fetchProducts() {
          try{
-            const result = await axios.get(baseURL)
+            const result = await AxiosClient.get(baseURL)
             .then((response) => {
                setProducts(response.data)
                setPrevURL(response.data.previous)
@@ -60,7 +61,7 @@ function ListStock() {
 
    const handleSearch = async () => {
       console.log(searchName)
-      const result = await axios.get(`http://127.0.0.1:8000/product/?search=${searchName}`)
+      const result = await AxiosClient.get(`product/?search=${searchName}`)
         .then((response) => {
           /* productDispatch({
             type: 'FETCH_PRODUCT',
@@ -164,7 +165,9 @@ function ListStock() {
                         <div className='w-[20%] border-r border-slate-300 px-3'>
                            ${((item.unit_price / 100) * item.quantity).toFixed(2)}
                         </div>
-                        <div className='w-[20%] border-r border-slate-300 px-3'>Username</div>
+                        <div className='w-[20%] border-r border-slate-300 px-3'>
+                           {item.user?.first_name} {item.user?.last_name}
+                        </div>
                         <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>
                            <div className='flex justify-center items-center gap-2'>
                               <Link to={`/stock/edit/${item.id}`}>

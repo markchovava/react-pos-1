@@ -15,7 +15,8 @@ import CurrentUser from '../../components/CurrentUser';
 function EditProduct() {
   const { id } = useParams()
   const navigate = useNavigate(); 
-  const { productDispatch, getToken } = MainContextState()
+  const { productDispatch, getToken,  authUser} = MainContextState()
+  const user_id = authUser?.id;
   const [product, setProduct] = useState()
   const token = getToken();
   useEffect(()=>{
@@ -23,13 +24,31 @@ function EditProduct() {
       return navigate('/login');
     }
   },[token])
+  /* ACCESS CONTROL */
+  const accessLevel = parseInt(authUser?.access_level)
+  useEffect(() => {
+    if(accessLevel > 5){
+      return navigate('/product', 
+                toast.success('You are not allowed.', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              })
+            );
+    }
+  }, [])
 
   
 
   useEffect(() => { 
     async function getProduct() {
       try{
-        const result = await axios.get(`http://127.0.0.1:8000/product/${parseInt(id)}/`)
+        const result = await AxiosClient.get(`product/${parseInt(id)}/`)
         .then((response) => {
           setProduct(response.data)
         })
@@ -91,7 +110,8 @@ function EditProduct() {
             barcode: e.target.barcode.value ? e.target.barcode.value : 0,
             quantity: e.target.quantity.value ? e.target.quantity.value : 0,
             unit_price: e.target.unit_price.value ? e.target.unit_price.value : 0,
-            brand: e.target.brand.value ? e.target.brand.value : ''
+            brand: e.target.brand.value ? e.target.brand.value : '',
+            user_id: user_id,
         });
       }}
       className='container h-[100vh] mx-auto max-w-screen-2xl lg:px-0 px-4 flex justify-start items-center'>

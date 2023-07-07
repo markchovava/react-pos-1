@@ -10,7 +10,7 @@ import LogoutBtn from '../../components/LogoutBtn';
 
 
 function EditUser() {
-   const { userDispatch, getToken } = MainContextState()
+   const { userDispatch, getToken, authUser } = MainContextState()
    const navigate = useNavigate();
    const { id } = useParams()
    const updateId = id;
@@ -36,8 +36,44 @@ function EditUser() {
    const [user, setUser] = useState()
    const [isSubmit, seIsSubmit] = useState(false)
 
-    /* GET USER */
+   /* ACCESS CONTROL */
+   const access_Level = parseInt(authUser?.access_level)
+  /*  useEffect(() => {
+     if(access_Level >= 3){
+       return navigate('/', 
+                 toast.success('You are not allowed.', {
+                 position: "top-right",
+                 autoClose: 5000,
+                 hideProgressBar: false,
+                 closeOnClick: true,
+                 pauseOnHover: true,
+                 draggable: true,
+                 progress: undefined,
+                 theme: "light",
+               })
+             );
+     }
+   }, []) */
+
+
     useEffect(() => {
+
+      /* ACCESS CONTROL */
+      if(access_Level >= 3){
+         return navigate('/', 
+                   toast.success('You are not allowed.', {
+                   position: "top-right",
+                   autoClose: 5000,
+                   hideProgressBar: false,
+                   closeOnClick: true,
+                   pauseOnHover: true,
+                   draggable: true,
+                   progress: undefined,
+                   theme: "light",
+                 })
+               );
+       }
+       /* GET USER */
       const getUser = async () => {
         try{
           const result = await AxiosClient.get(`users/${updateId}`, { headers })
@@ -240,7 +276,7 @@ function EditUser() {
                            {accessLevel == 4 ? <option value='4' selected>Operator</option> : <option value='4'>Operator</option>}
                            {accessLevel == 3 ? <option value='3' selected>Manager</option> : <option value='3'>Manager</option>}
                            {accessLevel == 2 ? <option value='2' selected>Admin</option> : <option value='2'>Admin</option>}
-                           {accessLevel == 2 ? <option value='1' selected>Super Admin</option> : <option value='1'>Super Admin</option>}
+                           {accessLevel == 1 ? <option value='1' selected>Super Admin</option> : <option value='1'>Super Admin</option>}
                         </select>
                         
                      </div>  

@@ -10,7 +10,7 @@ import CurrentUser from '../../components/CurrentUser';
 
 
 function AddUser() {
-   const { userDispatch, getToken } = MainContextState()
+   const { userDispatch, getToken, authUser } = MainContextState()
    const navigate = useNavigate();
    const token = getToken();
    useEffect(()=>{
@@ -18,6 +18,25 @@ function AddUser() {
          return navigate('/login');
       }
    },[token])
+
+    /* ACCESS CONTROL */
+    const access_Level = parseInt(authUser?.access_level)
+    useEffect(() => {
+      if(access_Level >= 3){
+        return navigate('/', 
+                  toast.success('You are not allowed.', {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                })
+              );
+      }
+    }, [])
    const headers = {
       'Content-Type': 'application/json',
       'Authorization': `JWT ${token}`

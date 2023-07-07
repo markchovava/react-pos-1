@@ -13,7 +13,9 @@ import CurrentUser from '../../components/CurrentUser'
 function PosPage() {
   const {getToken, posState, posDispatch, productState, productDispatch, zwlRate, 
     setZwlRate, currencyState, salesDispatch, currencyDispatch, paymentState, 
-    paymentDispatch} = MainContextState()
+    paymentDispatch, authUser} = MainContextState()
+    const user_id = authUser?.id;
+    //console.log('USER ID: ' + user_id)
   const navigate = useNavigate();
   const token = getToken();
   useEffect(()=>{
@@ -182,32 +184,45 @@ function PosPage() {
   const calculateStock = () => {}
 
   const processPos =  async (data) => {
+    let allItems = posState.products;
+    console.log(allItems)
     let items;
-    if(posState.products.length > 1) {
+    if(allItems && allItems.length > 1) {
       items = posState.products.map((item) => ({
         product_id: parseInt(item.id),
         product_name: item.product_name,
         stock: item.stock,
         currency: currencyRef.current.value,
         quantity_sold: parseInt(item.quantity_sold),
-        unit_price: parseInt(item.unit_price),
-        total_price: parseInt(item.total_price),
-        user_id: null
+        unit_price: currencyRef.current.value == 'ZWL' 
+                    ? (parseInt(item.unit_price) * parseInt(currencyState.currency.rate)) / 100
+                    : parseInt(item.unit_price),
+        total_price: currencyRef.current.value == 'ZWL' 
+                    ? (parseInt(item.total_price) * parseInt(currencyState.currency.rate)) / 100
+                    : parseInt(item.total_price),
+        user_id: parseInt(user_id)
       }))  
-    } else {
+    } else if(!allItems == []) {
       items = [{
-        product_id: parseInt(posState.products[0].id),
-        product_name: posState.products[0].product_name,
+        product_id: parseInt(allItems[0].id),
+        product_name: allItems[0].product_name,
         currency: currencyRef.current.value,
-        quantity_sold: parseInt(posState.products[0].quantity_sold),
-        unit_price: parseInt(posState.products[0].unit_price),
-        total_price: parseInt(posState.products[0].total_price),
-        user_id: null 
+        quantity_sold:  parseInt(allItems[0].quantity_sold),
+        unit_price: currencyRef.current.value == 'ZWL' 
+                    ? (parseInt(allItems[0].unit_price) * parseInt(currencyState.currency.rate)) / 100
+                    : parseInt(allItems[0].unit_price),
+        total_price: currencyRef.current.value == 'ZWL' 
+                    ? (parseInt(allItems[0].total_price) * parseInt(currencyState.currency.rate)) / 100
+                    : parseInt(allItems[0].total_price),
+        user_id: parseInt(user_id)
       }]
+    } else{
+      alert('Please add products to the Sale.')
+      return null
     }
     const sales_items = items;
     const sales = {
-      user_id: null,
+      user_id: user_id,
       quantity_total: parseInt(calculateQuantity()),
       grandtotal: parseInt(calculateGrandTotal()),
       amount_paid: parseInt(amountRef.current.value * 100),
@@ -223,17 +238,25 @@ function PosPage() {
     //console.log(sales_items)
     if( paymentState.method ) {
       //console.log(sales)
-      const result = await AxiosClient.post('sales/', sales)
+      //return false;
+      if(currencyRef.current.value != ''){
+        //console.log(currencyRef.current.value)
+        alert(currencyRef.current.value)
+        const result = await AxiosClient.post('sales/', sales)
         .then((response) => {
           try{
-            console.log(response.data)
+            //console.log(response.data)
             salesDispatch({type: 'ADD_SALES', payload: response.data})
             posDispatch({type: 'REMOVE_PRODUCT'})
             alert('Processing was successful.')
           } catch(error){
             console.log(`ERROR: ${error}`)
           }
-      })    
+        })  
+      } else{
+        confirm('Please Select Currency.')
+      }
+      
     } else {
       confirm('Select Payment Method')
     }
@@ -269,6 +292,7 @@ function PosPage() {
                             ref={currencyRef}
                               onChange={(e) => handleCurrency(e.target.value)}
                               className='text-lg border-none outline-none'>
+                                <option value=''>Select Currency.</option>
                                 <option value='USD'>USD</option>
                                 <option value='ZWL'>ZWL</option>
                             </select>
@@ -277,6 +301,7 @@ function PosPage() {
                               name='mode'
                               onChange={(e) => handleMode(e.target.value)}
                               className='text-lg border-none outline-none'>
+                                <option value=''>Select Mode.</option>
                                 <option value='SearchByBarcode'> Scan Mode </option>
                                 <option value='SearchByName'> Search Mode </option>
                             </select>
@@ -370,7 +395,7 @@ function PosPage() {
                         </div>
                         <div className='w-[20%] border-r border-slate-900 px-3'> 
                           ${ currencyState.currency.name == 'ZWL' ?
-                            (((currencyState.currency.rate / 100) * item.unit_price) / 100).toFixed(2)
+                             (((currencyState.currency.rate / 100) * item.unit_price) / 100).toFixed(2)
                             : (item.unit_price / 100).toFixed(2)
                             } 
                         </div>
@@ -382,7 +407,12 @@ function PosPage() {
                                 name='quantity_sold'
                                 onChange={(e) => {
                                   //console.log(item.name + ': ' + e.target.value)
-                                  posDispatch({type: 'SINGLE_PRODUCT_QUANTITY', payload:{id: item.id, quantity_sold: e.target.value}})
+                                  posDispatch({
+                                    type: 'SINGLE_PRODUCT_QUANTITY', 
+                                    payload:{
+                                      id: item.id, 
+                                      quantity_sold: e.target.value,
+                                    }})
                                   setInputUnique(item.id, e.target.value)
                                   if(isSubmit == true){
                                     productDispatch({
@@ -421,7 +451,7 @@ function PosPage() {
             {/* PosRightTop */}
             <div className='w-full h-auto px-6 pt-6 pb-4'>
               <p className='text-sm font-semibold'>TOTAL:</p>
-              <h3 className='text-3xl font-bold text-yellow-400'>
+              <h3 className='text-2xl font-bold text-yellow-400'>
                 ${calculateGrandTotal() ? (calculateGrandTotal() / 100).toFixed(2) : '0.00'}
               </h3>
             </div>
@@ -437,7 +467,7 @@ function PosPage() {
                   ref={amountRef}
                   name='amount'
                   onChange={() => setAmount(amountRef.current.value)}
-                  className='text-2xl text-black font-semibold px-3 py-2 border-none outline-none rounded w-full'/>
+                  className='text-xl text-black font-semibold px-3 py-2 border-none outline-none rounded w-full'/>
               </div>
             </div>
 
@@ -449,13 +479,13 @@ function PosPage() {
               <div className='w-full flex items-center justify-start gap-2'>
                 <div className='font-semibold w-[50%]'>
                   <p className='text-sm'>Subtotal</p>
-                  <h3 className='text-2xl text-yellow-100'>
+                  <h3 className='text-xl text-yellow-100'>
                     ${calculateSubTotal() ? (calculateSubTotal() / 100).toFixed(2) : '0.00'}
                   </h3>
                 </div>
                 <div className='font-semibold w-[50%]'>
                   <p className='text-sm'>Total Quantity</p>
-                  <h3 className='text-2xl text-yellow-100'>
+                  <h3 className='text-xl text-yellow-100'>
                     {calculateQuantity() ? calculateQuantity() : '00'}
                   </h3>
                 </div>
@@ -465,7 +495,7 @@ function PosPage() {
               <div className='mb-3'></div>
               <div className='font-semibold'>
                   <p className='text-sm '>Tax (15%) </p>
-                  <h3 className='text-2xl text-yellow-100'>
+                  <h3 className='text-xl text-yellow-100'>
                     ${ calculateTax() ? (calculateTax() / 100).toFixed(2) : '0.00' }
                   </h3>
               </div>
@@ -473,13 +503,13 @@ function PosPage() {
               <div className='flex items-center justify-start gap-2'>
                 <div className='font-semibold w-[50%] text-green-300'>
                     <p className='text-sm '>Change </p>
-                    <h3 className='text-2xl'>
+                    <h3 className='text-xl'>
                       ${ calculateChange() > 0 ? (calculateChange() / 100).toFixed(2) : '0.00'}
                     </h3>
                 </div>
                 <div className='font-semibold w-[50%] text-red-300'>
                     <p className='text-sm '>Owing </p>
-                    <h3 className='text-2xl'>${ calculateOwing() > 0 ? (calculateOwing() / 100).toFixed(2) : '0.00'}</h3>
+                    <h3 className='text-xl'>${ calculateOwing() > 0 ? (calculateOwing() / 100).toFixed(2) : '0.00'}</h3>
                 </div>
               </div>
             </div>
@@ -500,21 +530,21 @@ function PosPage() {
                       onClick={() => {
                         paymentDispatch({type: 'PAYMENT_METHOD', payload: 'Cash'})
                       }}
-                      className={`px-4 py-3 border border-slate-400 text-slate-400 hover:text-white hover:border-white  transition rounded-lg`}>
+                      className={`px-2 py-2 border border-slate-400 text-slate-400 hover:text-white hover:border-white  transition rounded-lg`}>
                         Cash
                     </button>
                     <button 
                       onClick={() => {
                         paymentDispatch({type: 'PAYMENT_METHOD', payload: 'EcoCash'})
                       }}
-                      className={`px-4 py-3 bg-blue-600 hover:bg-blue-700 transition rounded-lg`}>
+                      className={`px-2 py-2 bg-blue-600 hover:bg-blue-700 transition rounded-lg`}>
                       EcoCash
                     </button>
                     <button 
                       onClick={() => {
                         paymentDispatch({type: 'PAYMENT_METHOD', payload: 'Swipe'})
                       }}
-                      className={`px-4 py-3 bg-green-600 hover:bg-green-700 transition rounded-lg`}>
+                      className={`px-2 py-2 bg-green-600 hover:bg-green-700 transition rounded-lg`}>
                       Swipe
                     </button>
                   </div>

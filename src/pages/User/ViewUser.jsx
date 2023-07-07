@@ -10,7 +10,7 @@ import LogoutBtn from '../../components/LogoutBtn';
 
 
 function ViewUser() {
-   const { userDispatch, getToken } = MainContextState()
+   const { userDispatch, getToken, authUser } = MainContextState()
    const navigate = useNavigate();
    const { id } = useParams()
    const viewId = id;
@@ -24,6 +24,25 @@ function ViewUser() {
       'Content-Type': 'application/json',
       'Authorization': `JWT ${token}`
     };
+
+      /* ACCESS CONTROL */
+   const access_Level = parseInt(authUser?.access_level)
+   useEffect(() => {
+      if(access_Level >= 3){
+        return navigate('/', 
+                  toast.success('You are not allowed.', {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                })
+              );
+      }
+    }, [])
    const [userName , setuserName] = useState('')
    const [ firstName, setfirstName] = useState('')
    const [ lastName, setlastName] = useState('')
@@ -154,10 +173,10 @@ function ViewUser() {
                            Access Level:
                         </label>
                         <div className='w-[70%] text-lg'>
-                           {accessLevel == 4 && 'Operator'}
-                           {accessLevel == 3 && 'Manager'}
-                           {accessLevel == 2 && 'Admin'}
-                           {accessLevel == 2 && 'Super Admin' } 
+                           {parseInt(accessLevel) == 4 && 'Operator'}
+                           {parseInt(accessLevel) == 3 && 'Manager'}
+                           {parseInt(accessLevel) == 2 && 'Admin'}
+                           {parseInt(accessLevel) == 1 && 'Super Admin' } 
                         </div>
                      </div>  
                     
