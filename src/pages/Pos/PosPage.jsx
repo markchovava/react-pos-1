@@ -10,6 +10,21 @@ import 'react-toastify/dist/ReactToastify.css';
 import LogoutBtn from '../../components/LogoutBtn'
 import CurrentUser from '../../components/CurrentUser'
 
+
+const randomNum = () => {
+  let now = new Date();
+  let year = now.getFullYear();
+  let month = now.getMonth();
+  let day = now.getDate();
+  let hour = now.getHours();
+  let minute = now.getMinutes();
+  let second = now.getSeconds();
+  let random = Math.floor((Math.random() * 1000) + 1);
+  let final = year + '' + month + '' + day + '' + hour + '' + minute + '' + second + '' + random;
+  return final;
+}
+
+
 function PosPage() {
   const {getToken, posState, posDispatch, productState, productDispatch, zwlRate, 
     setZwlRate, currencyState, salesDispatch, currencyDispatch, paymentState, 
@@ -200,7 +215,7 @@ function PosPage() {
         total_price: currencyRef.current.value == 'ZWL' 
                     ? (parseInt(item.total_price) * parseInt(currencyState.currency.rate)) / 100
                     : parseInt(item.total_price),
-        user_id: parseInt(user_id)
+        user_id: parseInt(user_id),
       }))  
     } else if(!allItems == []) {
       items = [{
@@ -223,6 +238,7 @@ function PosPage() {
     const sales_items = items;
     const sales = {
       user_id: user_id,
+      ref_no: parseInt(randomNum()),
       quantity_total: parseInt(calculateQuantity()),
       grandtotal: parseInt(calculateGrandTotal()),
       amount_paid: parseInt(amountRef.current.value * 100),
@@ -241,7 +257,7 @@ function PosPage() {
       //return false;
       if(currencyRef.current.value != ''){
         //console.log(currencyRef.current.value)
-        alert(currencyRef.current.value)
+        //alert(currencyRef.current.value)
         const result = await AxiosClient.post('sales/', sales)
         .then((response) => {
           try{

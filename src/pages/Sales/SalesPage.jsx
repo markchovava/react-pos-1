@@ -4,6 +4,7 @@ import { BiTimeFive } from 'react-icons/bi'
 import { TbBrandProducthunt } from 'react-icons/tb'
 import { MdCalendarMonth, MdPermIdentity } from 'react-icons/md'
 import { FaRegUser, FaCalendarDay, FaProductHunt } from 'react-icons/fa'
+import { FcSalesPerformance } from 'react-icons/fc'
 import { Link, useNavigate } from 'react-router-dom'
 import { MainContextState } from '../../contexts/MainContextProvider'
 import AxiosClient from '../../axios/axiosClient'
@@ -108,14 +109,38 @@ function SalesPage() {
                             </div>
                           </div>
                         </Link>
-                        {/* <Link to='/sales/user'>
+                        <Link to='/sales/list'>
                           <div className='border-t border-b border-r border-red-500 hover:border-red-600 text-red-500 hover:text-red-600 transition cursor-pointer flex flex-col items-center justify-center gap-3 py-8'>
-                            <FaRegUser className='text-[5rem] '/>
+                            <FcSalesPerformance className='text-[5rem] '/>
+                            <div className='text-lg font-semibold p-2 mx-auto text-center'>
+                              All Sales
+                            </div>
+                          </div>
+                        </Link>
+                        <Link to='/sales/users'>
+                          <div className='border-t border-b border-r border-red-500 hover:border-red-600 text-red-500 hover:text-red-600 transition cursor-pointer flex flex-col items-center justify-center gap-3 py-8'>
+                            <FcSalesPerformance className='text-[5rem] '/>
                             <div className='text-lg font-semibold p-2 mx-auto text-center'>
                               User Sales
                             </div>
                           </div>
-                        </Link> */}
+                        </Link>
+                        <Link to='/sales/list'>
+                          <div className='border-t border-b border-r border-red-500 hover:border-red-600 text-red-500 hover:text-red-600 transition cursor-pointer flex flex-col items-center justify-center gap-3 py-8'>
+                            <FcSalesPerformance className='text-[5rem] '/>
+                            <div className='text-lg font-semibold p-2 mx-auto text-center'>
+                              User Monthly Sales
+                            </div>
+                          </div>
+                        </Link>
+                        <Link to='/sales/list'>
+                          <div className='border-t border-b border-r border-red-500 hover:border-red-600 text-red-500 hover:text-red-600 transition cursor-pointer flex flex-col items-center justify-center gap-3 py-8'>
+                            <FcSalesPerformance className='text-[5rem] '/>
+                            <div className='text-lg font-semibold p-2 mx-auto text-center'>
+                              User Daily Sales
+                            </div>
+                          </div>
+                        </Link>
                      </div>
                   </section>
                </div>

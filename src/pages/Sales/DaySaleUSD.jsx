@@ -62,7 +62,6 @@ function DaySaleUSD() {
    }
    /* END OF PAGINATION LOGIC */
 
-  
    useEffect(() => { 
      async function fetchSales() {
       try{
@@ -82,10 +81,6 @@ function DaySaleUSD() {
      fetchSales()
    }, []);
 
-   
-   
-
-   
  
    return (
       <section className='bg-slate-100 h-auto w-full overflow-hidden'>
@@ -179,6 +174,8 @@ function DaySaleUSD() {
          </div>
     </section>
    )
+
+   
 }
 
 export default DaySaleUSD

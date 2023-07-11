@@ -265,7 +265,7 @@ function Register() {
                <div className='mt-4 mb-3'>
                   <button 
                      className='text-white text-center rounded-md py-2 w-[100%] bg-blue-500 hover:bg-blue-600'>
-                        Login
+                        Register
                   </button>
                </div>
                <div>

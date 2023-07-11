@@ -30,6 +30,10 @@ function CurrentUser() {
   const firstName = authUser?.first_name ? authUser?.first_name : 'FirstName'
   const lastName = authUser?.last_name ? authUser?.last_name : 'LastName'
   const fullName = ` ${firstName} ${lastName} `;
+
+  console.log(authUser)
+  console.log(fullName)
+
   return (
     <div>
       <h2 className='font-semibold text-xl'>

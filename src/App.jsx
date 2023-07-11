@@ -19,7 +19,6 @@ import ListSupplier from './pages/Supplier/ListSupplier'
 import DaySaleOrder from './pages/SalesOrder/DaySaleOrder'
 import MonthSaleOrder from './pages/SalesOrder/MonthSaleOrder'
 import UserSaleOrder from './pages/SalesOrder/UserSaleOrder'
-import UserSale from './pages/Sales/UserSale'
 import StockOrder from './pages/StockOrder/StockOrder'
 import EditProduct from './pages/Product/EditProduct'
 import SettingPage from './pages/Setting/SettingPage'
@@ -35,6 +34,9 @@ import EditStock from './pages/Stock/EditStock'
 import ProfileEdit from './pages/Auth/ProfileEdit'
 import MonthSaleProductZWL from './pages/Sales/MonthSaleProductZWL'
 import MonthSaleProductUSD from './pages/Sales/MonthSaleProductUSD'
+import SalesList from './pages/Sales/SalesList'
+import SalesView from './pages/Sales/SalesView'
+import SalesUsers from './pages/Sales/SalesUsers'
 
 
 
@@ -67,6 +69,8 @@ function App() {
         <Route path='/product/edit/:id' element={<EditProduct />} />
         {/* Sales */}
         <Route path='/sales' element={<SalesPage />} />
+        <Route path='/sales/list' element={<SalesList />} />
+        <Route path='/sales/view/:id' element={<SalesView />} />
         <Route path='/sales/daily/usd/' element={<DaySaleUSD />} />
         <Route path='/sales/daily/zwl' element={<DaySaleZWL />} />
         <Route path='/sales/daily/product/usd' element={<DaySaleProductUSD />} />
@@ -75,7 +79,8 @@ function App() {
         <Route path='/sales/monthly/zwl' element={<MonthSaleZWL />} />
         <Route path='/sales/monthly/product/usd' element={<MonthSaleProductUSD />} />
         <Route path='/sales/monthly/product/zwl' element={<MonthSaleProductZWL />} />
-        <Route path='/sales/user' element={<UserSale />} />
+        <Route path='/sales/users' element={<SalesUsers />} />
+        <Route path='/sales/users/:id' element={<SalesByUser />} />
         {/* SalesOrder */}
         <Route path='/sales/order/daily' element={<DaySaleOrder />} />
         <Route path='/sales/order/monthly' element={<MonthSaleOrder />} />
