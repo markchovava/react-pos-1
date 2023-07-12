@@ -156,7 +156,8 @@ function SalesUsers() {
                <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
                   <div className='w-[50%] border-r border-slate-300 font-semibold px-3'>NAME </div>
                   <div className='w-[30%] border-r border-slate-300 font-semibold px-3'>PHONE </div>
-                  <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>ACTION</div>
+                  <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>DAILY</div>
+                  <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>MONTHLY</div>
                </div>
             </div>
          </section>
@@ -168,8 +169,13 @@ function SalesUsers() {
                   <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
                      <div className='w-[50%] border-r border-slate-300 font-semibold px-3'>{item.first_name} </div>
                      <div className='w-[30%] border-r border-slate-300 font-semibold px-3'>{item.phone_number} </div>
-                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>
-                        <Link to={`/sales/users/${item.id}`}>
+                     <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>
+                        <Link to={`/sales/users/daily/${item.id}`}>
+                           <AiFillEye className='text-xl transition text-slate-800 hover:text-blue-600 hover:scale-110'/>
+                        </Link>
+                     </div>
+                     <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>
+                        <Link to={`/sales/users/monthly/${item.id}`}>
                            <AiFillEye className='text-xl transition text-slate-800 hover:text-blue-600 hover:scale-110'/>
                         </Link>
                      </div>

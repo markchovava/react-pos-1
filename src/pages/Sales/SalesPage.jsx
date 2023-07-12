@@ -125,22 +125,7 @@ function SalesPage() {
                             </div>
                           </div>
                         </Link>
-                        <Link to='/sales/list'>
-                          <div className='border-t border-b border-r border-red-500 hover:border-red-600 text-red-500 hover:text-red-600 transition cursor-pointer flex flex-col items-center justify-center gap-3 py-8'>
-                            <FcSalesPerformance className='text-[5rem] '/>
-                            <div className='text-lg font-semibold p-2 mx-auto text-center'>
-                              User Monthly Sales
-                            </div>
-                          </div>
-                        </Link>
-                        <Link to='/sales/list'>
-                          <div className='border-t border-b border-r border-red-500 hover:border-red-600 text-red-500 hover:text-red-600 transition cursor-pointer flex flex-col items-center justify-center gap-3 py-8'>
-                            <FcSalesPerformance className='text-[5rem] '/>
-                            <div className='text-lg font-semibold p-2 mx-auto text-center'>
-                              User Daily Sales
-                            </div>
-                          </div>
-                        </Link>
+                        
                      </div>
                   </section>
                </div>

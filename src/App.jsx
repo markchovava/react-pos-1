@@ -37,6 +37,8 @@ import MonthSaleProductUSD from './pages/Sales/MonthSaleProductUSD'
 import SalesList from './pages/Sales/SalesList'
 import SalesView from './pages/Sales/SalesView'
 import SalesUsers from './pages/Sales/SalesUsers'
+import SalesByUserMonthly from './pages/Sales/SalesByUserMonthly'
+import SalesByUserDaily from './pages/Sales/SalesByUserDaily'
 
 
 
@@ -80,7 +82,8 @@ function App() {
         <Route path='/sales/monthly/product/usd' element={<MonthSaleProductUSD />} />
         <Route path='/sales/monthly/product/zwl' element={<MonthSaleProductZWL />} />
         <Route path='/sales/users' element={<SalesUsers />} />
-        <Route path='/sales/users/:id' element={<SalesByUser />} />
+        <Route path='/sales/users/daily/:id' element={<SalesByUserDaily />} />
+        <Route path='/sales/users/monthly/:id' element={<SalesByUserMonthly />} />
         {/* SalesOrder */}
         <Route path='/sales/order/daily' element={<DaySaleOrder />} />
         <Route path='/sales/order/monthly' element={<MonthSaleOrder />} />
