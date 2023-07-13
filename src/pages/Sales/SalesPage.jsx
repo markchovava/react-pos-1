@@ -3,7 +3,7 @@ import PosLeftContent from '../../components/PosLeftContent'
 import { BiTimeFive } from 'react-icons/bi'
 import { TbBrandProducthunt } from 'react-icons/tb'
 import { MdCalendarMonth, MdPermIdentity } from 'react-icons/md'
-import { FaRegUser, FaCalendarDay, FaProductHunt } from 'react-icons/fa'
+import { FaUser, FaCalendarDay, FaCoins } from 'react-icons/fa'
 import { FcSalesPerformance } from 'react-icons/fc'
 import { Link, useNavigate } from 'react-router-dom'
 import { MainContextState } from '../../contexts/MainContextProvider'
@@ -118,8 +118,8 @@ function SalesPage() {
                           </div>
                         </Link>
                         <Link to='/sales/users'>
-                          <div className='border-t border-b border-r border-red-500 hover:border-red-600 text-red-500 hover:text-red-600 transition cursor-pointer flex flex-col items-center justify-center gap-3 py-8'>
-                            <FcSalesPerformance className='text-[5rem] '/>
+                          <div className='border-t border-b border-r border-pink-500 hover:border-pink-600 text-pink-500 hover:text-pink-600 transition cursor-pointer flex flex-col items-center justify-center gap-3 py-8'>
+                            <FaCoins className='text-[5rem] '/>
                             <div className='text-lg font-semibold p-2 mx-auto text-center'>
                               User Sales
                             </div>

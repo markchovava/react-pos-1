@@ -111,7 +111,8 @@ function SalesByUserDaily() {
                    <div className='w-[96%] flex justify-between items-center'>
                       <div className=''>
                         <h1 className='font-bold text-xl'> 
-                           Daily User Sales Page for: <span className='text-blue-800'>{`${user.first_name} ${user.last_name}`}</span> 
+                           Daily User Sales Page for: 
+                           <span className='text-blue-800'> {`${user.first_name} ${user.last_name}`}</span> 
                         </h1>
                       </div>
                       <div className='flex gap-2 items-center'>

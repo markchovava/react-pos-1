@@ -127,23 +127,37 @@ function SalesUsers() {
             <div className='w-[100%] bg-white pt-4 pb-2 flex justify-center items-center pr-[0.5rem]'>
                <div className='w-[96%] flex justify-between items-center'>
                   <div className='w-[40%]'>
-                     <input type='text' placeholder='Search by User...' 
+                     <form className='w-[100%]' onSubmit={(e) => {
+                        e.preventDefault()
+                        setIsSubmit(true)
+                        }}>
+                        <input type='text' 
+                        name='search'
+                        ref={searchRef}
+                        onChange={(e) => {
+                           console.log(e.target.value)
+                           setSearchName(e.target.value)
+                           }}
+                        placeholder='Search User...' 
                         className='w-full rounded-md px-3 py-2 text-slate-500 border border-slate-300 outline-none'/>
+                     </form>
                   </div>
                   <div className='flex items-center justify-between gap-4'>
                      <div className='flex items-center justify-between'>
-                        <div className='py-2 px-2 hover:scale-125 cursor-pointer hover:text-blue-600'>
-                           <BsChevronDoubleLeft />
-                        </div>
-                        <div className='py-2 px-2 font-semibold transition-all hover:scale-125 cursor-pointer hover:text-blue-600'>
-                           1
-                        </div>
-                        <div className='py-2 px-2 font-semibold transition-all hover:scale-125 cursor-pointer hover:text-blue-600'>
-                           2
-                        </div>
-                        <div className='py-2 px-2 transition-all hover:scale-125 cursor-pointer hover:text-blue-600'>
-                           <BsChevronDoubleRight />
-                        </div>
+                        {prevURL &&
+                           <div className='py-2 px-2 transition-all hover:scale-110 cursor-pointer hover:text-blue-600'>
+                              <button id={prevURL} onClick={() => paginationHandler(prevURL)} className='flex gap-2 items-center'>
+                                 <AiOutlineArrowLeft /> Previous
+                              </button>
+                           </div>
+                        }
+                        {nextURL &&
+                           <div className='py-2 px-2 transition-all hover:scale-110 cursor-pointer hover:text-blue-600'>
+                              <button id={nextURL} onClick={() => paginationHandler(nextURL)} className='flex gap-2 items-center'>
+                                 Next <AiOutlineArrowRight />
+                              </button>
+                           </div>
+                        }
                      </div>
                   
                   </div>

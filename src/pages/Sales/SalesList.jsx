@@ -47,7 +47,7 @@ function SalesList() {
    }
    /* END OF PAGINATION LOGIC */
  
-   /* FETCH ALL PRODUCTS */
+   /* FETCH ALL SALES */
    useEffect(() => {    
       async function fetchSales() {
          try{
@@ -127,9 +127,21 @@ function SalesList() {
                  <div className='w-full h-[15vh] flex items-end justify-center shadow-lg'>
                  <div className='w-[100%] bg-white pt-4 pb-2 flex justify-center items-center pr-[0.5rem]'>
                     <div className='w-[96%] flex justify-between items-center'>
-                       <div className='w-[40%]'>
-                          {/* <input type='text' placeholder='Search by Day...' 
-                             className='w-full rounded-md px-3 py-2 text-slate-500 border border-slate-300 outline-none'/> */}
+                       <div className='w-[100%]'>
+                           <form className='w-[40%]' onSubmit={(e) => {
+                              e.preventDefault()
+                              setIsSubmit(true)
+                              }}>
+                              <input type='text' 
+                              name='search'
+                              ref={searchRef}
+                              onChange={(e) => {
+                                 console.log(e.target.value)
+                                 setSearchName(e.target.value)
+                                 }}
+                              placeholder='Search Ref No...' 
+                              className='w-full rounded-md px-3 py-2 text-slate-500 border border-slate-300 outline-none'/>
+                           </form>
                        </div>
                        <div className='flex items-center justify-between gap-4'>
                           <div className='flex items-center justify-between'>

@@ -39,6 +39,7 @@ import SalesView from './pages/Sales/SalesView'
 import SalesUsers from './pages/Sales/SalesUsers'
 import SalesByUserMonthly from './pages/Sales/SalesByUserMonthly'
 import SalesByUserDaily from './pages/Sales/SalesByUserDaily'
+import Reciept from './pages/Print/Reciept'
 
 
 
@@ -50,6 +51,7 @@ function App() {
     <>
       <Routes>
         <Route path='/pos' element={<PosPage />} />
+        <Route path='/receipt' element={<Reciept />} />
         {/*  */}
         <Route path='/' element={<Login />} />
         <Route path='/login' element={<Login />} />

@@ -112,20 +112,20 @@ function SalesByUserMonthly() {
                      </div>
                      <div className='flex items-center justify-between gap-4'>
                         <div className='flex items-center justify-between'>
-                        {prevURL &&
-                           <div className='py-2 px-2 transition-all hover:scale-110 cursor-pointer hover:text-blue-600'>
-                              <button id={prevURL} onClick={() => paginationHandler(prevURL)} className='flex gap-2 items-center'>
-                                 <AiOutlineArrowLeft /> Previous
-                              </button>
-                           </div>
-                        }
-                        {nextURL &&
-                           <div className='py-2 px-2 transition-all hover:scale-110 cursor-pointer hover:text-blue-600'>
-                              <button id={nextURL} onClick={() => paginationHandler(nextURL)} className='flex gap-2 items-center'>
-                                 Next <AiOutlineArrowRight />
-                              </button>
-                           </div>
-                        }
+                           {prevURL &&
+                              <div className='py-2 px-2 transition-all hover:scale-110 cursor-pointer hover:text-blue-600'>
+                                 <button id={prevURL} onClick={() => paginationHandler(prevURL)} className='flex gap-2 items-center'>
+                                    <AiOutlineArrowLeft /> Previous
+                                 </button>
+                              </div>
+                           }
+                           {nextURL &&
+                              <div className='py-2 px-2 transition-all hover:scale-110 cursor-pointer hover:text-blue-600'>
+                                 <button id={nextURL} onClick={() => paginationHandler(nextURL)} className='flex gap-2 items-center'>
+                                    Next <AiOutlineArrowRight />
+                                 </button>
+                              </div>
+                           }
                         </div>
                      
                      </div>
