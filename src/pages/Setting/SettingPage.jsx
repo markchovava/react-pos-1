@@ -53,10 +53,14 @@ function SettingPage() {
                               </div>
                            </div>
                         </Link>
-                        <div className='border border-green-600 hover:border-green-700 transition cursor-pointer flex flex-col items-center justify-center gap-3 py-8'>
-                           <MdPermIdentity className='text-[5rem] text-green-500' />
-                           <div className='text-xl text-green-600 font-semibold p-2 mx-auto text-center'>Permissions and Roles</div>
-                        </div>
+                        <Link to='/settings/app-info'>
+                           <div className='border border-green-600 hover:border-green-700 transition cursor-pointer flex flex-col items-center justify-center gap-3 py-8'>
+                              <MdPermIdentity className='text-[5rem] text-green-500' />
+                              <div className='text-xl text-green-600 font-semibold p-2 mx-auto text-center'>
+                                 App Info
+                              </div>
+                           </div>
+                        </Link>
                         <div className='bg-green-500 hover:bg-green-600 transition cursor-pointer flex flex-col items-center justify-center gap-3 py-8'>
                            <FaCalculator className='text-[5rem] text-white'/>
                            <div className='text-xl text-white font-semibold p-2 mx-auto text-center'>Calculations</div>

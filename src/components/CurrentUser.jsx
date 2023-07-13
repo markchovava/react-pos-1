@@ -18,7 +18,7 @@ function CurrentUser() {
         const result = await AxiosClient.get(`auth/users/me/`, { headers })
         .then((response) => {
           setAuthUser(response.data)
-          console.log(response.data)
+          //console.log(response.data)
         })
       } catch (error) {
         console.error(`Error: ${error}`)
@@ -31,8 +31,8 @@ function CurrentUser() {
   const lastName = authUser?.last_name ? authUser?.last_name : 'LastName'
   const fullName = ` ${firstName} ${lastName} `;
 
-  console.log(authUser)
-  console.log(fullName)
+  //console.log(authUser)
+  //console.log(fullName)
 
   return (
     <div>

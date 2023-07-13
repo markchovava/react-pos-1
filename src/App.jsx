@@ -40,6 +40,7 @@ import SalesUsers from './pages/Sales/SalesUsers'
 import SalesByUserMonthly from './pages/Sales/SalesByUserMonthly'
 import SalesByUserDaily from './pages/Sales/SalesByUserDaily'
 import Reciept from './pages/Print/Reciept'
+import AppInfoPage from './pages/Setting/AppInfoPage'
 
 
 
@@ -100,6 +101,7 @@ function App() {
         <Route path='/price/edit' element={<EditPrice />} />
         {/* Setting */}
         <Route path='/settings' element={<SettingPage />} />
+        <Route path='/settings/app-info' element={<AppInfoPage />} />
         <Route path='/settings/currency' element={<CurrencyPage />} />
         
       </Routes> 
