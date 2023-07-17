@@ -99,7 +99,7 @@ function Register() {
       console.log(error.response.headers);
       setUserNameErr(() => error.response.data?.username)
       setFirstNameErr(() => error.response.data?.first_name)
-      setLastName(() => error.response.data?.last_name)
+      setLastNameErr(() => error.response.data?.last_name)
       setAddressErr(() => error.response.data?.address)
       setPhoneNumberErr(() => error.response.data?.phone_number)
       setEmailErr(() => error.response.data?.email)

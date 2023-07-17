@@ -16,9 +16,10 @@ const RecieptPage = React.forwardRef((props,  ref) => {
   return (
 
       <div ref={ref}>
-          <section className='w-[320px] px-2 py-3 '>
+      { recieptData != undefined ? 
+        <section className='w-[320px] px-2 py-3 '>
             <div className='text-center font-bold text-lg pb-2'>RECEIPT</div>
-           <div className='text-sm font-semibold'>
+            <div className='text-sm font-semibold'>
               <div>Ref: {recieptData.ref_no} / {recieptData.id}</div>
               <div>Shop: {app_info.name}, {app_info.address}, {app_info.phone_number}</div>
               <div className='flex justify-between items-center'>
@@ -31,7 +32,7 @@ const RecieptPage = React.forwardRef((props,  ref) => {
               ---------------------
             </div>
             
-           <div className='text-sm'>
+            <div className='text-sm'>
               <div className='py-1 flex justify-between font-semibold'>
                 <div>PRODUCT</div>
                 <div>QUANTITY</div>
@@ -56,7 +57,8 @@ const RecieptPage = React.forwardRef((props,  ref) => {
             <div className='text-center'>
               ---------------------
             </div>
-             <div className='font-semibold text-sm'>
+
+            <div className='font-semibold text-sm'>
               <div className='pt-2 pb-1 flex justify-between'>
                 <div>TOTAL QUANTITY</div>
                 <div>
@@ -83,8 +85,13 @@ const RecieptPage = React.forwardRef((props,  ref) => {
                 </div>
               </div>
             </div> 
+
             <div className='text-center py-3'>Thank you.</div>
           </section> 
+      : 
+        'No data Available...'
+      }
+          
         </div>
   
   )
