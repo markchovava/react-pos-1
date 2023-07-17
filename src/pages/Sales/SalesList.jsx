@@ -21,6 +21,25 @@ function SalesList() {
        return navigate('/login');
      }
    },[token])
+
+     /* ACCESS CONTROL */
+     const accessLevel = parseInt(authUser?.access_level)
+   useEffect(() => {
+      if(accessLevel >= 3){
+         return navigate('/sales', 
+                   toast.success('You are not allowed.', {
+                   position: "top-right",
+                   autoClose: 5000,
+                   hideProgressBar: false,
+                   closeOnClick: true,
+                   pauseOnHover: true,
+                   draggable: true,
+                   progress: undefined,
+                   theme: "light",
+                 })
+               );
+       }
+   }, [])
  
    const searchRef = useRef(null)
    const [sales, setSales] = useState({});

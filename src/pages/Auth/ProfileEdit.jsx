@@ -24,7 +24,7 @@ function ProfileEdit() {
     'Content-Type': 'application/json',
     'Authorization': `JWT ${token}`
   };
-  console.log(token)
+  //console.log(token)
 
   const [ username, setUsername] = useState('')
   const [ firstName, setFirstName] = useState('')

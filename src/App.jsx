@@ -4,22 +4,13 @@ import ListProduct from './pages/Product/ListProduct'
 import AddProduct from './pages/Product/AddProduct'
 import ViewProduct from './pages/Product/ViewProduct'
 import ListStock from './pages/Stock/ListStock'
-import AddStock from './pages/Stock/AddStock'
-import ListPrice from './pages/Price/ListPrice'
-import EditPrice from './pages/Price/EditPrice'
 import Login from './pages/Auth/Login'
 import Register from './pages/Auth/Register'
 import ListUser from './pages/User/ListUser'
 import AddUser from './pages/User/AddUser'
 import EditUser from './pages/User/EditUser'
 import ViewUser from './pages/User/ViewUser'
-import ViewSupplier from './pages/Supplier/ViewSupplier'
-import AddSupplier from './pages/Supplier/AddSupplier'
-import ListSupplier from './pages/Supplier/ListSupplier'
-import DaySaleOrder from './pages/SalesOrder/DaySaleOrder'
-import MonthSaleOrder from './pages/SalesOrder/MonthSaleOrder'
-import UserSaleOrder from './pages/SalesOrder/UserSaleOrder'
-import StockOrder from './pages/StockOrder/StockOrder'
+
 import EditProduct from './pages/Product/EditProduct'
 import SettingPage from './pages/Setting/SettingPage'
 import CurrencyPage from './pages/Setting/CurrencyPage'
@@ -41,6 +32,7 @@ import SalesByUserMonthly from './pages/Sales/SalesByUserMonthly'
 import SalesByUserDaily from './pages/Sales/SalesByUserDaily'
 import Reciept from './pages/Print/Reciept'
 import AppInfoPage from './pages/Setting/AppInfoPage'
+import UserSalesPage from './pages/UserSales/UserSalesPage'
 
 
 
@@ -63,10 +55,7 @@ function App() {
         <Route path='/user/add' element={<AddUser />} />
         <Route path='/user/edit/:id' element={<EditUser />} />
         <Route path='/user/view/:id' element={<ViewUser />} />
-        {/* Supplier */}
-        <Route path='/supplier' element={<ListSupplier />} />
-        <Route path='/supplier/add' element={<AddSupplier />} />
-        <Route path='/supplier/view' element={<ViewSupplier />} />
+        <Route path='/user/sales' element={<UserSalesPage />} />
         {/*  */}
         <Route path='/product' element={<ListProduct />} />
         <Route path='/product/add' element={<AddProduct />} />
@@ -87,18 +76,9 @@ function App() {
         <Route path='/sales/users' element={<SalesUsers />} />
         <Route path='/sales/users/daily/:id' element={<SalesByUserDaily />} />
         <Route path='/sales/users/monthly/:id' element={<SalesByUserMonthly />} />
-        {/* SalesOrder */}
-        <Route path='/sales/order/daily' element={<DaySaleOrder />} />
-        <Route path='/sales/order/monthly' element={<MonthSaleOrder />} />
-        <Route path='/sales/order/user' element={<UserSaleOrder />} />
         {/* Stock */}
         <Route path='/stock' element={<ListStock />} />
         <Route path='/stock/edit/:id' element={<EditStock />} />
-        {/* Stock Order */}
-        <Route path='/stock/order' element={<StockOrder />} />
-        {/*  */}
-        <Route path='/price' element={<ListPrice />} />
-        <Route path='/price/edit' element={<EditPrice />} />
         {/* Setting */}
         <Route path='/settings' element={<SettingPage />} />
         <Route path='/settings/app-info' element={<AppInfoPage />} />

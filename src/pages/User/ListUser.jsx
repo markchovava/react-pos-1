@@ -26,7 +26,7 @@ function ListUser() {
      const access_Level = parseInt(authUser?.access_level)
      useEffect(() => {
         if(access_Level >= 3){
-          return navigate('/', 
+          return navigate('/pos', 
                     toast.success('You are not allowed.', {
                     position: "top-right",
                     autoClose: 5000,

@@ -1,6 +1,6 @@
 import React from 'react'
 import { BiBarcodeReader, BiPackage } from 'react-icons/bi'
-import { BsBarChartFill, BsFillCartCheckFill } from 'react-icons/bs'
+import { BsBarChartFill, BsFillCartCheckFill, BsPersonFill } from 'react-icons/bs'
 import { AiFillDashboard, AiFillSetting, AiFillDatabase } from 'react-icons/ai'
 import { FaDesktop } from 'react-icons/fa'
 import { TbReport } from 'react-icons/tb'
@@ -18,23 +18,28 @@ function PosLeftContent() {
             <AiFillDashboard className='left__Icon'/>
           </button> */}
           <button title='Product' className='left__ContentBtn'>
-            <Link to='/product'>
+            <Link to='/product' className='w-[100%] h-[100%] flex items-center justify-center'>
               <BsFillCartCheckFill className='left__Icon'/>
             </Link>
           </button>
           <button title='Sales' className='left__ContentBtn'>
-            <Link to='/sales'>
+            <Link to='/sales' className='w-[100%] h-[100%] flex items-center justify-center'>
               <BsBarChartFill className='left__Icon'/>
             </Link>
           </button>
           <button title='Stock' className='left__ContentBtn'>
-            <Link to='/stock'>
+            <Link to='/stock' className='w-[100%] h-[100%] flex items-center justify-center'>
               <BiPackage className='left__Icon'/>
             </Link>
           </button>
           <button title='Users' className='left__ContentBtn'>
-            <Link to='/user'>
+            <Link to='/user' className='w-[100%] h-[100%] flex items-center justify-center'>
               <FaDesktop className='left__Icon'/>
+            </Link>
+          </button>
+          <button title='User Sales' className='left__ContentBtn'>
+            <Link to='/user/sales' className='w-[100%] h-[100%] flex items-center justify-center'>
+                <BsPersonFill className='left__Icon'/>
             </Link>
           </button>
          {/*  <button title='Reports' className='left__ContentBtn'>
@@ -44,7 +49,7 @@ function PosLeftContent() {
             <AiFillDatabase className='left__Icon'/>
           </button> */}
           <button title='Settings' className='left__ContentBtn'>
-            <Link to='/settings'>
+            <Link to='/settings' className='w-[100%] h-[100%] flex items-center justify-center'>
               <AiFillSetting className='left__Icon'/>
             </Link>
           </button>

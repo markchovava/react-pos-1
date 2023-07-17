@@ -154,7 +154,6 @@ function AppInfoPage() {
   }
 
 
-
   return (
     <section className='bg-slate-100 h-auto w-full overflow-hidden'>
        <form 

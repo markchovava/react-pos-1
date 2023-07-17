@@ -88,7 +88,7 @@ function MonthSaleUSD() {
                <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg pr-[0.5rem]'>
                   <div className='w-[96%] flex justify-between items-center'>
                      <div className=''>
-                        <h1 className='font-bold text-xl'> Monthly ZWL Sales Page </h1>
+                        <h1 className='font-bold text-xl'> Monthly USD Sales Page </h1>
                      </div>
                      <div className='flex gap-2 items-center'>
                         <CurrentUser />
@@ -130,11 +130,10 @@ function MonthSaleUSD() {
                <div className='w-full h-[7vh] bg-white flex items-end justify-center pr-[0.5rem]'>
                   {/* Table Row */}
                   <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>DAY </div>
-                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>QUANTITY </div>
-                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>TOTAL PRICE </div>
-                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>CURRENCY </div>
-                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>ACTION</div>
+                     <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>MONTH </div>
+                     <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>QUANTITY </div>
+                     <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>TOTAL PRICE </div>
+                     <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>CURRENCY </div>
                   </div>
                </div>
             </section>
@@ -145,7 +144,7 @@ function MonthSaleUSD() {
                   { sales?.results &&
                      sales?.results.map((item, i) => (
                      <div key={i} className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                        <div className='w-[20%] border-r border-slate-300 px-3'>
+                        <div className='w-[25%] border-r border-slate-300 px-3'>
                         { item.month == 1 && 'January'}
                         { item.month == 2 && 'February'}
                         { item.month == 3 && 'March'}
@@ -160,15 +159,11 @@ function MonthSaleUSD() {
                         { item.month == 12 && 'December'}
                         {` ${item.year}`}
                         </div>
-                        <div className='w-[20%] border-r border-slate-300 px-3'>{item.quantity_total} </div>
-                        <div className='w-[20%] border-r border-slate-300 px-3'>${(item.grandtotal / 100).toFixed(2)} </div>
-                        <div className='w-[20%] border-r border-slate-300 px-3'> {item.currency} </div>
-                        <div className='w-[20%] border-r border-slate-300 px-3'> 
-                        <Link to=''>
-                           <AiFillEye className='text-xl transition text-slate-800 hover:text-blue-600 hover:scale-110'/>
-                        </Link>
-                     </div>
-                  </div>   
+                        <div className='w-[25%] border-r border-slate-300 px-3'>{item.quantity_total} </div>
+                        <div className='w-[25%] border-r border-slate-300 px-3'>${(item.grandtotal / 100).toFixed(2)} </div>
+                        <div className='w-[25%] border-r border-slate-300 px-3'> {item.currency} </div>
+                        
+                     </div>   
                   ))}
                   
                

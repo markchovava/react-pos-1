@@ -16,6 +16,8 @@ function SalesByUserMonthly() {
   const { id } = useParams()
 
   const baseURL = `sales/monthly/byuser/?user_id=${id}`
+  const [sales, setSales] = useState({})
+   const [user, setUser] = useState({})
    /* CHECK AUTHENTICATION */
    const {getToken, authUser} = MainContextState()
    const navigate = useNavigate();
@@ -45,7 +47,7 @@ function SalesByUserMonthly() {
      }
    }, [])
   
-  const [sales, setSales] = useState({})
+
   /* PAGINATION */
   const [nextURL, setNextURL] = useState()
   const [prevURL, setPrevURL] = useState()
@@ -64,21 +66,36 @@ function SalesByUserMonthly() {
   }
   /* END OF PAGINATION LOGIC */
 
-   /* FETCH ALL SALES */
+  /* GET ALL SALES */
+  async function fetchSales() {
+   try{
+     const result = await AxiosClient.get(baseURL)
+     .then((response) => {
+         setSales(response.data)
+         setPrevURL(response.data.previous)
+         setNextURL(response.data.next)
+      })
+   } catch (error) {
+     console.error(`Error: ${error}`)
+   }   
+   }
+  /* GET USER */
+  async function getUser() {
+   try{
+      const result = await AxiosClient.get(`users/${id}/`)
+      .then((response) => {
+            console.log(response.data)
+            setUser(response.data)
+         })
+      } catch (error) {
+      console.error(`Error: ${error}`)
+      }     
+   }
+
+   /* SIDE EFFECTS */
    useEffect(() => { 
-     async function fetchSales() {
-         try{
-           const result = await AxiosClient.get(baseURL)
-           .then((response) => {
-               setSales(response.data)
-               setPrevURL(response.data.previous)
-               setNextURL(response.data.next)
-            })
-         } catch (error) {
-           console.error(`Error: ${error}`)
-         }   
-     }
      fetchSales()
+     getUser()
    }, []);
 
 
@@ -93,7 +110,10 @@ function SalesByUserMonthly() {
                   <div className='w-[96%] flex justify-between items-center'>
                      <div className=''>
                         <h1 className='font-bold text-xl'> 
-                           Monthly Sales Page for: <span className='text-blue-800'>{`${user.first_name} ${user.last_name}`}</span> 
+                           Monthly Sales Page for: 
+                           <span className='text-blue-800'>
+                              {` ${user.first_name ? user.first_name : ''} ${user.last_name ? user.last_name: ''} `}
+                           </span> 
                         </h1>
                      </div>
                      <div className='flex gap-2 items-center'>

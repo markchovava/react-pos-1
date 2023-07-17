@@ -22,31 +22,17 @@ function CurrencyPage() {
     'Content-Type': 'application/json',
     'Authorization': `JWT ${token}`
   };
-  if(!token){
-     return navigate('/login');
-  } 
+ 
 
    /* ACCESS CONTROL */
    const accessLevel = parseInt(authUser?.access_level)
-  /*  useEffect(() => {
-     if(accessLevel >= 3){
-       return navigate('/sales', 
-                 toast.success('You are not allowed.', {
-                 position: "top-right",
-                 autoClose: 5000,
-                 hideProgressBar: false,
-                 closeOnClick: true,
-                 pauseOnHover: true,
-                 draggable: true,
-                 progress: undefined,
-                 theme: "light",
-               })
-             );
-     }
-   }, []) */
+
 
   /* GET ZWL RATE */
   useEffect(() => {
+    if(!token){
+      return navigate('/login');
+   } 
 
     if(accessLevel >= 3){
       return navigate('/settings', 

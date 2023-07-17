@@ -15,9 +15,12 @@ function ListStock() {
    const {getToken} = MainContextState()
    const navigate = useNavigate();
    const token = getToken();
-   if(!token){
-      return navigate('/login');
-   }
+   
+   useEffect(() => {
+      if(!token){
+         return navigate('/login');
+      }
+   }, [token])
 
    const [products, setProducts] = useState({})
    const [isSearch, setIsSearch] = useState(false)

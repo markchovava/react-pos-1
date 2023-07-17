@@ -5,10 +5,12 @@ import AxiosClient from '../../axios/axiosClient';
 import { ToastContainer,  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { MainContextState } from '../../contexts/MainContextProvider';
+import Loading from '../../components/Loading';
 
 
 
 function Login() {
+   const [loading, setLoading] = useState(false)
    const navigate = useNavigate();
    const { setToken, removeToken } = MainContextState()
    const [userName, setUserName] = useState('')
@@ -19,6 +21,7 @@ function Login() {
 
    useEffect(() => {
       removeToken()
+      setLoading(true)
    }, [])
 
 
@@ -51,16 +54,13 @@ function Login() {
    /* Login */
    const handleLogin = async (obj) => {
       //console.log(obj)
+      setLoading(false)
       try{
          const result = await AxiosClient.post(`auth/jwt/create/`, obj)
          .then((response) => {
                console.log(response)
                console.log(response.data.access)
-               /* authDispatch({
-                  type: 'SET_TOKEN', 
-                  payload: response.data.access
-               }) */
-               setToken(response.data.access)
+               setToken(response.data.access)    
                navigate('/pos', 
                   toast.success('User login Successfully', {
                      position: "top-right",
@@ -73,6 +73,7 @@ function Login() {
                      theme: "light",
                   })
                );
+               setLoading(true)
             })
       } catch (error) {
          // Error handling
@@ -84,8 +85,11 @@ function Login() {
          setErrorMessage(() => error.response.data?.detail)
       }   
    }
-
-  return (
+  return ( 
+  <>
+  { loading == false ?
+   <Loading />
+   :
    <div className='w-full min-h-auto bg-gray-200 py-[2rem]'>
       <section className='w-full h-[100vh] bg-gray-200 flex justify-center items-center'>
          <div className='w-[30vw] bg-white shadow-lg rounded-lg px-4 py-6'>
@@ -139,6 +143,8 @@ function Login() {
          <ToastContainer />
       </section>
    </div>
+  }
+  </>
    
   )
 }

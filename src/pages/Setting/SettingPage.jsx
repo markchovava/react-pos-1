@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import PosLeftContent from '../../components/PosLeftContent'
 import { BsCurrencyDollar } from 'react-icons/bs'
 import { MdPermIdentity } from 'react-icons/md'
@@ -15,9 +15,11 @@ function SettingPage() {
    const {getToken} = MainContextState()
    const navigate = useNavigate();
    const token = getToken();
-   if(!token){
-      return navigate('/login');
-   }
+   useEffect(() => {
+      if(!token){
+         return navigate('/login');
+      }
+   }, [token])
    
   return (
    <section className='bg-slate-100 h-auto w-full overflow-hidden'>

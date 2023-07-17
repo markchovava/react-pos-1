@@ -19,8 +19,27 @@ function SalesView() {
         return navigate('/login');
       }
     },[token])
+
+      /* ACCESS CONTROL */
+   const accessLevel = parseInt(authUser?.access_level)
+   
     /* FETCH SINGLE SALES */
-    useEffect(() => {    
+    useEffect(() => {  
+      if(accessLevel >= 3){
+        return navigate('/sales', 
+                  toast.success('You are not allowed.', {
+                  position: "top-right",
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+                })
+              );
+      }
+      /*  */  
       async function fetchSale() {
         try{
           const result = await AxiosClient.get(baseURL)
