@@ -98,7 +98,7 @@ function SalesByUserDaily() {
 
 
    return (
-    <section className='bg-slate-100 h-auto w-full overflow-hidden'>
+   <section className='bg-slate-100 h-auto w-full overflow-hidden'>
        <div className='container h-[100vh] mx-auto max-w-screen-2xl lg:px-0 px-4 flex justify-start items-center'>
           {/* LEFT */}
           <PosLeftContent />
@@ -190,7 +190,7 @@ function SalesByUserDaily() {
              </section>
           </section>
        </div>
-  </section>
+   </section>
  )
 }
 

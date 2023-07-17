@@ -17,7 +17,7 @@ function CurrentUser() {
       try{
         const result = await AxiosClient.get(`auth/users/me/`, { headers })
         .then((response) => {
-          setAuthUser(response.data)
+          setAuthUser(() => response.data)
           //console.log(response.data)
         })
       } catch (error) {

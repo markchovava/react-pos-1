@@ -33,6 +33,8 @@ import SalesByUserDaily from './pages/Sales/SalesByUserDaily'
 import Reciept from './pages/Print/Reciept'
 import AppInfoPage from './pages/Setting/AppInfoPage'
 import UserSalesPage from './pages/UserSales/UserSalesPage'
+import UserMonthlySales from './pages/UserSales/UserMonthlySales'
+import UserDailySales from './pages/UserSales/UserDailySales'
 
 
 
@@ -55,8 +57,11 @@ function App() {
         <Route path='/user/add' element={<AddUser />} />
         <Route path='/user/edit/:id' element={<EditUser />} />
         <Route path='/user/view/:id' element={<ViewUser />} />
+        {/* Current User Sales */}
         <Route path='/user/sales' element={<UserSalesPage />} />
-        {/*  */}
+        <Route path='/user/sales/daily/:id' element={<UserDailySales />} />
+        <Route path='/user/sales/monthly/:id' element={<UserMonthlySales />} />
+        {/* Product */}
         <Route path='/product' element={<ListProduct />} />
         <Route path='/product/add' element={<AddProduct />} />
         <Route path='/product/view/:id' element={<ViewProduct />} />

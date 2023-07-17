@@ -45,7 +45,7 @@ function EditStock() {
   useEffect(() => { 
     async function getProduct() {
       try{
-        const result = await AxiosClient.get(`http://127.0.0.1:8000/product/${parseInt(id)}/`)
+        const result = await AxiosClient.get(`product/${parseInt(id)}/`)
         .then((response) => {
           setProduct(response.data)
           setQuantity(response.data.quantity)

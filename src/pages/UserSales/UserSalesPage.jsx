@@ -12,7 +12,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function UserSalesPage() {
   /* CHECK AUTHENTICATION */
-  const {getToken} = MainContextState()
+  const {getToken, authUser} = MainContextState()
+  const user_id = authUser.id ? parseInt(authUser.id) : null;
   const navigate = useNavigate();
   const token = getToken();
   useEffect(() => {
@@ -49,7 +50,7 @@ function UserSalesPage() {
                   <section className='w-[96%] h-[80vh] my-[5vh] mx-auto'>
                      <div className='grid grid-cols-5'>
                        
-                        <Link to=''>
+                        <Link to={`/user/sales/daily/${user_id}`}>
                            <div className='border-t border-b border-l border-blue-500 hover:border-blue-600 text-blue-500 hover:text-blue-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
                               <FaCalendarDay className='text-[5rem]' />
                               <div className='text-md font-semibold p-2 mx-auto text-center'>
@@ -58,7 +59,7 @@ function UserSalesPage() {
                            </div>
                         </Link>
 
-                        <Link to=''>
+                        <Link to={`/user/sales/monthly/${user_id}`}>
                            <div className='border-y border-x border-pink-500 hover:border-pink-600 text-pink-500 hover:text-pink-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
                               <MdCalendarMonth className='text-[5rem]' />
                               <div className='text-md font-semibold p-2 mx-auto text-center'>
