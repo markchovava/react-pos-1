@@ -41,19 +41,24 @@ function EditStock() {
    }, [])
   const [product, setProduct] = useState({})
   const [quantity, setQuantity] = useState();
+  const [isSubmit, setIsSubmit] = useState(false);
+  const [productData, setProductData] = useState({});
  
+
+  /* GET PRODUCT */
+  async function getProduct() {
+    try{
+      const result = await AxiosClient.get(`product/${parseInt(id)}/`)
+      .then((response) => {
+        setProduct(() => response.data)
+        setQuantity(() => response.data.quantity)
+      })
+    } catch (error) {
+      console.error(`Error: ${error}`)
+    }   
+  }   
+
   useEffect(() => { 
-    async function getProduct() {
-      try{
-        const result = await AxiosClient.get(`product/${parseInt(id)}/`)
-        .then((response) => {
-          setProduct(response.data)
-          setQuantity(response.data.quantity)
-        })
-      } catch (error) {
-        console.error(`Error: ${error}`)
-      }   
-    }    
     getProduct()
   }, []); 
 
@@ -70,10 +75,6 @@ function EditStock() {
         const result = await AxiosClient.put(`product/${id}/`, product)
         .then((response) => {
               console.log(response.data)
-              /* productDispatch({
-              type: 'UPDATE_PRODUCT',
-              payload: response.data 
-              }); */
           })
           .then(() => {
           navigate('/stock', 
@@ -93,20 +94,32 @@ function EditStock() {
           console.error(`Error: ${error}`)
       }    
   }
+
+  useEffect(()=> {
+    if(isSubmit == true){
+      updateProduct(productData)
+    }
+  }, [isSubmit])
+
+  const handleUpdate = (e) => {
+      e.preventDefault();
+      setProductData({
+        name: product.name,
+        quantity: e.target.quantity.value,
+        description: product.description,
+        barcode: product.barcode,
+        unit_price: product.unit_price,
+        brand: product.brand,
+        user_id: authUser.id
+      })
+      console.log(productData)
+      setIsSubmit(true)
+  }
   
   return (
     <section className='bg-slate-100 h-auto w-full overflow-hidden'>
     <form 
-      onSubmit={(e) => { e.preventDefault();
-        updateProduct({
-          name: product.name,
-          quantity: e.target.quantity.value,
-          description: product.description,
-          barcode: product.barcode,
-          unit_price: product.unit_price,
-          brand: product.brand
-       });
-    }}
+      onSubmit={handleUpdate}
     className='container h-[100vh] mx-auto max-w-screen-2xl lg:px-0 px-4 flex justify-start items-center'>
       <PosLeftContent />
       <section className='w-[65vw] h-[100vh] left-[10vw] bg-slate-100 fixed'>

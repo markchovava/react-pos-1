@@ -67,19 +67,20 @@ function SalesList() {
    /* END OF PAGINATION LOGIC */
  
    /* FETCH ALL SALES */
+   async function fetchSales() {
+      try{
+         const result = await AxiosClient.get(baseURL)
+         .then((response) => {
+               setSales(response.data)  
+               setPrevURL(response.data.previous)
+               setNextURL(response.data.next)
+          })
+      } catch (error) {
+         console.error(`Error: ${error}`)
+      }   
+    } 
    useEffect(() => {    
-      async function fetchSales() {
-         try{
-            const result = await AxiosClient.get(baseURL)
-            .then((response) => {
-                  setSales(response.data)  
-                  setPrevURL(response.data.previous)
-                  setNextURL(response.data.next)
-             })
-         } catch (error) {
-            console.error(`Error: ${error}`)
-         }   
-       } 
+      
       fetchSales()
    }, []);
     
@@ -89,7 +90,7 @@ function SalesList() {
        const result = await AxiosClient.delete(`sales/${deleteId}`)
        .then((response) => {
          console.log(response.data)
-         setSales(response.data)
+         fetchSales()
        })
        alert('Deleted successful...')   
      }

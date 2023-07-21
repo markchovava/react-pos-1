@@ -66,10 +66,6 @@ function ListStock() {
       console.log(searchName)
       const result = await AxiosClient.get(`product/?search=${searchName}`)
         .then((response) => {
-          /* productDispatch({
-            type: 'FETCH_PRODUCT',
-            payload: response.data.results,
-          })  */
           setProducts(response.data) 
           setPrevURL(response.data.previous)
           setNextURL(response.data.next)
