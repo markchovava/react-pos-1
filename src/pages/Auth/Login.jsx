@@ -135,9 +135,9 @@ function Login() {
                         Login
                   </button>
                </div>
-               <div>
+               {/* <div>
                   <Link to='/register' className='text-blue-500 underline'>New Here?</Link>
-                  </div>
+               </div> */}
             </form> 
          </div>
          <ToastContainer />
