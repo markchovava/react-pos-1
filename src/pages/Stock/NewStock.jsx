@@ -527,8 +527,9 @@ function NewStock() {
                     <input type="text" 
                       ref={searchSupplierRef}
                       name='supplier_name'
+                      placeholder='Enter Supplier name...'
                       onChange={(e) => handleSupplierSearch(e.target.value)}
-                      className='text-xl text-black font-semibold px-3 py-2 border-none outline-none rounded w-full'/>
+                      className='text-lg text-black font-normal px-2 py-1 border-none outline-none rounded w-full'/>
                     <div 
                       className={`${supplierSearchResults.length == 0 ? 'hidden' : 'absolute top-[110%] w-[100%] z-20 bg-slate-50 shadow-md'} `}>
                          { supplierSearchResults.length > 0 &&
@@ -574,9 +575,10 @@ function NewStock() {
                     <input type="number" 
                       min={0}
                       name='amount_paid'
+                      placeholder='Enter Amount paid...'
                       value={amountPaid}
                       onChange={(e) => setAmountPaid(() => e.target.value)}
-                      className='text-xl text-black font-semibold px-3 py-2 border-none outline-none rounded w-full'/>
+                      className='text-xl text-black font-normal px-2 py-1 border-none outline-none rounded w-full'/>
                      
                   </div>
                  
@@ -590,7 +592,7 @@ function NewStock() {
                   <div className='w-full flex items-center justify-start gap-2'>
                     <div className='font-semibold w-[50%]'>
                       <p className='text-sm'>Total Quantity</p>
-                      <h3 className='text-xl text-yellow-100'>
+                      <h3 className='text-lg text-yellow-100'>
                         {calculateQuantity() ? calculateQuantity() : '00'}
                       </h3>
                     </div>
@@ -603,13 +605,13 @@ function NewStock() {
                   <div className='flex items-center justify-start gap-2'>
                     <div className='font-semibold w-[50%] text-green-300'>
                         <p className='text-sm '>Change </p>
-                        <h3 className='text-xl'>
+                        <h3 className='text-lg'>
                           ${ calculateChange() > 0 ? (calculateChange() / 100).toFixed(2) : '0.00'}
                         </h3>
                     </div>
                     <div className='font-semibold w-[50%] text-red-300'>
                         <p className='text-sm '>Owing </p>
-                        <h3 className='text-xl'>${ calculateOwing() > 0 ? (calculateOwing() / 100).toFixed(2) : '0.00'}</h3>
+                        <h3 className='text-lg'>${ calculateOwing() > 0 ? (calculateOwing() / 100).toFixed(2) : '0.00'}</h3>
                     </div>
                   </div>
                 </div>
