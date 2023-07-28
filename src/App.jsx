@@ -46,6 +46,11 @@ import NewStock from './pages/Stock/NewStock'
 import SettingPage from './pages/Setting/SettingPage'
 import CurrencyPage from './pages/Setting/CurrencyPage'
 import AppInfoPage from './pages/Setting/AppInfoPage'
+/* ------------------- SUPPLIER ------------------- */
+import AddSupplier from './pages/Supplier/AddSupplier'
+import EditSupplier from './pages/Supplier/EditSupplier'
+import ListSupplier from './pages/Supplier/ListSupplier'
+import ViewSupplier from './pages/Supplier/ViewSupplier'
 
 
 
@@ -97,6 +102,11 @@ function App() {
         <Route path='/stock/list' element={<ListStock />} />
         <Route path='/stock/edit/:id' element={<EditStock />} />
 
+        {/* ------------------- SUPPLIER ------------------- */}
+        <Route path='/supplier' element={<ListSupplier />} />
+        <Route path='/supplier/add' element={<AddSupplier />} />
+        <Route path='/supplier/edit/:id' element={<EditSupplier />} />
+        <Route path='/supplier/view/:id' element={<ViewSupplier />} />
         {/* ------------------- Setting ------------------- */}
         <Route path='/settings' element={<SettingPage />} />
         <Route path='/settings/app-info' element={<AppInfoPage />} />

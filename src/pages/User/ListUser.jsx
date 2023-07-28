@@ -88,7 +88,6 @@ function ListUser() {
    fetchUsers()
   }, []);
 
-
   const handleDelete = async () => {
    let a = confirm(`Are you sure?`)
    if( a ){

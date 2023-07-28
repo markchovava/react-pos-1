@@ -10,6 +10,7 @@ import { salesItemInitialState, salesItemReducer } from '../reducers/SalesItemRe
 import { userInitialState, userReducer } from '../reducers/UserReducer';
 import { recieptReducer, recieptInitialState } from '../reducers/RecieptReducer';
 import { stockInitialState, stockReducer } from '../reducers/StockReducer';
+import { supplierInitialState, supplierReducer } from '../reducers/SupplierReducer';
 
 
 
@@ -28,6 +29,7 @@ function MainContextProvider({ children }) {
    const [zwlRate, setZwlRate] = useState('')
    const [recieptState, recieptDispatch] = useReducer(recieptReducer, recieptInitialState)
    const [stockState, stockDispatch] = useReducer(stockReducer, stockInitialState)
+   const [supplierState, supplierDispatch] = useReducer(supplierReducer, supplierInitialState)
 
   const setToken = (token) => {
     localStorage.setItem('POS_ACCESS_TOKEN', token);
@@ -71,7 +73,9 @@ function MainContextProvider({ children }) {
          salesItemState, 
          salesItemDispatch,
          stockState, 
-         stockDispatch
+         stockDispatch,
+         supplierState, 
+         supplierDispatch,
       }}>
       { children }
       </MainContext.Provider>

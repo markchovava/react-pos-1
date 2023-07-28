@@ -2,6 +2,7 @@ import React from 'react'
 import { BiBarcodeReader, BiPackage } from 'react-icons/bi'
 import { BsBarChartFill, BsFillCartCheckFill, BsPersonFill } from 'react-icons/bs'
 import { AiFillDashboard, AiFillSetting, AiFillDatabase } from 'react-icons/ai'
+import { MdWidgets } from 'react-icons/md'
 import { FaDesktop } from 'react-icons/fa'
 import { TbReport } from 'react-icons/tb'
 import { Link } from 'react-router-dom'
@@ -42,7 +43,12 @@ function PosLeftContent() {
                 <BsPersonFill className='left__Icon'/>
             </Link>
           </button>
-         {/*  <button title='Reports' className='left__ContentBtn'>
+          <button title='Suppliers' className='left__ContentBtn'>
+            <Link to='/supplier' className='w-[100%] h-[100%] flex items-center justify-center'>
+              <MdWidgets className='left__Icon'/>
+            </Link>
+          </button>
+          {/* <button title='Reports' className='left__ContentBtn'>
             <TbReport className='left__Icon'/>
           </button> */}
          {/*  <button title='Orders' className='left__ContentBtn'>
