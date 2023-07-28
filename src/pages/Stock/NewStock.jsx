@@ -42,30 +42,34 @@ function NewStock() {
       }
     },[token])
   
-    const [amount, setAmount] = useState(0)
-    const amountRef = useRef()
     const currencyRef = useRef()
-    const [searchResults, setSearchResults] = useState([])
-    const searchRef = useRef()
-    const scanRef = useRef()
+    /* PRODUCT */
+    const [isProductSearch, setIsProductSearch] = useState(false)
+    const [productSearch, setProductSearch] = useState('')
+    const [productSearchResults, setProductSearchResults] = useState([])
+    const searchProductRef = useRef()
+    /* SUPPLIER */
+    const [isSupplierSearch, setIsSupplierSearch] = useState(false)
+    const [supplierSearch, setSupplierSearch] = useState('')
+    const [supplierSearchResults, setSupplierSearchResults] = useState([])
+    const searchSupplierRef = useRef()
+    /*  */
     const quantityRef = useRef()
     const [inputData, setInputData] = useState(0);
-    const [scanInput, setScanInput] = useState()
     const [isSubmit, setIsSubmit] = useState(false)
+    const [amountPaid, setAmountPaid] = useState(0)
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': `JWT ${token}`
     };
     
     /* Reciept PROCESSING */
-    const receiptURL = `sales/byuser/latest/?user_id=${user_id}`
-    console.log(receiptURL)
-    const [latest, setLatest] = useState({})
-    const [latestItems, setLatestItems] = useState({})
-    const [recieptUser, setRecieptUser] = useState({})
-    const [appInfo, setAppInfo] = useState({})
+    //const receiptURL = `sales/byuser/latest/?user_id=${user_id}`
+    // console.log(receiptURL)
+    //const [latest, setLatest] = useState({})
+    //const [recieptUser, setRecieptUser] = useState({})
     /* FETCH Latest */
-    async function getLatest() {
+    /* async function getLatest() {
       try{
          const result = await AxiosClient.get(receiptURL, {headers})
          .then((response) => {
@@ -81,9 +85,10 @@ function NewStock() {
          console.error(`Error: ${error}`)
          console.error(`Error: ${error.response}`)
       }   
-    }
+    } */
     /* --------------------- */
     /* GET SITE INFO */
+    const [appInfo, setAppInfo] = useState({})
      async function getAppInfo() {
       try{
          const result = await AxiosClient.get('app-info/', {headers})
@@ -93,22 +98,6 @@ function NewStock() {
       } catch (error) {
          console.error(`Error: ${error}`)
          console.error(`Error: ${error.response}`)
-      }   
-    }
-    /* FETCH ALL PRODUCTS */
-    async function fetchProducts() {
-      try{
-         const result = await AxiosClient.get('product/', {headers})
-         .then((response) => {
-              productDispatch({
-               type: 'FETCH_PRODUCT',
-               payload: response.data.results,
-               })  
-               console.log('PRODUCTS:') 
-               console.log(response.data.results)  
-          })
-      } catch (error) {
-         console.error(`Error: ${error}`)
       }   
     }
     /* GET ZWL RATE */
@@ -123,12 +112,11 @@ function NewStock() {
       }   
    }
     /* SIDE EFFECTS */
-    useEffect(() => {     
-      fetchProducts()
+    useEffect(() => { 
       getZwlRate()
       /*  */
       getAppInfo()
-      getLatest()
+      //getLatest()
       /*  */
       setLoading(true)
     }, []);
@@ -143,7 +131,7 @@ function NewStock() {
       });
       setInputData(newList)
     };
-    /* CHANGE CURRENCY */
+    /* --------------------- CHANGE CURRENCY --------------------- */
     const handleCurrency = (currency) => {
       let rate;
       if(currency == 'ZWL'){
@@ -154,16 +142,64 @@ function NewStock() {
       currencyDispatch({type: 'CHANGE_CURRENCY', payload: {name: currency , rate: rate}})
      
     }
-    /* SEARCH PRODUCT USING NAME */
-    const handleSearch = (search) => {
-      const searchData = productState.products.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()));
-      if(search){
-        setSearchResults(searchData)
-        console.log(searchData)
-      }else if(!search){
-        setSearchResults([])
-      }
+
+    /* --------------------- HANDLE PRODUCT SEARCH USING NAME --------------------- */
+   const handleProductSearch = (input) => {
+      setProductSearch(input)
+      setIsProductSearch(() => true)
     }
+    const getProductBySearch = async () => {
+      try{
+        const result = await AxiosClient.get(`product/?search=${productSearch}`)
+          .then((response) => {
+            setProductSearchResults( () => response.data.results )
+            //console.log('productSearchResults')
+            //console.log(productSearchResults)
+            setIsProductSearch(() => false)
+          })
+      } catch (error){
+        console.error(`Error: ${error}`)
+        console.error(`Error: ${error.response}`)
+      }
+         
+    }
+    useEffect( () => {
+      if( isProductSearch == true ){ 
+        getProductBySearch()  
+      }
+    }, [isProductSearch]);
+    /* ------------------------------------------ */
+
+     /* --------------------- HANDLE PRODUCT SEARCH USING NAME --------------------- */
+   const handleSupplierSearch = (input) => {
+    console.log(input)
+    setSupplierSearch(input)
+    setIsSupplierSearch(() => true)
+  }
+  const getSupplierBySearch = async () => {
+    try{
+      const result = await AxiosClient.get(`supplier/?search=${supplierSearch}`)
+        .then((response) => {
+          setSupplierSearchResults( () => response.data.results )
+          console.log('supplierSearchResults')
+          console.log(supplierSearchResults)
+          setIsSupplierSearch(() => false)
+        })
+    } catch (error){
+      console.error(`Error: ${error}`)
+      console.error(`Error: ${error.response}`)
+    }
+       
+  }
+  useEffect( () => {
+    if( isSupplierSearch == true ){ 
+      getSupplierBySearch()  
+    }
+  }, [isSupplierSearch]);
+  /* ------------------------------------------ */
+
+
+
    
     /* GRANDTOTAL */
     const calculateGrandTotal = () => {
@@ -180,12 +216,16 @@ function NewStock() {
     const calculateQuantity = () => {
       const quantity = stockState.products.reduce((acc, item) => acc + item.quantity_bought, 0);
       return quantity;
-    };
-    
+    };   
     /* OWING */
     const calculateOwing = () => {
-      const owing = calculateGrandTotal() - (amount * 100);
+      const owing = calculateGrandTotal() - (amountPaid * 100);
       return owing;
+    }
+    /* CHANGE */
+    const calculateChange = () => {
+      const change = (amountPaid * 100) - calculateGrandTotal();
+      return change;
     }
     /* PROCESS TRANSACTIONS */
     const processPos =  async (data) => {
@@ -275,12 +315,12 @@ function NewStock() {
       }
     }
    
-    console.log(appInfo)
+    //console.log(appInfo)
     /* print stuff */
-     const componentRef = useRef();
+    /*  const componentRef = useRef();
      const handlePrint = useReactToPrint({
        content: () => componentRef.current,
-     });
+     }); */
      /* --------------------- */
 
   return (
@@ -335,14 +375,13 @@ function NewStock() {
                           <div className='relative bg-white w-[96%] shadow-lg flex flex-col justify-center items-center'>
                             <input type='text' 
                               name='searchname'
-                              ref={searchRef}
-                              onChange={(e) => handleSearch(e.target.value)} 
+                              ref={searchProductRef}
+                              onChange={(e) => handleProductSearch(e.target.value)} 
                               placeholder='Search by name...'
-                              autoFocus={stockState.mode == 'SearchByName' && true}
                               className='shadow appearance-none border rounded w-[94%] text-lg py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
-                            <div className={`${searchResults.length == 0 ? 'hidden' : 'absolute top-[110%] w-[100%] z-20 bg-slate-50 shadow-md'} `}>
-                              { searchResults.length > 0 &&
-                                searchResults.map((item, i) => (
+                            <div className={`${productSearchResults.length == 0 ? 'hidden' : 'absolute top-[110%] w-[100%] z-20 bg-slate-50 shadow-md'} `}>
+                              { productSearchResults.length > 0 &&
+                                  productSearchResults.map((item, i) => (
                                   <div className='w-[94%] z-20 mx-auto py-3 px-2 my-1 cursor-pointer hover:bg-slate-100 hover:text-black text-slate-800' 
                                     key={i}
                                     onClick={() => {
@@ -360,8 +399,8 @@ function NewStock() {
                                           total_cost: item.unit_price
                                         }
                                       })
-                                      searchRef.current.value = ''
-                                      setSearchResults([])  
+                                      searchProductRef.current.value = ''
+                                      setProductSearchResults([])  
                                     }}>
                                     {item.name}
                                   </div>
@@ -483,14 +522,64 @@ function NewStock() {
                 <div className='border-b border-slate-500 mx-6'></div>
 
                 <div className='w-full h-auto px-6 py-5'>
-                  <div className='font-semibold'>
+                  <div className='font-semibold relative'>
                     <p className='text-sm mb-2'>Supplier</p>
                     <input type="text" 
-                      ref={amountRef}
-                      name='amount'
-                      onChange={() => setAmount(amountRef.current.value)}
+                      ref={searchSupplierRef}
+                      name='supplier_name'
+                      onChange={(e) => handleSupplierSearch(e.target.value)}
                       className='text-xl text-black font-semibold px-3 py-2 border-none outline-none rounded w-full'/>
+                    <div 
+                      className={`${supplierSearchResults.length == 0 ? 'hidden' : 'absolute top-[110%] w-[100%] z-20 bg-slate-50 shadow-md'} `}>
+                         { supplierSearchResults.length > 0 &&
+                                  supplierSearchResults.map((item, i) => (
+                                  <div className='w-[94%] z-20 mx-auto py-3 px-2 my-1 cursor-pointer hover:bg-slate-100 hover:text-black text-slate-800' 
+                                    key={i}
+                                    onClick={() => {
+                                      stockDispatch({
+                                        type: 'ADD_SUPPLIER', 
+                                        payload: {
+                                          supplier_id: item.id,
+                                          supplier_name: item.name,
+                                          supplier_ref: item.supplier_ref,
+                                        }
+                                      })
+                                      searchSupplierRef.current.value = ''
+                                      setSupplierSearchResults([])  
+                                    }}>
+                                    {item.name}
+                                  </div>
+                          ))}
+                    </div>   
                   </div>
+                  <div className='mt-3 ml-3 flex flex-col gap-1'>
+                      <div className=''>
+                        Supplier Id:
+                        <span className='font-bold text-yellow-100'> {stockState.supplier.supplier_ref}</span>
+                      </div>
+                      <div>
+                        Supplier Name:
+                        <span className='font-bold text-yellow-100'> {stockState.supplier.supplier_name}</span>
+                      </div>
+                    </div>
+                </div>
+
+                <div className='border-b border-slate-500 mx-6'></div>
+                <div className='mb-1'></div>
+                <div className='border-b border-slate-500 mx-6'></div>
+
+                <div className='w-full h-auto px-6 py-5'>
+                  <div className='font-semibold relative'>
+                    <p className='text-sm mb-2'>Amount Paid <i>(in cents)</i></p>
+                    <input type="number" 
+                      min={0}
+                      name='amount_paid'
+                      value={amountPaid}
+                      onChange={(e) => setAmountPaid(() => e.target.value)}
+                      className='text-xl text-black font-semibold px-3 py-2 border-none outline-none rounded w-full'/>
+                     
+                  </div>
+                 
                 </div>
 
                 <div className='border-b border-slate-500 mx-6'></div>
@@ -512,6 +601,12 @@ function NewStock() {
                  
                   <div className='mb-3'></div>
                   <div className='flex items-center justify-start gap-2'>
+                    <div className='font-semibold w-[50%] text-green-300'>
+                        <p className='text-sm '>Change </p>
+                        <h3 className='text-xl'>
+                          ${ calculateChange() > 0 ? (calculateChange() / 100).toFixed(2) : '0.00'}
+                        </h3>
+                    </div>
                     <div className='font-semibold w-[50%] text-red-300'>
                         <p className='text-sm '>Owing </p>
                         <h3 className='text-xl'>${ calculateOwing() > 0 ? (calculateOwing() / 100).toFixed(2) : '0.00'}</h3>
@@ -574,7 +669,7 @@ function NewStock() {
                       </button>
                       <button 
                         className='w-[30%] text-center py-3 border border-slate-100 hover:border-white bg-slate-600 hover:bg-slate-900 transition rounded-lg'
-                        onClick={handlePrint}>
+                        >
                         Print
                       </button>
                     </div>
@@ -583,11 +678,11 @@ function NewStock() {
               </section>
             </div>
             <div style={{ display: "none" }}>
-            <RecieptPage 
+            {/* <RecieptPage 
               ref={componentRef} 
               recieptData={latest} 
               app_info={appInfo} 
-              user_info={recieptUser} />
+              user_info={recieptUser} /> */}
             </div>
             <ToastContainer />
         </section>
