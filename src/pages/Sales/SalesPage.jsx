@@ -7,7 +7,6 @@ import { FaUser, FaCalendarDay, FaCoins } from 'react-icons/fa'
 import { FcSalesPerformance } from 'react-icons/fc'
 import { Link, useNavigate } from 'react-router-dom'
 import { MainContextState } from '../../contexts/MainContextProvider'
-import AxiosClient from '../../axios/axiosClient'
 import LogoutBtn from '../../components/LogoutBtn'
 import CurrentUser from '../../components/CurrentUser'
 import { ToastContainer, toast} from 'react-toastify';

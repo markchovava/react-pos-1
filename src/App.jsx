@@ -41,7 +41,7 @@ import EditProduct from './pages/Product/EditProduct'
 import StockPage from './pages/Stock/StockPage'
 import ListStock from './pages/Stock/ListStock'
 import EditStock from './pages/Stock/EditStock'
-import NewStock from './pages/Stock/NewStock'
+import NewPurchase from './pages/Purchase/NewPurchase'
 /* ------------------- SETTING ------------------- */
 import SettingPage from './pages/Setting/SettingPage'
 import CurrencyPage from './pages/Setting/CurrencyPage'
@@ -51,6 +51,8 @@ import AddSupplier from './pages/Supplier/AddSupplier'
 import EditSupplier from './pages/Supplier/EditSupplier'
 import ListSupplier from './pages/Supplier/ListSupplier'
 import ViewSupplier from './pages/Supplier/ViewSupplier'
+import ListPurchase from './pages/Purchase/ListPurchase'
+import ViewPurchase from './pages/Purchase/ViewPurchase'
 
 
 
@@ -98,10 +100,12 @@ function App() {
         <Route path='/sales/users/monthly/:id' element={<SalesByUserMonthly />} />
         {/* ------------------- Stock ------------------- */}
         <Route path='/stock' element={<StockPage />} />
-        <Route path='/stock/new' element={<NewStock />} />
         <Route path='/stock/list' element={<ListStock />} />
         <Route path='/stock/edit/:id' element={<EditStock />} />
-
+        {/* ------------------- PURCHASE ------------------- */}
+        <Route path='/purchase/new' element={<NewPurchase />} />
+        <Route path='/purchase/list' element={<ListPurchase />} />
+        <Route path='/purchase/view/:id' element={<ViewPurchase />} />
         {/* ------------------- SUPPLIER ------------------- */}
         <Route path='/supplier' element={<ListSupplier />} />
         <Route path='/supplier/add' element={<AddSupplier />} />

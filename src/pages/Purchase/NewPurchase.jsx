@@ -5,33 +5,20 @@ import PosLeftContent from '../../components/PosLeftContent'
 import { MainContextState } from '../../contexts/MainContextProvider'
 import AxiosClient from '../../axios/axiosClient'
 import { Link, useNavigate } from 'react-router-dom'
-import  { useReactToPrint } from 'react-to-print';
 import { ToastContainer,  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import LogoutBtn from '../../components/LogoutBtn'
 import CurrentUser from '../../components/CurrentUser'
 import Loading from '../../components/Loading'
-import RecieptPage from './components/RecieptPage'
+import RandomNumber from '../../__utils/RandomNumber'
 
 
-const randomNum = () => {
-    let now = new Date();
-    let year = now.getFullYear();
-    let month = now.getMonth();
-    let day = now.getDate();
-    let hour = now.getHours();
-    let minute = now.getMinutes();
-    let second = now.getSeconds();
-    let random = Math.floor((Math.random() * 1000) + 1);
-    let final = year + '' + month + '' + day + '' + hour + '' + minute + '' + second + '' + random;
-    return final;
-  }
 
-function NewStock() {
+function NewPurchase() {
     const [loading, setLoading] = useState(false)
     const {getToken, productState, productDispatch, zwlRate, 
-      setZwlRate, currencyState, salesDispatch, currencyDispatch, paymentState, 
-      paymentDispatch, authUser, recieptDispatch, stockState, stockDispatch} = MainContextState()
+      setZwlRate, currencyState, currencyDispatch, paymentState, 
+      paymentDispatch, authUser, stockState, stockDispatch} = MainContextState()
       const user_id = authUser?.id;
       console.log('USER ID: ' + user_id)
     const navigate = useNavigate();
@@ -63,29 +50,7 @@ function NewStock() {
       'Authorization': `JWT ${token}`
     };
     
-    /* Reciept PROCESSING */
-    //const receiptURL = `sales/byuser/latest/?user_id=${user_id}`
-    // console.log(receiptURL)
-    //const [latest, setLatest] = useState({})
-    //const [recieptUser, setRecieptUser] = useState({})
-    /* FETCH Latest */
-    /* async function getLatest() {
-      try{
-         const result = await AxiosClient.get(receiptURL, {headers})
-         .then((response) => {
-              setLatest(() => response.data[0])
-              recieptDispatch({
-                type: 'GET_ITEMS', 
-                payload:response.data[0].sales_items
-              })
-              setRecieptUser(() => response.data[0].user)
-              //console.log(response.data) 
-          })
-      } catch (error) {
-         console.error(`Error: ${error}`)
-         console.error(`Error: ${error.response}`)
-      }   
-    } */
+   
     /* --------------------- */
     /* GET SITE INFO */
     const [appInfo, setAppInfo] = useState({})
@@ -198,9 +163,6 @@ function NewStock() {
   }, [isSupplierSearch]);
   /* ------------------------------------------ */
 
-
-
-   
     /* GRANDTOTAL */
     const calculateGrandTotal = () => {
       const calculateGrandTotal = stockState.products.reduce((acc, item) => acc + item.total_cost, 0);
@@ -228,7 +190,7 @@ function NewStock() {
       return change;
     }
     /* PROCESS TRANSACTIONS */
-    const processPos =  async (data) => {
+    const processPos =  async () => {
       let allItems = stockState.products;
       console.log(allItems)
       let items;
@@ -236,12 +198,12 @@ function NewStock() {
         items = stockState.products.map((item) => ({
           product_id: parseInt(item.id),
           product_name: item.product_name,
-          stock: item.stock,
+          quantity_bought: item.quantity_bought,
           currency: currencyRef.current.value,
           quantity_bought: parseInt(item.quantity_bought),
-          unit_price: currencyRef.current.value == 'ZWL' 
-                      ? (parseInt(item.unit_price) * parseInt(currencyState.currency.rate)) / 100
-                      : parseInt(item.unit_price),
+          unit_cost: currencyRef.current.value == 'ZWL' 
+                      ? (parseInt(item.unit_cost) * parseInt(currencyState.currency.rate)) / 100
+                      : parseInt(item.unit_cost),
           total_cost: currencyRef.current.value == 'ZWL' 
                       ? (parseInt(item.total_cost) * parseInt(currencyState.currency.rate)) / 100
                       : parseInt(item.total_cost),
@@ -253,59 +215,49 @@ function NewStock() {
           product_name: allItems[0].product_name,
           currency: currencyRef.current.value,
           quantity_bought:  parseInt(allItems[0].quantity_bought),
-          unit_price: currencyRef.current.value == 'ZWL' 
-                      ? (parseInt(allItems[0].unit_price) * parseInt(currencyState.currency.rate)) / 100
-                      : parseInt(allItems[0].unit_price),
+          unit_cost: currencyRef.current.value == 'ZWL' 
+                      ? (parseInt(allItems[0].unit_cost) * parseInt(currencyState.currency.rate)) / 100
+                      : parseInt(allItems[0].unit_cost),
           total_cost: currencyRef.current.value == 'ZWL' 
                       ? (parseInt(allItems[0].total_cost) * parseInt(currencyState.currency.rate)) / 100
                       : parseInt(allItems[0].total_cost),
           user_id: parseInt(user_id)
         }]
       } else{
-        alert('Please add products to the Sale.')
+        alert('Please add products to the Purchase.')
         return null
       }
-      const sales_items = items;
-      const sales = {
-        user_id: user_id,
-        ref_no: parseInt(randomNum()),
+      const purchase_items = items;
+      const purchase = {
+        user_id: parseInt(user_id),
+        purchase_ref: 'PU' + RandomNumber(),
+        supplier_id: stockState.supplier.supplier_id,
+        supplier_ref: stockState.supplier.supplier_ref,
+        supplier_name: stockState.supplier.supplier_name,
         quantity_total: parseInt(calculateQuantity()),
-        grandtotal: parseInt(calculateGrandTotal()),
-        amount_paid: parseInt(amountRef.current.value * 100),
-        tax: parseInt(calculateTax()),
+        purchase_total: parseInt(calculateGrandTotal()),
+        amount_paid: parseInt(amountPaid * 100),
         change: parseInt(calculateChange()),
         owing: calculateOwing() < 1 ? null : parseInt(calculateOwing()),
         currency: currencyRef.current.value,
         payment_method: paymentState.method,
-        sales_items: sales_items
+        purchase_items: purchase_items
       }
-      //console.log(sales) 
-      //console.log(sales_items)
       if( paymentState.method ) {
-        //console.log(sales)
-        //return false;
         if(currencyRef.current.value != ''){
-          //console.log(currencyRef.current.value)
-          //alert(currencyRef.current.value)
-          const result = await AxiosClient.post('sales/', sales)
+          console.log(purchase)
+         const result = await AxiosClient.post('purchase/', purchase)
           .then((response) => {
             try{
-              //console.log(response.data)
-              salesDispatch({type: 'ADD_SALES', payload: response.data})
               stockDispatch({type: 'REMOVE_PRODUCT'})
-              /* RECIEPT */
-              setLatest(() => response.data)
-              recieptDispatch({
-                type: 'GET_ITEMS', 
-                payload:response.data.sales_items
-              })
-              setRecieptUser(() => response.data.user)
-              /* ----------------- */
               alert('Processing was successful.')
             } catch(error){
-              console.log(`ERROR: ${error}`)
+              console.error(`Error: ${error}`)
+              console.log(error.response.data);
+              console.log(error.response.status);
+              console.log(error.response.headers);
             }
-          })  
+          }) 
         } else{
           confirm('Please Select Currency.')
         }
@@ -315,13 +267,7 @@ function NewStock() {
       }
     }
    
-    //console.log(appInfo)
-    /* print stuff */
-    /*  const componentRef = useRef();
-     const handlePrint = useReactToPrint({
-       content: () => componentRef.current,
-     }); */
-     /* --------------------- */
+ 
 
   return (
     <>
@@ -679,13 +625,7 @@ function NewStock() {
                 </div>
               </section>
             </div>
-            <div style={{ display: "none" }}>
-            {/* <RecieptPage 
-              ref={componentRef} 
-              recieptData={latest} 
-              app_info={appInfo} 
-              user_info={recieptUser} /> */}
-            </div>
+           
             <ToastContainer />
         </section>
       }
@@ -693,4 +633,4 @@ function NewStock() {
   )
 }
 
-export default NewStock
+export default NewPurchase

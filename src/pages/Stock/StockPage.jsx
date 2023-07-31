@@ -51,7 +51,7 @@ function StockPage() {
                   <section className='w-[96%] h-[80vh] my-[5vh] mx-auto'>
                      <div className='grid grid-cols-5'>
                         
-                        <Link to='/stock/new'>
+                        <Link to='/purchase/new'>
                            <div className='border-x border-y border-pink-500 hover:border-pink-600 text-pink-500 hover:text-pink-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
                               <AiFillFileAdd className='text-[5rem]' />
                               <div className='text-md font-semibold p-2 mx-auto text-center'>
@@ -65,6 +65,15 @@ function StockPage() {
                               <AiOutlineStock className='text-[5rem]' />
                               <div className='text-md font-semibold p-2 mx-auto text-center'>
                                  Stock List
+                              </div>
+                           </div>
+                        </Link>  
+
+                        <Link to='/purchase/list'>
+                           <div className='border-y border-r border-red-500 hover:border-red-600 text-red-500 hover:text-red-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
+                              <TbBrandProducthunt className='text-[5rem]' />
+                              <div className='text-md font-semibold p-2 mx-auto text-center'>
+                                 Purchase List
                               </div>
                            </div>
                         </Link>                    
