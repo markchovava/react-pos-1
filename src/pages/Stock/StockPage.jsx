@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react'
 import PosLeftContent from '../../components/PosLeftContent'
 import { AiOutlineStock, AiFillFileAdd } from 'react-icons/ai'
+import { BiPurchaseTag } from 'react-icons/bi'
 import { TbBrandProducthunt } from 'react-icons/tb'
 import { MdCalendarMonth, MdPermIdentity } from 'react-icons/md'
 import { FaUser, FaCalendarDay, FaCoins } from 'react-icons/fa'
@@ -71,9 +72,54 @@ function StockPage() {
 
                         <Link to='/purchase/list'>
                            <div className='border-y border-r border-red-500 hover:border-red-600 text-red-500 hover:text-red-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
+                              <BiPurchaseTag className='text-[5rem]' />
+                              <div className='text-md font-semibold p-2 mx-auto text-center'>
+                                 All Purchase List
+                              </div>
+                           </div>
+                        </Link>   
+
+                        <Link to='/purchase/day/usd'>
+                           <div className='border-y border-r border-sky-500 hover:border-sky-600 text-sky-500 hover:text-sky-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
                               <TbBrandProducthunt className='text-[5rem]' />
                               <div className='text-md font-semibold p-2 mx-auto text-center'>
-                                 Purchase List
+                                 Daily Purchase(USD)
+                              </div>
+                           </div>
+                        </Link>     
+
+                        <Link to='/purchase/day/zwl'>
+                           <div className='border-y border-r border-emerald-500 hover:border-emerald-600 text-emerald-500 hover:text-emerald-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
+                              <TbBrandProducthunt className='text-[5rem]' />
+                              <div className='text-md font-semibold p-2 mx-auto text-center'>
+                                 Daily Purchase(ZWL)
+                              </div>
+                           </div>
+                        </Link>  
+
+                        <Link to='/purchase/month/usd'>
+                           <div className='border-y border-x border-slate-500 hover:border-slate-600 text-slate-500 hover:text-slate-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
+                              <MdCalendarMonth className='text-[5rem]' />
+                              <div className='text-md font-semibold p-2 mx-auto text-center'>
+                                 Monthly Purchase(USD)
+                              </div>
+                           </div>
+                        </Link>    
+
+                        <Link to='/purchase/month/zwl'>
+                           <div className='border-y border-r border-emerald-500 hover:border-emerald-600 text-emerald-500 hover:text-emerald-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
+                              <MdCalendarMonth className='text-[5rem]' />
+                              <div className='text-md font-semibold p-2 mx-auto text-center'>
+                                 Monthly Purchase(USD)
+                              </div>
+                           </div>
+                        </Link>   
+
+                        <Link to='/purchase/supplier'>
+                           <div className='border-y border-r border-emerald-500 hover:border-emerald-600 text-emerald-500 hover:text-emerald-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
+                              <FaCoins className='text-[5rem]' />
+                              <div className='text-md font-semibold p-2 mx-auto text-center'>
+                                 Purchase Supplier
                               </div>
                            </div>
                         </Link>                    

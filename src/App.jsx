@@ -53,6 +53,11 @@ import ListSupplier from './pages/Supplier/ListSupplier'
 import ViewSupplier from './pages/Supplier/ViewSupplier'
 import ListPurchase from './pages/Purchase/ListPurchase'
 import ViewPurchase from './pages/Purchase/ViewPurchase'
+import DayPurchaseProductUSD from './pages/Purchase/DayPurchaseProductUSD'
+import DayPurchaseProductZWL from './pages/Purchase/DayPurchaseProductZWL'
+import MonthPurchaseProductUSD from './pages/Purchase/MonthPurchaseProductUSD'
+import MonthPurchaseProductZWL from './pages/Purchase/MonthPurchaseProductZWL'
+import PurchaseSupplier from './pages/Purchase/PurchaseSupplier'
 
 
 
@@ -106,6 +111,11 @@ function App() {
         <Route path='/purchase/new' element={<NewPurchase />} />
         <Route path='/purchase/list' element={<ListPurchase />} />
         <Route path='/purchase/view/:id' element={<ViewPurchase />} />
+        <Route path='/purchase/day/usd' element={<DayPurchaseProductUSD />} />
+        <Route path='/purchase/day/zwl' element={<DayPurchaseProductZWL />} />
+        <Route path='/purchase/month/usd' element={<MonthPurchaseProductUSD />} />
+        <Route path='/purchase/month/zwl' element={<MonthPurchaseProductZWL />} />
+        <Route path='/purchase/supplier' element={<PurchaseSupplier />} />
         {/* ------------------- SUPPLIER ------------------- */}
         <Route path='/supplier' element={<ListSupplier />} />
         <Route path='/supplier/add' element={<AddSupplier />} />

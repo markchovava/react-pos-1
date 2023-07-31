@@ -183,7 +183,7 @@ function ListPurchase() {
                            {item.supplier_name}
                         </div>
                         <div className='w-[20%] border-r border-slate-300 px-3'>
-                           ${((item.purchase_total / 100)).toFixed(2)}
+                           [{item.currency}] ${((item.purchase_total / 100)).toFixed(2)}
                         </div>
                         <div className='w-[20%] border-r border-slate-300 px-3'>
                            {item.created_at}

@@ -243,19 +243,23 @@ function NewPurchase() {
       }
       if( paymentState.method ) {
         if(currencyRef.current.value != ''){
-          console.log(purchase)
-         const result = await AxiosClient.post('purchase/', purchase)
-          .then((response) => {
-            try{
-              stockDispatch({type: 'REMOVE_PRODUCT'})
-              alert('Processing was successful.')
-            } catch(error){
-              console.error(`Error: ${error}`)
-              console.log(error.response.data);
-              console.log(error.response.status);
-              console.log(error.response.headers);
-            }
-          }) 
+          if(!purchase.supplier_id == ''){
+            console.log(purchase)
+            const result = await AxiosClient.post('purchase/', purchase)
+            .then((response) => {
+              try{
+                stockDispatch({type: 'REMOVE_PRODUCT'})
+                alert('Processing was successful.')
+              } catch(error){
+                console.error(`Error: ${error}`)
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+              }
+            }) 
+          } else{
+            alert('Please add Supplier...')
+          }
         } else{
           confirm('Please Select Currency.')
         }
