@@ -96,22 +96,7 @@ function PosPage() {
        console.error(`Error: ${error.response}`)
     }   
   }
-  /* FETCH ALL PRODUCTS */
-  async function fetchProducts() {
-    try{
-       const result = await AxiosClient.get('product/', {headers})
-       .then((response) => {
-            productDispatch({
-             type: 'FETCH_PRODUCT',
-             payload: response.data.results,
-             })  
-             console.log('PRODUCTS:') 
-             console.log(response.data.results)  
-        })
-    } catch (error) {
-       console.error(`Error: ${error}`)
-    }   
-  }
+ 
   /* GET ZWL RATE */
   async function getZwlRate() {
     try{
@@ -122,10 +107,9 @@ function PosPage() {
     } catch (error) {
        console.error(`Error: ${error}`)
     }   
- }
+  }
   /* SIDE EFFECTS */
-  useEffect(() => {     
-    fetchProducts()
+  useEffect(() => {  
     getZwlRate()
     /*  */
     getAppInfo()
@@ -161,49 +145,60 @@ function PosPage() {
    
   }
   /* SEARCH PRODUCT USING NAME */
-  const handleSearch = (search) => {
-    const searchData = productState.products.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()));
+  const getProductBySearch = async (search) => {
     if(search){
-      setSearchResults(searchData)
-      console.log(searchData)
+      try{
+        const result = await AxiosClient.get(`product/?search=${search}`)
+          .then((response) => {
+            setSearchResults( () => response.data.results )
+          })
+      } catch (error){
+        console.error(`Error: ${error}`)
+        console.error(`Error: ${error.response}`)
+      }
     }else if(!search){
       setSearchResults([])
-    }
+    } 
   }
-   /* SEARCH PRODUCT USING BARCODE */
-   const handleScan = (search) => {
-    setScanInput(search)
+  
+  /* SEARCH PRODUCT USING BARCODE */
+  const getProductByBarcode = async (search) => {
     if(search){
-      console.log(productState.products)
-      /* if(!Number.isInteger(search)){
-        alert('The input is not a number...')
-      } */
-      const scanData = productState.products.filter((item) => item.barcode == search);
-      console.log(scanData[0])
-      if(scanData[0]){
-        posDispatch({
-          type: 'ADD_PRODUCT', 
-           payload: {
-            id: scanData[0].id,
-            product_id: scanData[0].id,
-            product_name: scanData[0].name,
-            quantity: scanData[0].quantity,
-            stock: scanData[0].quantity - 1,
-            quantity_sold: 1,
-            currency: currencyRef.current.value,
-            unit_price: scanData[0].unit_price,
-            total_price: scanData[0].unit_price
-        }})
-        scanRef.current.value = '' 
-        setScanInput('')
-      } else{
-        alert('Not found.')
-        scanRef.current.value = ''
+      try{
+        const result = await AxiosClient.get(`product/?search=${search}`)
+          .then((response) => {
+            //console.log(response.data.results)
+            if(response.data.results[0]){
+              posDispatch({
+                type: 'ADD_PRODUCT', 
+                 payload: {
+                  id: response.data.results[0].id,
+                  product_id: response.data.results[0].id,
+                  product_name:response.data.results[0].name,
+                  quantity: response.data.results[0].quantity,
+                  stock: response.data.results[0].quantity - 1,
+                  quantity_sold: 1,
+                  currency: currencyRef.current.value,
+                  unit_price: response.data.results[0].unit_price,
+                  total_price: response.data.results[0].unit_price
+              }})
+              scanRef.current.value = '' 
+              setScanInput('')
+            }else{
+              alert('Not found.')
+              scanRef.current.value = ''
+            }
+          })
+      } catch (error){
+        console.error(`Error: ${error}`)
+        console.error(`Error: ${error.response}`)
       }
-    } else if(!search){
-      console.log('The input is empty...')
-    }
-  } 
+    }else if(!search){
+      alert('The input is empty...')
+    } 
+  }
+
+  
   /* GRANDTOTAL */
   const calculateGrandTotal = () => {
     const calculateGrandTotal = posState.products.reduce((acc, item) => acc + item.total_price, 0);
@@ -241,7 +236,6 @@ function PosPage() {
     return owing;
   }
 
-  const calculateStock = () => {}
   /* PROCESS TRANSACTIONS */
   const processPos =  async (data) => {
     let allItems = posState.products;
@@ -400,7 +394,7 @@ function PosPage() {
                             <input type='text' 
                               name='searchname'
                               ref={searchRef}
-                              onChange={(e) => handleSearch(e.target.value)} 
+                              onChange={(e) => getProductBySearch(e.target.value)} 
                               placeholder='Search by name...'
                               autoFocus={posState.mode == 'SearchByName' && true}
                               className='shadow appearance-none border rounded w-[94%] text-lg py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
@@ -438,7 +432,8 @@ function PosPage() {
                         <form className='h-[12vh] w-full flex justify-center' 
                           onSubmit={(e) => {
                             e.preventDefault()
-                            handleScan(scanInput)
+                            // handleScan(scanInput)
+                            getProductByBarcode(scanInput)
                             }}>
                           <div className='bg-white w-[96%] shadow-lg flex justify-center items-center'>
                             <input type='number' 

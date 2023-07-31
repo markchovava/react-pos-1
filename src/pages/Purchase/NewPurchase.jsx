@@ -118,8 +118,6 @@ function NewPurchase() {
         const result = await AxiosClient.get(`product/?search=${productSearch}`)
           .then((response) => {
             setProductSearchResults( () => response.data.results )
-            //console.log('productSearchResults')
-            //console.log(productSearchResults)
             setIsProductSearch(() => false)
           })
       } catch (error){
