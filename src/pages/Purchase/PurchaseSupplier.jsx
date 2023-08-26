@@ -13,8 +13,8 @@ import { AiFillEye } from 'react-icons/ai';
 
 function PurchaseSupplier() {
    const baseURL = 'supplier/'
-   const {getToken, userState, userDispatch, authUser} = MainContextState()
-   const [supplier, setSupplier] = useState({})
+   const {getToken, authUser} = MainContextState()
+   const [supplier, setSupplier] = useState([])
    const navigate = useNavigate();
    const token = getToken();
    useEffect(()=>{
@@ -112,8 +112,19 @@ function PurchaseSupplier() {
             {/* Page Title and Username */}
             <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg pr-[0.5rem]'>
                <div className='w-[96%] flex justify-between items-center'>
-                  <CurrentUser />
-                  <LogoutBtn />
+                  <div className=''>
+                     <h1 className='font-bold text-lg'> 
+                        <Link 
+                           to='/stock'
+                           className='text-blue-800 hover:text-black'>
+                           Stock
+                        </Link> / <span className=''>Suppliers</span>
+                     </h1>
+                  </div>
+                  <div className='flex gap-2 items-center'>
+                     <CurrentUser />
+                     <LogoutBtn />
+                  </div>
                </div>
             </div>
             {/* Search and Add */}

@@ -196,7 +196,6 @@ function NewPurchase() {
         items = stockState.products.map((item) => ({
           product_id: parseInt(item.id),
           product_name: item.product_name,
-          quantity_bought: item.quantity_bought,
           currency: currencyRef.current.value,
           quantity_bought: parseInt(item.quantity_bought),
           unit_cost: currencyRef.current.value == 'ZWL' 
@@ -610,18 +609,18 @@ function NewPurchase() {
                   <div className='font-semibold'>
                     <div className='flex justify-between gap-2'>
                       <button 
-                        className='w-[70%] text-center py-3 border border-slate-100 hover:border-white bg-[#ff0000] hover:bg-slate-900 transition rounded-lg'
+                        className='w-[100%] text-center py-3 border border-slate-100 hover:border-white bg-[#ff0000] hover:bg-slate-900 transition rounded-lg'
                         onClick={() => {
                           processPos()
                           setIsSubmit(true)
                         }}>
                         Proceed
                       </button>
-                      <button 
+                     {/*  <button 
                         className='w-[30%] text-center py-3 border border-slate-100 hover:border-white bg-slate-600 hover:bg-slate-900 transition rounded-lg'
                         >
                         Print
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 </div>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { AiFillEye, AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai'
@@ -9,6 +9,9 @@ import CurrentUser from '../../components/CurrentUser'
 import AxiosClient from '../../axios/axiosClient'
 import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import { useReactToPrint } from 'react-to-print';
+import SalesByUserMonthlyPrint  from './Print/SalesByUserMonthlyPrint'
 
 
 function SalesByUserMonthly() {
@@ -98,6 +101,12 @@ function SalesByUserMonthly() {
      getUser()
    }, []);
 
+    /* PRINT STUFF */
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
 
   return (
     <section className='bg-slate-100 h-auto w-full overflow-hidden'>
@@ -109,11 +118,17 @@ function SalesByUserMonthly() {
                <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg pr-[0.5rem]'>
                   <div className='w-[96%] flex justify-between items-center'>
                      <div className=''>
-                        <h1 className='font-bold text-xl'> 
-                           Monthly Sales Page for: 
-                           <span className='text-blue-800'>
-                              {` ${user.first_name ? user.first_name : ''} ${user.last_name ? user.last_name: ''} `}
-                           </span> 
+                        <h1 className='font-bold text-lg'> 
+                           <Link 
+                              to='/sales'
+                              className='text-blue-800 hover:text-black'>
+                              Sales
+                           </Link> / <Link 
+                              to='/sales/users'
+                              className='text-blue-800 hover:text-black'>
+                              Users
+                           </Link> / Monthly Sales for:
+                           <span className='text-green-800'> {`${user.first_name} ${user.last_name}`}</span> 
                         </h1>
                      </div>
                      <div className='flex gap-2 items-center'>
@@ -147,6 +162,12 @@ function SalesByUserMonthly() {
                               </div>
                            }
                         </div>
+
+                        <button
+                           onClick={handlePrint}
+                           className='bg-blue-500 hover:bg-blue-600 duration py-2 px-4 rounded-md text-white'>
+                              Print
+                        </button>
                      
                      </div>
                   </div>
@@ -200,6 +221,14 @@ function SalesByUserMonthly() {
          </section>
 
       </div>
+
+      <div style={{ display: "none" }}>
+         <SalesByUserMonthlyPrint
+            ref={componentRef}
+            sales={sales}
+            user={user} />
+      </div>
+
    </section>
   )
 

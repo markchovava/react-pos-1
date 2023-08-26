@@ -65,19 +65,20 @@ const RecieptPage = React.forwardRef((props,  ref) => {
                   {recieptData.quantity_total && recieptData.quantity_total}
                 </div>
               </div>
-              <div className='pt-2 pb-1 flex justify-between'>
+              {/* <div className='pt-2 pb-1 flex justify-between'>
                 <div>SUBTOTAL</div>
                 <div>
                   ${recieptData?.subtotal && (recieptData.subtotal / 100).toFixed(2)}
                 </div>
-              </div>
-              <div className='pt-2 pb-1 flex justify-between'>
+              </div> */}
+             
+              {/* <div className='pt-2 pb-1 flex justify-between'>
                 <div>TAX</div>
                 <div>
-                  {/* ${recieptData?.tax != undefined && (recieptData.tax / 100).toFixed(2)} */}
                   ${recieptData?.tax && (recieptData.tax / 100).toFixed(2)}
                 </div>
-              </div>
+              </div> */}
+
               <div className='pt-2 pb-1 flex justify-between'>
                 <div>GRANDTOTAL</div>
                 <div>

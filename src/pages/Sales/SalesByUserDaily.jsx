@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { AiFillEye, AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai'
@@ -9,6 +9,10 @@ import CurrentUser from '../../components/CurrentUser'
 import AxiosClient from '../../axios/axiosClient'
 import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+/* PRINT */
+import { useReactToPrint } from 'react-to-print';
+import SalesByUserDailyPrint  from './Print/SalesByUserDailyPrint'
 
 function SalesByUserDaily() {
    const { id } = useParams();
@@ -97,6 +101,16 @@ function SalesByUserDaily() {
    }, []);
 
 
+   
+ 
+ 
+      /* PRINT STUFF */
+   const componentRef = useRef();
+   const handlePrint = useReactToPrint({
+     content: () => componentRef.current,
+   });
+
+
    return (
    <section className='bg-slate-100 h-auto w-full overflow-hidden'>
        <div className='container h-[100vh] mx-auto max-w-screen-2xl lg:px-0 px-4 flex justify-start items-center'>
@@ -110,9 +124,17 @@ function SalesByUserDaily() {
                 <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg pr-[0.5rem]'>
                    <div className='w-[96%] flex justify-between items-center'>
                       <div className=''>
-                        <h1 className='font-bold text-xl'> 
-                           Daily User Sales Page for: 
-                           <span className='text-blue-800'> {`${user.first_name} ${user.last_name}`}</span> 
+                        <h1 className='font-bold text-lg'> 
+                           <Link 
+                              to='/sales'
+                              className='text-blue-800 hover:text-black'>
+                              Sales
+                           </Link> / <Link 
+                              to='/sales/users'
+                              className='text-blue-800 hover:text-black'>
+                              Users
+                           </Link> / Daily Sales for:
+                           <span className='text-green-800'> {`${user.first_name} ${user.last_name}`}</span> 
                         </h1>
                       </div>
                       <div className='flex gap-2 items-center'>
@@ -148,6 +170,11 @@ function SalesByUserDaily() {
                                </div>
                             }
                          </div>
+                         <button
+                           onClick={handlePrint}
+                           className='bg-blue-500 hover:bg-blue-600 duration py-2 px-4 rounded-md text-white'>
+                              Print
+                        </button>
                       </div>
                    </div>
                 </div>
@@ -156,7 +183,7 @@ function SalesByUserDaily() {
                 <div className='w-full h-[7vh] bg-white flex items-end justify-center pr-[0.5rem]'>
                    {/* Table Row */}
                    <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                      <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>DAY </div>
+                      <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>DATE </div>
                       <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>QUANTITY </div>
                       <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>TOTAL PRICE </div>
                       <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>CURRENCY </div>
@@ -190,6 +217,12 @@ function SalesByUserDaily() {
              </section>
           </section>
        </div>
+       <div style={{ display: "none" }}>
+         <SalesByUserDailyPrint
+            ref={componentRef}
+            sales={sales}
+            user={user} />
+      </div>
    </section>
  )
 }

@@ -70,13 +70,24 @@ function ViewPurchase() {
                  {/* Page Title and Username */}
                  <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg pr-[0.5rem]'>
                     <div className='w-[96%] flex justify-between items-center'>
-                       <div className=''>
-                          <h1 className='font-bold text-xl'> Purchase Items Page </h1>
-                       </div>
-                       <div className='flex gap-2 items-center'>
-                          <CurrentUser />
-                         <LogoutBtn />
-                       </div>
+                        <div>
+                            <h1 className='font-bold text-lg'> 
+                              <Link 
+                                  to='/stock'
+                                  className='text-blue-800 hover:text-black'>
+                                  Stock
+                              </Link> / <Link 
+                                  to='/purchase/list'
+                                  className='text-blue-800 hover:text-black'>
+                                  Purchase List
+                              </Link> / Purchase   
+                            </h1>
+                        </div>
+                   
+                        <div className='flex gap-2 items-center'>
+                            <CurrentUser />
+                            <LogoutBtn />
+                        </div>
                     </div>
                  </div>
 

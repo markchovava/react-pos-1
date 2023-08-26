@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 /* NOTIFICATIONS */
 import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -176,7 +176,13 @@ function AppInfoPage() {
              <div className='w-full h-[10vh] bg-white border-b border-slate-400 flex items-center justify-center shadow-lg '>
                <div className='w-[96%] flex justify-between items-center pr-[1rem]'>
                    <div className=''>
-                     <h1 className='font-bold text-xl'> Edit App Info Page </h1>
+                     <h1 className='font-bold text-lg'> 
+                        <Link 
+                          to='/settings'
+                          className='text-blue-800 hover:text-black'>
+                              Settings
+                        </Link> / <span className=''>Edit App Info</span>
+                      </h1>
                    </div>
                    <div className='flex gap-2 items-center'>
                      <CurrentUser />

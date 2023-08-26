@@ -79,11 +79,15 @@ function UserMonthlySales() {
              <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg pr-[0.5rem]'>
                 <div className='w-[96%] flex justify-between items-center'>
                    <div className=''>
-                     <h1 className='font-bold text-xl'> 
-                        Daily User Sales Page for: 
-                        <span className='text-blue-800'> 
-                         {` ${ authUser.first_name ? authUser.first_name : '' } ${ authUser.last_name ? authUser.last_name : '' }`}
-                        </span> 
+                     <h1 className='font-bold text-lg'> 
+                        <Link 
+                           to='/user/sales'
+                           className='text-blue-800 hover:text-black'>
+                              User Sales
+                        </Link> / Monthly User Sales for:
+                        <span className='text-green-800'>
+                           {` ${ authUser.first_name ? authUser.first_name : '' } ${ authUser.last_name ? authUser.last_name : '' }`}
+                        </span>
                      </h1>
                    </div>
                    <div className='flex gap-2 items-center'>

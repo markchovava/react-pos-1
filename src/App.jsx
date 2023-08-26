@@ -30,8 +30,8 @@ import DaySaleProductUSD from './pages/Sales/DaySaleProductUSD'
 import DaySaleProductZWL from './pages/Sales/DaySaleProductZWL'
 /* ------------------- USER SALES ------------------- */
 import UserSalesPage from './pages/UserSales/UserSalesPage'
+import UserDailyProductSales from './pages/UserSales/UserDailyProductSales'
 import UserMonthlySales from './pages/UserSales/UserMonthlySales'
-import UserDailySales from './pages/UserSales/UserDailySales'
 /* ------------------- PRODUCT ------------------- */
 import ListProduct from './pages/Product/ListProduct'
 import AddProduct from './pages/Product/AddProduct'
@@ -58,6 +58,9 @@ import DayPurchaseProductZWL from './pages/Purchase/DayPurchaseProductZWL'
 import MonthPurchaseProductUSD from './pages/Purchase/MonthPurchaseProductUSD'
 import MonthPurchaseProductZWL from './pages/Purchase/MonthPurchaseProductZWL'
 import PurchaseSupplier from './pages/Purchase/PurchaseSupplier'
+import SupplierDailyPurchase from './pages/Purchase/SupplierDailyPurchase'
+import SupplierMonthlyPurchase from './pages/Purchase/SupplierMonthlyPurchase'
+
 
 
 
@@ -81,7 +84,7 @@ function App() {
         <Route path='/user/view/:id' element={<ViewUser />} />
         {/* ------------------- Current User Sales ------------------- */}
         <Route path='/user/sales' element={<UserSalesPage />} />
-        <Route path='/user/sales/daily/:id' element={<UserDailySales />} />
+        <Route path='/user/sales/daily/product/:id' element={<UserDailyProductSales />} />
         <Route path='/user/sales/monthly/:id' element={<UserMonthlySales />} />
         {/* ------------------- Product ------------------- */}
         <Route path='/product' element={<ListProduct />} />
@@ -116,6 +119,8 @@ function App() {
         <Route path='/purchase/month/usd' element={<MonthPurchaseProductUSD />} />
         <Route path='/purchase/month/zwl' element={<MonthPurchaseProductZWL />} />
         <Route path='/purchase/supplier' element={<PurchaseSupplier />} />
+        <Route path='/purchase/supplier/monthly/:id' element={<SupplierMonthlyPurchase />} />
+        <Route path='/purchase/supplier/daily/:id' element={<SupplierDailyPurchase />} />
         {/* ------------------- SUPPLIER ------------------- */}
         <Route path='/supplier' element={<ListSupplier />} />
         <Route path='/supplier/add' element={<AddSupplier />} />

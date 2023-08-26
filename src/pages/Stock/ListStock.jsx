@@ -8,9 +8,13 @@ import LogoutBtn from '../../components/LogoutBtn'
 import CurrentUser from '../../components/CurrentUser'
 import AxiosClient from '../../axios/axiosClient'
 
+/* PRINT */
+import { useReactToPrint } from 'react-to-print';
+import ListStockPrint  from './Print/ListStockPrint'
+
 
 function ListStock() {
-   const baseURL = 'product/';
+   const baseURL = 'product-stock/';
    /* CHECK AUTHENTICATION */
    const {getToken} = MainContextState()
    const navigate = useNavigate();
@@ -78,7 +82,11 @@ function ListStock() {
       }
     }, [isSearch]);
    
- 
+      /* PRINT STUFF */
+      const componentRef = useRef();
+      const handlePrint = useReactToPrint({
+        content: () => componentRef.current,
+      });
    
   return (
    <section className='bg-slate-100 h-auto w-full overflow-hidden'>
@@ -90,7 +98,13 @@ function ListStock() {
                <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg'>
                   <div className='w-[96%] flex justify-between items-center'>
                      <div className=''>
-                        <h1 className='font-bold text-xl'> Product Stock Page </h1>
+                        <h1 className='font-bold text-lg'> 
+                           <Link 
+                              to='/stock'
+                              className='text-blue-800 hover:text-black'>
+                              Stock
+                           </Link> / <span className=''>Stock List</span>
+                        </h1>
                      </div>
                      <div className='flex gap-2 items-center'>
                            <CurrentUser />
@@ -133,6 +147,11 @@ function ListStock() {
                               </div>
                            }
                         </div>
+                        <button
+                           onClick={handlePrint}
+                           className='bg-blue-500 hover:bg-blue-600 duration py-2 px-4 rounded-md text-white'>
+                              Print
+                        </button>
                      </div>
                   </div>
                </div>
@@ -181,6 +200,11 @@ function ListStock() {
             </section>
          </section>
 
+      </div>
+      <div style={{ display: "none" }}>
+         <ListStockPrint
+            ref={componentRef}
+            products={products} />
       </div>
    </section>
   )

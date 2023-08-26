@@ -135,7 +135,13 @@ function SalesList() {
                  <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg pr-[0.5rem]'>
                     <div className='w-[96%] flex justify-between items-center'>
                        <div className=''>
-                          <h1 className='font-bold text-xl'> All Sales Page </h1>
+                          <h1 className='font-bold text-lg'> 
+                            <Link 
+                              to='/sales'
+                              className='text-blue-800 hover:text-black'>
+                              Sales
+                            </Link> / <span className=''>Sales List</span>
+                           </h1>
                        </div>
                        <div className='flex gap-2 items-center'>
                           <CurrentUser />
@@ -188,12 +194,12 @@ function SalesList() {
                  <div className='w-full h-[7vh] bg-white flex items-end justify-center pr-[0.5rem]'>
                     {/* Table Row */}
                     <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                       <div className='w-[16%] border-r border-slate-300 font-semibold px-3'>REF NO </div>
+                       <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>REF NO </div>
                        <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>USER </div>
-                       <div className='w-[16%] border-r border-slate-300 font-semibold px-3'>GRANDTOTAL </div>
-                       <div className='w-[16%] border-r border-slate-300 font-semibold px-3'>CURRENCY </div>
-                       <div className='w-[16%] border-r border-slate-300 font-semibold px-3'>CREATED AT </div>
-                       <div className='w-[16%] border-r border-slate-300 font-semibold px-3'>ACTION</div>
+                       <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>GRANDTOTAL </div>
+                       <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>CURRENCY </div>
+                       <div className='w-[15%] border-r border-slate-300 font-semibold px-3'>CREATED AT </div>
+                       <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>ACTION</div>
                     </div>
                  </div>
               </section>
@@ -205,16 +211,16 @@ function SalesList() {
                     { sales?.results &&
                        sales?.results.map((item, i) => (
                        <div key={i} className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                          <div className='w-[16%] border-r border-slate-300 px-3'>
+                          <div className='w-[25%] border-r border-slate-300 px-3'>
                               {item?.ref_no}
                           </div>
                           <div className='w-[20%] border-r border-slate-300 px-3'> {`${item.user ? item.user?.first_name : '' } ${item.user ? item.user?.last_name : ''}`} </div>
-                          <div className='w-[16%] border-r border-slate-300 px-3'>${(item.grandtotal / 100).toFixed(2)} </div>
-                          <div className='w-[16%] border-r border-slate-300 px-3'> {item.currency}</div>
-                          <div className='w-[16%] border-r border-slate-300 px-3'>
+                          <div className='w-[20%] border-r border-slate-300 px-3'>${(item.grandtotal / 100).toFixed(2)} </div>
+                          <div className='w-[10%] border-r border-slate-300 px-3'> {item.currency}</div>
+                          <div className='w-[15%] border-r border-slate-300 px-3'>
                             {item.created_at}
                           </div>
-                          <div className='w-[16%] border-r border-slate-300 px-3'> 
+                          <div className='w-[10%] border-r border-slate-300 px-3'> 
                           <div className='flex items-center gap-2'>
                             <Link to={`/sales/view/${item.id}`}>
                               <AiFillEye className='text-xl transition text-slate-800 hover:text-blue-600 hover:scale-110'/>

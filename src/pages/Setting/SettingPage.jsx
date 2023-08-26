@@ -63,10 +63,7 @@ function SettingPage() {
                               </div>
                            </div>
                         </Link>
-                        <div className='bg-green-500 hover:bg-green-600 transition cursor-pointer flex flex-col items-center justify-center gap-3 py-8'>
-                           <FaCalculator className='text-[5rem] text-white'/>
-                           <div className='text-xl text-white font-semibold p-2 mx-auto text-center'>Calculations</div>
-                        </div>
+                       
                      </div>
                   </section>
                </div>

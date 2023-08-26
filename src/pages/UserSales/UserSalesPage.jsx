@@ -35,7 +35,8 @@ function UserSalesPage() {
                <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg'>
                   <div className='w-[96%] flex justify-between items-center'>
                       <div className=''>
-                        <h1 className='font-bold text-lg'> User Sales Page </h1>
+                        <h1 className='font-bold text-lg'> User Sales </h1>
+                        
                       </div>
                       <div className='flex gap-2 items-center'>
                            <CurrentUser />
@@ -50,7 +51,7 @@ function UserSalesPage() {
                   <section className='w-[96%] h-[80vh] my-[5vh] mx-auto'>
                      <div className='grid grid-cols-5'>
                        
-                        <Link to={`/user/sales/daily/${user_id}`}>
+                        <Link to={`/user/sales/daily/product/${user_id}`}>
                            <div className='border-t border-b border-l border-blue-500 hover:border-blue-600 text-blue-500 hover:text-blue-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
                               <FaCalendarDay className='text-[5rem]' />
                               <div className='text-md font-semibold p-2 mx-auto text-center'>

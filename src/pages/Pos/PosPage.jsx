@@ -34,7 +34,6 @@ function PosPage() {
     setZwlRate, currencyState, salesDispatch, currencyDispatch, paymentState, 
     paymentDispatch, authUser, _token, recieptDispatch} = MainContextState()
     const user_id = authUser?.id;
-    console.log('USER ID: ' + user_id)
   const navigate = useNavigate();
   const token = getToken();
   useEffect(()=>{
@@ -216,15 +215,15 @@ function PosPage() {
     return quantity;
   };
   /* SUBTOTAL */
-  const calculateSubTotal = () => {
+ /*  const calculateSubTotal = () => {
     const subtotal = calculateGrandTotal() - calculateTax();
     return subtotal;
-  };
+  }; */
   /* TAX */
-  const calculateTax = () => {
+  /* const calculateTax = () => {
     const tax = (15 / 100) * calculateGrandTotal();
     return tax;
-  }
+  } */
   /* CHANGE */
   const calculateChange = () => {
     const change = (amount * 100) - calculateGrandTotal();
@@ -281,8 +280,10 @@ function PosPage() {
       quantity_total: parseInt(calculateQuantity()),
       grandtotal: parseInt(calculateGrandTotal()),
       amount_paid: parseInt(amountRef.current.value * 100),
-      subtotal: parseInt(calculateSubTotal()),
-      tax: parseInt(calculateTax()),
+      //subtotal: parseInt(calculateSubTotal()),
+      subtotal: 0,
+      //tax: parseInt(calculateTax()),
+      tax: 0,
       change: parseInt(calculateChange()),
       owing: calculateOwing() < 1 ? null : parseInt(calculateOwing()),
       currency: currencyRef.current.value,
@@ -557,12 +558,12 @@ function PosPage() {
 
                 <div className='w-full h-auto px-6 py-4'>
                   <div className='w-full flex items-center justify-start gap-2'>
-                    <div className='font-semibold w-[50%]'>
+                    {/* <div className='font-semibold w-[50%]'>
                       <p className='text-sm'>Subtotal</p>
                       <h3 className='text-xl text-yellow-100'>
                         ${calculateSubTotal() ? (calculateSubTotal() / 100).toFixed(2) : '0.00'}
                       </h3>
-                    </div>
+                    </div> */}
                     <div className='font-semibold w-[50%]'>
                       <p className='text-sm'>Total Quantity</p>
                       <h3 className='text-xl text-yellow-100'>
@@ -572,13 +573,14 @@ function PosPage() {
 
                   </div>
                   
-                  <div className='mb-3'></div>
+                  {/* <div className='mb-3'></div>
                   <div className='font-semibold'>
                       <p className='text-sm '>Tax (15%) </p>
                       <h3 className='text-xl text-yellow-100'>
                         ${ calculateTax() ? (calculateTax() / 100).toFixed(2) : '0.00' }
                       </h3>
-                  </div>
+                  </div> */}
+
                   <div className='mb-3'></div>
                   <div className='flex items-center justify-start gap-2'>
                     <div className='font-semibold w-[50%] text-green-300'>
@@ -658,11 +660,11 @@ function PosPage() {
               </section>
             </div>
             <div style={{ display: "none" }}>
-            <RecieptPage 
-              ref={componentRef} 
-              recieptData={latest} 
-              app_info={appInfo} 
-              user_info={recieptUser} />
+              <RecieptPage 
+                ref={componentRef} 
+                recieptData={latest} 
+                app_info={appInfo} 
+                user_info={recieptUser} />
             </div>
             <ToastContainer />
         </section>

@@ -142,7 +142,13 @@ function EditSupplier() {
                <div className='w-full h-[10vh] bg-white border-b border-slate-400 flex items-center justify-center shadow-lg pr-[1rem]'>
                   <div className='w-[96%] flex justify-between items-center'>
                      <div className=''>
-                        <h1 className='font-bold text-xl'> Edit Supplier Page </h1>
+                        <h1 className='font-bold text-lg'> 
+                           <Link 
+                              to='/supplier'
+                              className='text-blue-800 hover:text-black'>
+                                 Supplier List
+                           </Link> / <span className=''>Edit Supplier</span>
+                        </h1>
                      </div>
                      <div className='flex gap-2 items-center'>
                       <CurrentUser />

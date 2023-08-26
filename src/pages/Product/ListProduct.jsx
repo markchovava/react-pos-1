@@ -95,7 +95,7 @@ function ListProduct() {
 
   const handleSearch = async () => {
     console.log(searchName)
-    const result = await AxiosClient.get(`product/?search=${searchName}`)
+    const result = await AxiosClient.get(`${baseURL}?search=${searchName}`)
       .then((response) => {
         productDispatch({
           type: 'FETCH_PRODUCT',
@@ -124,7 +124,7 @@ function ListProduct() {
                 <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg'>
                   <div className='w-[96%] flex justify-between items-center'>
                       <div className=''>
-                        <h1 className='font-bold text-xl'> Product List Page </h1>
+                        <h1 className='font-bold text-lg'> Product List Page </h1>
                       </div>
                       <div className='flex gap-2 items-center'>
                         <CurrentUser />

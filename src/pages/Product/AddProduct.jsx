@@ -81,7 +81,8 @@ function AddProduct() {
        addProduct({
           name: e.target.name.value,
           barcode: e.target.barcode.value,
-          quantity: e.target.quantity.value,
+          //quantity: e.target.quantity.value,
+          quantity: 0,
           unit_price: e.target.unit_price.value,
           brand: e.target.brand.value,
           user_id: user_id,
@@ -96,7 +97,13 @@ function AddProduct() {
             <div className='w-full h-[10vh] bg-white border-b border-slate-400 flex items-center justify-center shadow-lg pr-[1rem]'>
               <div className='w-[96%] flex justify-between items-center'>
                   <div className=''>
-                    <h1 className='font-bold text-xl'> Add Product Page </h1>
+                    <h1 className='font-bold text-lg'> 
+                      <Link 
+                        to='/product'
+                        className='text-blue-800 hover:text-black'>
+                        Products
+                      </Link> / <span className=''>Add Product</span>
+                    </h1>
                   </div>
                   <div className='flex gap-2 items-center'>
                     <CurrentUser />
@@ -108,7 +115,9 @@ function AddProduct() {
             <div className='w-full h-[15vh]  shadow-lg flex justify-center items-end pr-[1rem]'>
               <div className='w-full h-[10vh] bg-white flex justify-center'>
                   <div className='w-[96%] flex justify-between items-end pb-2'>
-                    <h1 className='text-4xl font-bold'>Add Product</h1>
+                    <h1 className='text-4xl font-bold'>
+                        Add Product
+                    </h1>
                     <Link to='/product'>
                       <button className='px-3 py-2 bg-green-500 hover:bg-green-600 text-white rounded-md'>
                         View All
@@ -144,14 +153,14 @@ function AddProduct() {
                   className='border border-slate-400 rounded-md outline-none py-2 px-3 w-[70%]' 
                   placeholder='Enter Barcode here...'/>
                 </div>
-                <div className='flex items-center justify-start mb-6'>
+                {/* <div className='flex items-center justify-start mb-6'>
                   <label className='w-[25%] font-semibold text-slate-900'>
                     Product Stock:
                   </label>
                   <input type="number" name='quantity'
                   className='border border-slate-400 rounded-md outline-none py-2 px-3 w-[70%]' 
                   placeholder='Enter Quantity Here...'/>
-                </div>
+                </div> */}
                 <div className='flex items-center justify-start mb-6'>
                   <label className='w-[25%] font-semibold text-slate-900'>
                     Unit Price:
