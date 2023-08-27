@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import { AiFillEye, AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai'
@@ -9,6 +9,10 @@ import CurrentUser from '../../components/CurrentUser'
 import AxiosClient from '../../axios/axiosClient'
 import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+/* PRINT */
+import { useReactToPrint } from 'react-to-print';
+import DayPurchaseProductPrint  from './Print/DayPurchaseProductPrint'
 
 
 function DayPurchaseProductZWL() {
@@ -102,6 +106,13 @@ function DayPurchaseProductZWL() {
               getPurchaseProduct()
           }
       }, [isSearch])
+
+
+       /* PRINT STUFF */
+    const componentRef = useRef();
+    const handlePrint = useReactToPrint({
+      content: () => componentRef.current,
+    });
   
 
 
@@ -162,6 +173,12 @@ function DayPurchaseProductZWL() {
                               </div>
                           }
                         </div>
+
+                        <button
+                          onClick={handlePrint}
+                          className='bg-blue-500 hover:bg-blue-600 duration py-2 px-4 rounded-md text-white'>
+                            Print
+                        </button>
                     
                     </div>
                   </div>
@@ -172,10 +189,10 @@ function DayPurchaseProductZWL() {
                   {/* Table Row */}
                   <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>PRODUCT NAME </div>
-                    <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>DATE </div>
                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>QUANTITY </div>
                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>TOTAL COST </div>
                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>CURRENCY</div>
+                    <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>DATE </div>
                   </div>
               </div>
             </section>
@@ -187,12 +204,11 @@ function DayPurchaseProductZWL() {
                     purchase?.results.map((item, i) => (
                     <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
                       <div className='w-[20%] border-r border-slate-300 px-3'>{item.product_name} </div>
-                      <div className='w-[20%] border-r border-slate-300 px-3'>{item.created_at } </div>
                       <div className='w-[20%] border-r border-slate-300 px-3'>{item.quantity_bought ? item.quantity_bought : 0} </div>
                       <div className='w-[20%] border-r border-slate-300 px-3'>
-                        ${(item.total_cost / 100).toFixed(2)}
-                      </div>
+                          ${(item.total_cost / 100).toFixed(2)}  </div>
                       <div className='w-[20%] border-r border-slate-300 px-3'> {item.currency} </div>
+                      <div className='w-[20%] border-r border-slate-300 px-3'>{item.created_at } </div>
                     </div>   
                   ))}
               </div>
@@ -202,6 +218,15 @@ function DayPurchaseProductZWL() {
         </section>
 
       </div>
+
+      <div style={{ display: "none" }}>
+        <DayPurchaseProductPrint 
+          ref={componentRef} 
+          purchase={purchase} 
+          currency='ZWL' />
+      </div>
+
+
     </section>
   )
 }

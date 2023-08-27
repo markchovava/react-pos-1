@@ -193,7 +193,8 @@ function DaySaleUSD() {
                         <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>DAY </div>
                         <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>QUANTITY </div>
                         <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>TOTAL PRICE </div>
-                        <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>CURRENCY </div>
+                        <div className='w-[15%] border-r border-slate-300 font-semibold px-3'>CURRENCY </div>
+                        <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>ACTION </div>
                      </div>
                   </div>
                </section>
@@ -208,7 +209,12 @@ function DaySaleUSD() {
                            <div className='w-[25%] border-r border-slate-300 px-3'> { item.created_at }</div>
                            <div className='w-[25%] border-r border-slate-300 px-3'> {item.quantity_total} </div>
                            <div className='w-[25%] border-r border-slate-300 px-3'> ${(item.grandtotal / 100).toFixed(2)} </div>
-                           <div className='w-[25%] px-3'> { item.currency } </div>
+                           <div className='w-[15%] border-r border-slate-300 px-3'> { item.currency } </div>
+                           <div className='w-[10%] px-3'>  
+                              <Link to={`/sales/daily/usd/${item.created_at}`}>
+                                 <AiFillEye className='text-xl transition text-slate-800 hover:text-blue-600 hover:scale-110'/>
+                              </Link>
+                           </div>
                      </div>   
                      ))}
                      
@@ -218,6 +224,7 @@ function DaySaleUSD() {
                </section>
             </section>
          </div>
+         {/* -------------------------------------- */}
          <div style={{ display: "none" }}>
             <DaySalePrint 
                ref={componentRef}

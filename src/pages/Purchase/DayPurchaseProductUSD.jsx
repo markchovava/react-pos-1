@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import { AiFillEye, AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai'
@@ -10,8 +10,12 @@ import AxiosClient from '../../axios/axiosClient'
 import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+/* PRINT */
+import { useReactToPrint } from 'react-to-print';
+import DayPurchaseProductPrint  from './Print/DayPurchaseProductPrint'
 
-function DayPurchseProductUSD() {
+
+function DayPurchaseProductUSD() {
   const baseURL = 'purchase-item-daily/usd/';
   /* CHECK AUTHENTICATION */
   const {getToken, authUser} = MainContextState()
@@ -104,7 +108,11 @@ function DayPurchseProductUSD() {
   }, [isSearch])
   
   
-
+ /* PRINT STUFF */
+ const componentRef = useRef();
+ const handlePrint = useReactToPrint({
+   content: () => componentRef.current,
+ });
 
   return (
     <section className='bg-slate-100 h-auto w-full overflow-hidden'>
@@ -163,6 +171,12 @@ function DayPurchseProductUSD() {
                               </div>
                           }
                         </div>
+
+                        <button
+                          onClick={handlePrint}
+                          className='bg-blue-500 hover:bg-blue-600 duration py-2 px-4 rounded-md text-white'>
+                            Print
+                        </button>
                     
                     </div>
                   </div>
@@ -172,11 +186,11 @@ function DayPurchseProductUSD() {
               <div className='w-full h-[7vh] bg-white flex items-end justify-center pr-[0.5rem]'>
                   {/* Table Row */}
                   <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                    <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>PRODUCT NAME </div>
-                    <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>DATE </div>
+                    <div className='w-[30%] border-r border-slate-300 font-semibold px-3'>PRODUCT NAME </div>
                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>QUANTITY </div>
                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>TOTAL COST </div>
-                    <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>CURRENCY</div>
+                    <div className='w-[15%] border-r border-slate-300 font-semibold px-3'>CURRENCY</div>
+                    <div className='w-[15%] border-r border-slate-300 font-semibold px-3'>DATE </div>
                   </div>
               </div>
             </section>
@@ -187,13 +201,13 @@ function DayPurchseProductUSD() {
                   { purchase?.results &&
                     purchase?.results.map((item, i) => (
                     <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                      <div className='w-[20%] border-r border-slate-300 px-3'>{item.product_name} </div>
-                      <div className='w-[20%] border-r border-slate-300 px-3'>{item.created_at } </div>
+                      <div className='w-[30%] border-r border-slate-300 px-3'>{item.product_name} </div>
                       <div className='w-[20%] border-r border-slate-300 px-3'>{item.quantity_bought ? item.quantity_bought : 0} </div>
                       <div className='w-[20%] border-r border-slate-300 px-3'>
                         ${(item.total_cost / 100).toFixed(2)} 
                       </div>
-                      <div className='w-[20%] border-r border-slate-300 px-3'> {item.currency} </div>
+                      <div className='w-[15%] border-r border-slate-300 px-3'> {item.currency} </div>
+                      <div className='w-[15%] border-r border-slate-300 px-3'>{item.created_at } </div>
                     </div>   
                   ))}
               </div>
@@ -203,8 +217,16 @@ function DayPurchseProductUSD() {
         </section>
 
       </div>
+
+      <div style={{ display: "none" }}>
+        <DayPurchaseProductPrint 
+          ref={componentRef} 
+          purchase={purchase} 
+          currency='USD' />
+      </div>
+      
     </section>
   )
 }
 
-export default DayPurchseProductUSD
+export default DayPurchaseProductUSD

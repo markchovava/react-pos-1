@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { AiFillEye, AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai'
@@ -9,6 +9,12 @@ import CurrentUser from '../../components/CurrentUser'
 import AxiosClient from '../../axios/axiosClient'
 import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+
+/* PRINT */
+import { useReactToPrint } from 'react-to-print';
+import SupplierDailyPurchasePrint from './Print/SupplierDailyPurchasePrint'
+
 
 function SupplierDailyPurchase() {
          /* Get Single Product */
@@ -96,6 +102,14 @@ function SupplierDailyPurchase() {
      fetchPurchase()
      getSupplier()
    }, []);
+
+
+    /* PRINT STUFF */
+    const componentRef = useRef();
+    const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+    });
+
   return (
     <section className='bg-slate-100 h-auto w-full overflow-hidden'>
         <div className='container h-[100vh] mx-auto max-w-screen-2xl lg:px-0 px-4 flex justify-start items-center'>
@@ -152,6 +166,12 @@ function SupplierDailyPurchase() {
                                 </div>
                             }
                         </div>
+
+                        <button
+                          onClick={handlePrint}
+                          className='bg-blue-500 hover:bg-blue-600 duration py-2 px-4 rounded-md text-white'>
+                            Print
+                        </button>
                     
                     </div>
                     </div>
@@ -193,6 +213,14 @@ function SupplierDailyPurchase() {
         </section>
 
         </div>
+        
+        <div style={{ display: "none" }}>
+            <SupplierDailyPurchasePrint
+                ref={componentRef} 
+                purchase={purchase}
+                supplier={supplier} />
+        </div>
+
     </section>
   )
 }

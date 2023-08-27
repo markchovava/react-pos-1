@@ -9,6 +9,11 @@ import CurrentUser from '../../components/CurrentUser'
 import AxiosClient from '../../axios/axiosClient'
 
 
+/* PRINT */
+import { useReactToPrint } from 'react-to-print';
+import ListPurchasePrint from './Print/ListPurchasePrint'
+
+
 function ListPurchase() {
    const baseURL = 'purchase/';
    /* CHECK AUTHENTICATION */
@@ -99,6 +104,12 @@ function ListPurchase() {
       }
     }, [deleteId])
    
+
+   /* PRINT STUFF */
+   const componentRef = useRef();
+   const handlePrint = useReactToPrint({
+      content: () => componentRef.current,
+   });
  
    
   return (
@@ -160,6 +171,13 @@ function ListPurchase() {
                               </div>
                            }
                         </div>
+
+                        <button
+                          onClick={handlePrint}
+                          className='bg-blue-500 hover:bg-blue-600 duration py-2 px-4 rounded-md text-white'>
+                            Print
+                        </button>
+
                      </div>
                   </div>
                </div>
@@ -217,6 +235,13 @@ function ListPurchase() {
          </section>
 
       </div>
+
+      <div style={{ display: "none" }}>
+         <ListPurchasePrint
+            ref={componentRef} 
+            purchase={purchases} />
+      </div>
+
    </section>
   )
 }

@@ -60,6 +60,8 @@ import MonthPurchaseProductZWL from './pages/Purchase/MonthPurchaseProductZWL'
 import PurchaseSupplier from './pages/Purchase/PurchaseSupplier'
 import SupplierDailyPurchase from './pages/Purchase/SupplierDailyPurchase'
 import SupplierMonthlyPurchase from './pages/Purchase/SupplierMonthlyPurchase'
+import ProductsSalesByDayUSD from './pages/Sales/ProductsSalesByDayUSD'
+import ProductsSalesByDayZWL from './pages/Sales/ProductsSalesByDayZWL'
 
 
 
@@ -96,7 +98,9 @@ function App() {
         <Route path='/sales/list' element={<SalesList />} />
         <Route path='/sales/view/:id' element={<SalesView />} />
         <Route path='/sales/daily/usd/' element={<DaySaleUSD />} />
+        <Route path='/sales/daily/usd/:created_at' element={<ProductsSalesByDayUSD />} />
         <Route path='/sales/daily/zwl' element={<DaySaleZWL />} />
+        <Route path='/sales/daily/zwl/:created_at' element={<ProductsSalesByDayZWL />} />
         <Route path='/sales/daily/product/usd' element={<DaySaleProductUSD />} />
         <Route path='/sales/daily/product/zwl' element={<DaySaleProductZWL />} />
         <Route path='/sales/monthly/usd' element={<MonthSaleUSD />} />
