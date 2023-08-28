@@ -67,6 +67,7 @@ import DailyPurchaseUSD from './pages/Purchase/DailyPurchaseUSD'
 import DailyPurchaseZWL from './pages/Purchase/DailyPurchaseZWL'
 import PurchaseByDayUSD from './pages/Purchase/PurchaseByDayUSD'
 import PurchaseByDayZWL from './pages/Purchase/PurchaseByDayZWL'
+import NotFoundPage from './pages/NotFound/NotFoundPage'
 
 
  
@@ -77,6 +78,8 @@ function App() {
   return (
     <>
       <Routes>
+        <Route path='*' element={<NotFoundPage />} />
+
         <Route path='/pos' element={<PosPage />} />
         <Route path='/receipt' element={<Reciept />} />
         {/* ------------------- AUTH ------------------- */}
