@@ -22,19 +22,19 @@ const DaySalePrint = React.forwardRef((props,  ref) => {
               </div>
           </div>
           <div className='w-full flex justify-start border border-slate-300 py-2'>
-              <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>DATE </div>
+              <div className='w-[30%] border-r border-slate-300 font-semibold px-3'>DATE </div>
               <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>QUANTITY </div>
               <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>TOTAL PRICE </div>
-              <div className='w-[25%] font-semibold px-3'>CURRENCY</div>
+              <div className='w-[20%] font-semibold px-3'>CURRENCY</div>
           </div>
           
           { sales?.results &&
               sales?.results.map((item, i) => (
               <div key={i} className='w-full flex justify-start border border-slate-300 py-1'>
-                  <div className='w-[25%] border-r border-slate-300 px-3'> {item.created_at} </div>
+                  <div className='w-[30%] border-r border-slate-300 px-3'> {item.created_at} </div>
                   <div className='w-[25%] border-r border-slate-300 px-3'> {item.quantity_total} </div>
                   <div className='w-[25%] border-r border-slate-300 px-3'> ${(item.grandtotal / 100).toFixed(2)} </div>
-                  <div className='w-[25%] px-3'> { item.currency } </div>
+                  <div className='w-[20%] px-3'> { item.currency } </div>
               </div>
               )
           )}

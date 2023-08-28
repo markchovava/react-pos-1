@@ -10,41 +10,26 @@ import AxiosClient from '../../axios/axiosClient'
 import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 import { useReactToPrint } from 'react-to-print';
-import DaySalePrint  from './Print/DaySalePrint'
+import DailyPurchasePrint  from './Print/DailyPurchasePrint'
 
 
-function DaySaleUSD() {
-   const baseURL = 'sales/daily/usd/'
+const DailyPurchaseZWL = () => {
+   const baseURL = 'purchase-daily/zwl/'
+   const currency = 'ZWL'
    const {getToken, authUser} = MainContextState()
+   const [purchases, setPurchases] = useState({})
    const navigate = useNavigate();
    const token = getToken();
    useEffect(()=>{
       if(!token){
         return navigate('/login');
       }
-    },[token])
+   },[token])
 
-    /* ACCESS CONTROL */
+   /* ACCESS CONTROL */
    const accessLevel = parseInt(authUser?.access_level)
-   useEffect(() => {
-     if(accessLevel >= 3){
-       return navigate('/sales', 
-                 toast.success('You are not allowed.', {
-                 position: "top-right",
-                 autoClose: 5000,
-                 hideProgressBar: false,
-                 closeOnClick: true,
-                 pauseOnHover: true,
-                 draggable: true,
-                 progress: undefined,
-                 theme: "light",
-               })
-             );
-     }
-   }, [])
-  
-   const [sales, setSales] = useState({})
    /* PAGINATION */
    const [nextURL, setNextURL] = useState()
    const [prevURL, setPrevURL] = useState()
@@ -55,7 +40,7 @@ function DaySaleUSD() {
             console.log(response.data)
             console.log('Prev: ' + response.data.previous)
             console.log('Next: ' + response.data.next)
-            setSales(response.data)
+            setPurchases(response.data)
             setPrevURL(response.data.previous)
             setNextURL(response.data.next)
          })
@@ -65,25 +50,40 @@ function DaySaleUSD() {
    }
    /* END OF PAGINATION LOGIC */
 
-   useEffect(() => { 
-     async function fetchSales() {
-      try{
-         const result = await AxiosClient.get(baseURL)
-         .then((response) => {
-               console.log(response.data)
-               console.log('Prev: ' + response.data.previous)
-               console.log('Next: ' + response.data.next)
-               setSales(response.data)
-               setPrevURL(response.data.previous)
-               setNextURL(response.data.next)
-            })
-         } catch (error) {
-         console.error(`Error: ${error}`)
-         }     
-     }
-     fetchSales()
+   /* GET PAGINATED PURCHASES */
+   async function fetchPurchases() {
+    try{
+       const result = await AxiosClient.get(baseURL)
+       .then((response) => {
+             console.log(response.data)
+             console.log('Prev: ' + response.data.previous)
+             console.log('Next: ' + response.data.next)
+             setPurchases(response.data)
+             setPrevURL(response.data.previous)
+             setNextURL(response.data.next)
+          })
+       } catch (error) {
+       console.error(`Error: ${error}`)
+       }     
+   }
+   /* SIDE EFFECTS */
+   useEffect(() => {        
+        if(accessLevel >= 3){
+            return navigate('/stock', 
+                    toast.success('You are not allowed.', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    })
+                );
+        }
+        fetchPurchases();
    }, []);
-
    /* SEARCH ALL SALES */
    const [searchName, setSearchName] = useState('')
    const [isSubmit, setIsSubmit] = useState(false)
@@ -92,7 +92,7 @@ function DaySaleUSD() {
    console.log(searchName)
    const result = await AxiosClient.get(`${baseURL}?search=${searchName}`)
       .then((response) => {
-        setSales(response.data)
+        setPurchases(response.data)
         console.log(response.data)
         setPrevURL(response.data.previous)
         setNextURL(response.data.next)
@@ -100,9 +100,9 @@ function DaySaleUSD() {
       })   
    }
    useEffect( () => {
-    if( isSubmit == true){ 
-      handleSearch()  
-    } 
+        if( isSubmit == true){ 
+        handleSearch()  
+        } 
    }, [isSubmit]);
 
 
@@ -112,8 +112,8 @@ function DaySaleUSD() {
     content: () => componentRef.current,
   }); 
 
- 
-   return (
+
+  return (
    <section className='bg-slate-100 h-auto w-full overflow-hidden'>
          <div className='container h-[100vh] mx-auto max-w-screen-2xl lg:px-0 px-4 flex justify-start items-center'>
             {/* LEFT */}
@@ -128,10 +128,10 @@ function DaySaleUSD() {
                         <div className=''>
                            <h1 className='font-bold text-lg'> 
                               <Link 
-                                 to='/sales'
+                                 to='/stock'
                                  className='text-blue-800 hover:text-black'>
-                                 Sales
-                              </Link> / <span className=''>Daily Sales Totals: USD</span>
+                                 Stock Purchases
+                              </Link> / <span className=''>Daily Purchases Totals: {currency}</span>
                            </h1>
                         </div>
                         <div className='flex gap-2 items-center'>
@@ -192,7 +192,7 @@ function DaySaleUSD() {
                      <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
                         <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>DAY </div>
                         <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>QUANTITY </div>
-                        <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>TOTAL PRICE </div>
+                        <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>PURCHASE TOTAL</div>
                         <div className='w-[15%] border-r border-slate-300 font-semibold px-3'>CURRENCY </div>
                         <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>ACTION </div>
                      </div>
@@ -203,15 +203,15 @@ function DaySaleUSD() {
                   {/* ListStockTable */}
                   <div className='w-full bg-white flex flex-col items-center justify-center text-md'>
                      {/* Table Row */}  
-                     { sales?.results &&
-                        sales?.results.map((item, i) => (
+                     { purchases?.results &&
+                        purchases?.results.map((item, i) => (
                         <div key={i} className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
                            <div className='w-[25%] border-r border-slate-300 px-3'> { item.created_at }</div>
                            <div className='w-[25%] border-r border-slate-300 px-3'> {item.quantity_total} </div>
-                           <div className='w-[25%] border-r border-slate-300 px-3'> ${(item.grandtotal / 100).toFixed(2)} </div>
+                           <div className='w-[25%] border-r border-slate-300 px-3'> ${(item.purchase_total / 100).toFixed(2)} </div>
                            <div className='w-[15%] border-r border-slate-300 px-3'> { item.currency } </div>
                            <div className='w-[10%] px-3'>  
-                              <Link to={`/sales/daily/usd/${item.created_at}`}>
+                              <Link to={`/purchase/daily/zwl/${item.created_at}`}>
                                  <AiFillEye className='text-xl transition text-slate-800 hover:text-blue-600 hover:scale-110'/>
                               </Link>
                            </div>
@@ -226,15 +226,13 @@ function DaySaleUSD() {
          </div>
          {/* -------------------------------------- */}
          <div style={{ display: "none" }}>
-            <DaySalePrint 
+            <DailyPurchasePrint 
                ref={componentRef}
-               sales={sales}
-               currency='USD' />
+               purchases={purchases}
+               currency={currency} />
          </div>
    </section>
-   )
-
-   
+  )
 }
 
-export default DaySaleUSD
+export default DailyPurchaseZWL

@@ -79,23 +79,41 @@ function StockPage() {
                            </div>
                         </Link>   
 
-                        <Link to='/purchase/day/usd'>
+                        <Link to='/purchase/product/day/usd'>
                            <div className='border-y border-r border-sky-500 hover:border-sky-600 text-sky-500 hover:text-sky-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
                               <TbBrandProducthunt className='text-[5rem]' />
                               <div className='text-md font-semibold p-2 mx-auto text-center'>
-                                 Daily Purchase(USD)
+                                 Product Purchase (USD)
                               </div>
                            </div>
                         </Link>     
 
-                        <Link to='/purchase/day/zwl'>
+                        <Link to='/purchase/product/day/zwl'>
                            <div className='border-y border-r border-emerald-500 hover:border-emerald-600 text-emerald-500 hover:text-emerald-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
                               <TbBrandProducthunt className='text-[5rem]' />
                               <div className='text-md font-semibold p-2 mx-auto text-center'>
-                                 Daily Purchase(ZWL)
+                                 Product Purchase (ZWL)
                               </div>
                            </div>
                         </Link>  
+
+                        <Link to='/purchase/daily/usd'>
+                           <div className='border-t border-b border-l border-red-500 hover:border-red-600 text-red-500 hover:text-red-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
+                              <FaCalendarDay className='text-[5rem]' />
+                              <div className='text-md font-semibold p-2 mx-auto text-center'>
+                                 Daily Purchase (USD)
+                              </div>
+                           </div>
+                        </Link>
+
+                        <Link to='/purchase/daily/zwl'>
+                           <div className='border-t border-b border-l border-pink-500 hover:border-pink-600 text-pink-500 hover:text-pink-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
+                              <FaCalendarDay className='text-[5rem]' />
+                              <div className='text-md font-semibold p-2 mx-auto text-center'>
+                                 Daily Purchase (ZWL)
+                              </div>
+                           </div>
+                        </Link>
 
                         <Link to='/purchase/month/usd'>
                            <div className='border-y border-x border-slate-500 hover:border-slate-600 text-slate-500 hover:text-slate-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 

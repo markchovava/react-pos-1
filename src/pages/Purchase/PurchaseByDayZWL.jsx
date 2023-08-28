@@ -13,13 +13,14 @@ import 'react-toastify/dist/ReactToastify.css';
 
 /* PRINT */
 import { useReactToPrint } from 'react-to-print';
-import ProductsSalesByDayPrint from './Print/ProductsSalesByDayPrint';
+import PurchasesByDayPrint from './Print/PurchasesByDayPrint';
 
-const ProductsSalesByDayZWL = () => {
-  const currency = 'ZWL'
-  const { created_at } = useParams()
-    const baseURL = `all-salesitem-byday-paginated/zwl/?created_at=${created_at}`;
-    const printURL = `all-salesitem-byday/zwl/?created_at=${created_at}`;
+
+const PurchaseByDayZWL = () => {
+    const currency = 'ZWL'
+    const { created_at } = useParams()
+    const baseURL = `purchase-item-byday-paginated/zwl/?created_at=${created_at}`;
+    const printURL = `purchase-item-byday/zwl/?created_at=${created_at}`;
     /* CHECK AUTHENTICATION */
     const {getToken, authUser} = MainContextState()
     const navigate = useNavigate();
@@ -32,8 +33,8 @@ const ProductsSalesByDayZWL = () => {
     /* ACCESS CONTROL */
     const accessLevel = parseInt(authUser?.access_level)
     /*  */
-    const [sales, setSales] = useState({})
-    const [allSales, setAllSales] = useState([])
+    const [purchases, setPurchases] = useState({})
+    const [allPurchases, setAllPurchases] = useState([])
     /* PAGINATION */
     const [nextURL, setNextURL] = useState()
     const [prevURL, setPrevURL] = useState()
@@ -41,7 +42,7 @@ const ProductsSalesByDayZWL = () => {
         try{
             const result = await axios.get(url)
             .then((response) => {
-            setSales(response.data)
+            setPurchases(response.data)
             setPrevURL(response.data.previous)
             setNextURL(response.data.next)
             })
@@ -52,11 +53,11 @@ const ProductsSalesByDayZWL = () => {
     /* END OF PAGINATION LOGIC */
     
     /* FETCH PAGINATED SALES */
-    async function fetchSales() {
+    async function fetchPurchases() {
         try{
             const result = await AxiosClient.get(baseURL)
             .then((response) => {
-            setSales(response.data)
+            setPurchases(response.data)
             setPrevURL(response.data.previous)
             setNextURL(response.data.next)
             })
@@ -65,11 +66,11 @@ const ProductsSalesByDayZWL = () => {
         }   
     }
     /* FETCH ALL SALES */
-    async function fetchAllSales() {
+    async function fetchAllPurchases() {
         try{
             const result = await AxiosClient.get(printURL)
             .then((response) => {
-            setAllSales(response.data)
+            setAllPurchases(response.data)
             console.log(response.data)
             })
         } catch (error) {
@@ -79,7 +80,7 @@ const ProductsSalesByDayZWL = () => {
 
     useEffect(() => { 
         if(accessLevel >= 2){
-            return navigate('/sales', 
+            return navigate('/stock', 
                     toast.success('You are not allowed.', {
                     position: "top-right",
                     autoClose: 5000,
@@ -92,8 +93,8 @@ const ProductsSalesByDayZWL = () => {
                 })
             );
         }
-        fetchSales()
-        fetchAllSales()
+        fetchPurchases()
+        fetchAllPurchases()
     }, []);
 
     /* SEARCH ALL SALES */
@@ -104,7 +105,7 @@ const ProductsSalesByDayZWL = () => {
         console.log(searchName)
         const result = await AxiosClient.get(`${baseURL}?search=${searchName}`)
         .then((response) => {
-            setSales(response.data)
+            setPurchases(response.data)
             console.log(response.data)
             setPrevURL(response.data.previous)
             setNextURL(response.data.next)
@@ -123,6 +124,9 @@ const ProductsSalesByDayZWL = () => {
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
     });
+
+
+
   return (
     <section className='bg-slate-100 h-auto w-full overflow-hidden'>
       <div className='container h-[100vh] mx-auto max-w-screen-2xl lg:px-0 px-4 flex justify-start items-center'>
@@ -135,17 +139,17 @@ const ProductsSalesByDayZWL = () => {
                     <div className=''>
                         <h1 className='font-bold text-lg'> 
                             <Link 
-                              to='/sales'
+                              to='/stock'
                               className='text-blue-800 hover:text-black'>
-                              Sales
+                              Stock Purchases
                             </Link> / 
                             <Link 
-                              to='/sales/daily/zwl'
+                              to='/purchase/daily/zwl'
                               className='text-green-700 hover:text-black ml-1'>
-                               Daily Sales ({currency})
+                               Daily Purchases ({currency})
                             </Link> / 
-                                Product Sold on: 
-                                <span className='text-yellow-800'> {created_at} </span>
+                                Products Bought on: 
+                                <span className='text-violet-700'> {created_at}</span>
                         </h1>
                     </div>
                     <div className='flex gap-2 items-center'>
@@ -159,8 +163,7 @@ const ProductsSalesByDayZWL = () => {
               <div className='w-[100%] bg-white pt-4 pb-2 flex justify-center items-center pr-[0.5rem]'>
                   <div className='w-[96%] flex justify-between items-center'>
                    
-                    <div className='w-[40%]'>
-                      
+                    <div className='w-[40%]'> 
                     </div>
                   
                     <div className='flex items-center justify-between gap-4'>
@@ -195,7 +198,7 @@ const ProductsSalesByDayZWL = () => {
                   <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
                     <div className='w-[30%] border-r border-slate-300 font-semibold px-3'>PRODUCT NAME </div>
                     <div className='w-[20%] border-r border-slate-300 font-semibold px-3'>QUANTITY </div>
-                    <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>TOTAL PRICE </div>
+                    <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>TOTAL COST </div>
                     <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>CURRENCY</div>
                     <div className='w-[15%] border-r border-slate-300 font-semibold px-3'>DATE </div>
                   </div>
@@ -205,16 +208,16 @@ const ProductsSalesByDayZWL = () => {
               {/* ListStockTable */}
               <div className='w-full bg-white flex flex-col items-center justify-center text-md'>
                   {/* Table Row */}
-                  { sales?.results &&
-                    sales?.results.map((item, i) => (
-                    <div className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                      <div className='w-[30%] border-r border-slate-300 px-3'> {item.product_name} </div>
-                      <div className='w-[20%] border-r border-slate-300 px-3'> {item.quantity_sold ? item.quantity_sold : 0} </div>
-                      <div className='w-[25%] border-r border-slate-300 px-3'> ${(item.total_price / 100).toFixed(2)} </div>
-                      <div className='w-[10%] border-r border-slate-300 px-3'> {item.currency} </div>
-                      <div className='w-[15%] border-r border-slate-300 px-3'> {item.created_at} </div>
-                    </div>   
-                    ))
+                  { purchases?.results &&
+                      purchases?.results.map((item, i) => (
+                      <div key={i} className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
+                        <div className='w-[30%] border-r border-slate-300 px-3'> {item.product_name} </div>
+                        <div className='w-[20%] border-r border-slate-300 px-3'> {item.quantity_bought ? item.quantity_bought : 0} </div>
+                        <div className='w-[25%] border-r border-slate-300 px-3'> ${(item.total_cost / 100).toFixed(2)} </div>
+                        <div className='w-[10%] border-r border-slate-300 px-3'> {item.currency} </div>
+                        <div className='w-[15%] border-r border-slate-300 px-3'> {item.created_at} </div>
+                      </div>   
+                      ))
                   }
 
               </div>
@@ -225,9 +228,9 @@ const ProductsSalesByDayZWL = () => {
 
       </div>
       <div style={{ display: "none" }}>
-        <ProductsSalesByDayPrint
+        <PurchasesByDayPrint
           ref={componentRef}
-          allSales={allSales}
+          allPurchases={allPurchases}
           created_at={created_at}
           currency={currency} />
       </div>
@@ -235,4 +238,4 @@ const ProductsSalesByDayZWL = () => {
   )
 }
 
-export default ProductsSalesByDayZWL
+export default PurchaseByDayZWL

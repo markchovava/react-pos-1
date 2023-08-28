@@ -51,6 +51,7 @@ import AddSupplier from './pages/Supplier/AddSupplier'
 import EditSupplier from './pages/Supplier/EditSupplier'
 import ListSupplier from './pages/Supplier/ListSupplier'
 import ViewSupplier from './pages/Supplier/ViewSupplier'
+/* ------------------- PURCHASE ------------------- */
 import ListPurchase from './pages/Purchase/ListPurchase'
 import ViewPurchase from './pages/Purchase/ViewPurchase'
 import DayPurchaseProductUSD from './pages/Purchase/DayPurchaseProductUSD'
@@ -62,9 +63,13 @@ import SupplierDailyPurchase from './pages/Purchase/SupplierDailyPurchase'
 import SupplierMonthlyPurchase from './pages/Purchase/SupplierMonthlyPurchase'
 import ProductsSalesByDayUSD from './pages/Sales/ProductsSalesByDayUSD'
 import ProductsSalesByDayZWL from './pages/Sales/ProductsSalesByDayZWL'
+import DailyPurchaseUSD from './pages/Purchase/DailyPurchaseUSD'
+import DailyPurchaseZWL from './pages/Purchase/DailyPurchaseZWL'
+import PurchaseByDayUSD from './pages/Purchase/PurchaseByDayUSD'
+import PurchaseByDayZWL from './pages/Purchase/PurchaseByDayZWL'
 
 
-
+ 
 
 
 function App() {
@@ -118,8 +123,12 @@ function App() {
         <Route path='/purchase/new' element={<NewPurchase />} />
         <Route path='/purchase/list' element={<ListPurchase />} />
         <Route path='/purchase/view/:id' element={<ViewPurchase />} />
-        <Route path='/purchase/day/usd' element={<DayPurchaseProductUSD />} />
-        <Route path='/purchase/day/zwl' element={<DayPurchaseProductZWL />} />
+        <Route path='/purchase/daily/usd' element={<DailyPurchaseUSD />} />
+        <Route path='/purchase/daily/zwl' element={<DailyPurchaseZWL />} />
+        <Route path='/purchase/daily/usd/:created_at' element={<PurchaseByDayUSD />} />
+        <Route path='/purchase/daily/zwl/:created_at' element={<PurchaseByDayZWL />} />
+        <Route path='/purchase/product/day/usd' element={<DayPurchaseProductUSD />} />
+        <Route path='/purchase/product/day/zwl' element={<DayPurchaseProductZWL />} />
         <Route path='/purchase/month/usd' element={<MonthPurchaseProductUSD />} />
         <Route path='/purchase/month/zwl' element={<MonthPurchaseProductZWL />} />
         <Route path='/purchase/supplier' element={<PurchaseSupplier />} />

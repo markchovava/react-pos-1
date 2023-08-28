@@ -187,7 +187,8 @@ function DaySaleZWL() {
                   <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>DAY </div>
                   <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>QUANTITY </div>
                   <div className='w-[25%] border-r border-slate-300 font-semibold px-3'>TOTAL PRICE </div>
-                  <div className='w-[25%] font-semibold px-3'>CURRENCY </div>
+                  <div className='w-[15%] border-r border-slate-300 font-semibold px-3'>CURRENCY </div>
+                  <div className='w-[10%] border-r border-slate-300 font-semibold px-3'>ACTION </div>
                </div>
             </div>
          </section>
@@ -198,10 +199,15 @@ function DaySaleZWL() {
                { sales?.results &&
                   sales?.results.map((item, i) => (
                   <div key={i} className='w-[96%] bg-white text-slate-800 border border-slate-300 py-2 flex justify-center items-center'>
-                     <div className='w-[25%] border-r border-slate-300 px-3'>{ item.created_at }</div>
-                     <div className='w-[25%] border-r border-slate-300 px-3'>{item.quantity_total} </div>
-                     <div className='w-[25%] border-r border-slate-300 px-3'>${(item.grandtotal / 100).toFixed(2)} </div>
-                     <div className='w-[25%] px-3'> { item.currency } </div>
+                     <div className='w-[25%] border-r border-slate-300 px-3'> { item.created_at }</div>
+                     <div className='w-[25%] border-r border-slate-300 px-3'> {item.quantity_total} </div>
+                     <div className='w-[25%] border-r border-slate-300 px-3'> ${(item.grandtotal / 100).toFixed(2)} </div>
+                     <div className='w-[15%] border-r border-slate-300 px-3'> { item.currency } </div>
+                     <div className='w-[10%] px-3'>  
+                        <Link to={`/sales/daily/zwl/${item.created_at}`}>
+                           <AiFillEye className='text-xl transition text-slate-800 hover:text-blue-600 hover:scale-110'/>
+                        </Link>
+                     </div>
                   </div>   
                ))}
                

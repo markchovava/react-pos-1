@@ -10,11 +10,13 @@ import CurrentUser from '../../components/CurrentUser'
 import AxiosClient from '../../axios/axiosClient'
 import { ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 /* PRINT */
 import { useReactToPrint } from 'react-to-print';
 import ProductsSalesByDayPrint from './Print/ProductsSalesByDayPrint';
 
 const ProductsSalesByDayUSD = () => {
+    const currency = 'USD'
     const { created_at } = useParams()
     const baseURL = `all-salesitem-byday-paginated/usd/?created_at=${created_at}`;
     const printURL = `all-salesitem-byday/usd/?created_at=${created_at}`;
@@ -142,7 +144,7 @@ const ProductsSalesByDayUSD = () => {
                             <Link 
                               to='/sales/daily/usd'
                               className='text-green-700 hover:text-black ml-1'>
-                               Daily Sales (USD)
+                               Daily Sales ({currency})
                             </Link> / 
                                 Product Sold on: 
                                 <span className='text-yellow-800'> {created_at}</span>
@@ -159,20 +161,8 @@ const ProductsSalesByDayUSD = () => {
               <div className='w-[100%] bg-white pt-4 pb-2 flex justify-center items-center pr-[0.5rem]'>
                   <div className='w-[96%] flex justify-between items-center'>
                    
-                    <form className='w-[40%]' onSubmit={(e) => {
-                          e.preventDefault()
-                          setIsSubmit(true)
-                          }}>
-                          <input type='text' 
-                            name='search'
-                            ref={searchRef}
-                            onChange={(e) => {
-                              console.log(e.target.value)
-                              setSearchName(e.target.value)
-                              }}
-                            placeholder='Search Product...' 
-                            className='w-full rounded-md px-3 py-2 text-slate-500 border border-slate-300 outline-none'/>
-                    </form>
+                    <div className='w-[40%]'> 
+                    </div>
                   
                     <div className='flex items-center justify-between gap-4'>
                         <div className='flex items-center justify-between'>
@@ -228,10 +218,6 @@ const ProductsSalesByDayUSD = () => {
                     ))
                   }
 
-              
-
-
-
               </div>
               
 
@@ -244,7 +230,7 @@ const ProductsSalesByDayUSD = () => {
           ref={componentRef}
           allSales={allSales}
           created_at={created_at}
-          currency='USD' />
+          currency={currency} />
       </div>
     </section>
   )
