@@ -492,7 +492,7 @@ function PosPage() {
                                         type: 'SINGLE_PRODUCT_QUANTITY', 
                                         payload:{
                                           id: item.id, 
-                                          quantity_sold: e.target.value,
+                                          quantity_sold: e.target.value, 
                                         }})
                                       setInputUnique(item.id, e.target.value)
                                       if(isSubmit == true){

@@ -68,6 +68,10 @@ import DailyPurchaseZWL from './pages/Purchase/DailyPurchaseZWL'
 import PurchaseByDayUSD from './pages/Purchase/PurchaseByDayUSD'
 import PurchaseByDayZWL from './pages/Purchase/PurchaseByDayZWL'
 import NotFoundPage from './pages/NotFound/NotFoundPage'
+/* ------------------- PRICE ------------------- */
+import PricePage from './pages/Price/PricePage'
+import PriceAdd from './pages/Price/PriceAdd'
+import PriceList from './pages/Price/PriceList'
 
 
  
@@ -122,6 +126,10 @@ function App() {
         <Route path='/stock' element={<StockPage />} />
         <Route path='/stock/list' element={<ListStock />} />
         <Route path='/stock/edit/:id' element={<EditStock />} />
+        {/* ------------------- PRICE ------------------- */}
+        <Route path='/price' element={<PricePage />} />
+        <Route path='/price/add' element={<PriceAdd />} />
+        <Route path='/price/list' element={<PriceList />} />
         {/* ------------------- PURCHASE ------------------- */}
         <Route path='/purchase/new' element={<NewPurchase />} />
         <Route path='/purchase/list' element={<ListPurchase />} />
