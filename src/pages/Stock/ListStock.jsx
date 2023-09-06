@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
+import { ToastContainer, toast} from 'react-toastify';
 import { AiFillEdit, AiFillEye, AiOutlineArrowRight, AiOutlineArrowLeft } from 'react-icons/ai'
 import PosLeftContent from '../../components/PosLeftContent'
 import { MainContextState } from '../../contexts/MainContextProvider'
@@ -206,6 +207,7 @@ function ListStock() {
             ref={componentRef}
             products={products} />
       </div>
+      <ToastContainer />
    </section>
   )
 }

@@ -3,7 +3,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import PosLeftContent from '../../components/PosLeftContent'
 import AxiosClient from '../../axios/axiosClient';
 import { MainContextState } from '../../contexts/MainContextProvider';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import LogoutBtn from '../../components/LogoutBtn';
@@ -17,9 +17,11 @@ function EditStock() {
   /* CHECK AUTHENTICATION */
   const {getToken, authUser} = MainContextState()
   const token = getToken();
-  if(!token){
-     return navigate('/login');
-  }
+  useEffect(() => {
+    if(!token){
+       return navigate('/');
+    }
+  }, [token])
 
    /* ACCESS CONTROL */
    const accessLevel = parseInt(authUser?.access_level)
@@ -67,7 +69,6 @@ function EditStock() {
   const quantityChange = (e) => {
     setQuantity(e.target.value);
   };
-  console.log(quantity)
 
   /* UPDATE PRODUCT */
   async function updateProduct(product) {
@@ -77,7 +78,7 @@ function EditStock() {
               console.log(response.data)
           })
           .then(() => {
-          navigate('/stock', 
+          navigate('/stock/list', 
               toast.success('Product Updated successfully', {
               position: "top-right",
               autoClose: 5000,
@@ -219,6 +220,7 @@ function EditStock() {
 
 
     </form>
+    <ToastContainer />
   </section>
   )
 

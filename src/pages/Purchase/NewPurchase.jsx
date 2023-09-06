@@ -378,7 +378,7 @@ function NewPurchase() {
                                 ref={currencyRef}
                                   onChange={(e) => handleCurrency(e.target.value)}
                                   className='text-lg border-none outline-none'>
-                                    <option value=''>Select Currency.</option>
+                                    <option value=''>Currency</option>
                                     <option value='USD'>USD</option>
                                     <option value='ZWL'>ZWL</option>
                                 </select>
