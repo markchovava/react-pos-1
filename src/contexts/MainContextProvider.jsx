@@ -9,7 +9,7 @@ import { salesInitialState, salesReducer } from '../reducers/SalesReducer';
 import { salesItemInitialState, salesItemReducer } from '../reducers/SalesItemReducer';
 import { userInitialState, userReducer } from '../reducers/UserReducer';
 import { recieptReducer, recieptInitialState } from '../reducers/RecieptReducer';
-import { stockInitialState, stockReducer } from '../reducers/StockReducer';
+import { stockInitialState, stockReducer, stockInit } from '../reducers/StockReducer';
 import { supplierInitialState, supplierReducer } from '../reducers/SupplierReducer';
 import { priceInitialState, priceReducer, priceInit } from '../reducers/PriceReducer';
 
@@ -29,7 +29,7 @@ function MainContextProvider({ children }) {
    const [salesItemState, salesItemDispatch] = useReducer(salesItemReducer, salesItemInitialState)
    const [zwlRate, setZwlRate] = useState('')
    const [recieptState, recieptDispatch] = useReducer(recieptReducer, recieptInitialState)
-   const [stockState, stockDispatch] = useReducer(stockReducer, stockInitialState)
+   const [stockState, stockDispatch] = useReducer(stockReducer, stockInitialState, stockInit)
    const [supplierState, supplierDispatch] = useReducer(supplierReducer, supplierInitialState)
    const [priceState, priceDispatch] = useReducer(priceReducer, priceInitialState, priceInit)
 

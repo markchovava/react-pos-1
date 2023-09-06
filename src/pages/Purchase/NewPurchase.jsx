@@ -15,26 +15,31 @@ import RandomNumber from '../../__utils/RandomNumber'
 
 
 function NewPurchase() {
+    const productURL = 'product/';
     const [loading, setLoading] = useState(false)
     const {getToken, productState, productDispatch, zwlRate, 
       setZwlRate, currencyState, currencyDispatch, paymentState, 
       paymentDispatch, authUser, stockState, stockDispatch} = MainContextState()
-      const user_id = authUser?.id;
-      console.log('USER ID: ' + user_id)
-    const navigate = useNavigate();
-    const token = getToken();
-    useEffect(()=>{
-      if(!token){
-        return navigate('/login');
-      }
-    },[token])
-  
-    const currencyRef = useRef()
-    /* PRODUCT */
+    const user_id = authUser?.id;
+    const [scanInput, setScanInput] = useState()
     const [isProductSearch, setIsProductSearch] = useState(false)
     const [productSearch, setProductSearch] = useState('')
     const [productSearchResults, setProductSearchResults] = useState([])
     const searchProductRef = useRef()
+    const currencyRef = useRef()
+    const [searchResults, setSearchResults] = useState([])
+    const searchRef = useRef()
+    const scanRef = useRef()
+    const navigate = useNavigate();
+    const token = getToken();
+    /*  */
+    useEffect(()=>{
+      if(!token){
+        return navigate('/');
+      }
+    },[token])
+
+    
     /* SUPPLIER */
     const [isSupplierSearch, setIsSupplierSearch] = useState(false)
     const [supplierSearch, setSupplierSearch] = useState('')
@@ -108,24 +113,23 @@ function NewPurchase() {
      
     }
 
-    /* --------------------- HANDLE PRODUCT SEARCH USING NAME --------------------- */
-   const handleProductSearch = (input) => {
-      setProductSearch(input)
-      setIsProductSearch(() => true)
-    }
-    const getProductBySearch = async () => {
+   /* SEARCH PRODUCT USING NAME */
+  const getProductBySearch = async (search) => {
+    if(search){
       try{
-        const result = await AxiosClient.get(`product/?search=${productSearch}`)
+        const result = await AxiosClient.get(`${productURL}?search=${search}`)
           .then((response) => {
-            setProductSearchResults( () => response.data.results )
-            setIsProductSearch(() => false)
+            setSearchResults( () => response.data.results )
           })
       } catch (error){
         console.error(`Error: ${error}`)
         console.error(`Error: ${error.response}`)
       }
-         
-    }
+    }else if(!search){
+      setSearchResults([])
+    } 
+  }
+
     useEffect( () => {
       if( isProductSearch == true ){ 
         getProductBySearch()  
@@ -133,7 +137,45 @@ function NewPurchase() {
     }, [isProductSearch]);
     /* ------------------------------------------ */
 
-     /* --------------------- HANDLE PRODUCT SEARCH USING NAME --------------------- */
+    /* SEARCH PRODUCT USING BARCODE */
+  const getProductByBarcode = async (search) => {
+    if(search){
+      try{
+        const result = await AxiosClient.get(`${productURL}?search=${search}`)
+          .then((response) => {
+            const result = response.data.results[0]
+            if(response.data.results[0]){
+                stockDispatch({
+                    type: 'ADD_PRODUCT', 
+                    payload: {
+                      id: result.id,
+                      product_id: result.id,
+                      product_name: result.name,
+                      product_stock: result.quantity + 1,
+                      quantity: result.quantity,
+                      quantity_bought: 1,
+                      unit_cost: 0,
+                      total_cost: 0,
+                     }
+                })
+                console.log(stockState.products)
+              scanRef.current.value = '' 
+              setScanInput('')
+            }else{
+              alert('Not found.')
+              scanRef.current.value = ''
+            }
+          })
+      } catch (error){
+        console.error(`Error: ${error}`)
+        console.error(`Error: ${error.response}`)
+      }
+    }else if(!search){
+      alert('The input is empty...')
+    } 
+  }
+
+     /* HANDLE PRODUCT SEARCH USING NAME --------------------- */
    const handleSupplierSearch = (input) => {
     console.log(input)
     setSupplierSearch(input)
@@ -248,6 +290,7 @@ function NewPurchase() {
             .then((response) => {
               try{
                 stockDispatch({type: 'REMOVE_PRODUCT'})
+                stockDispatch({type: 'REMOVE_SUPPLIER'})
                 alert('Processing was successful.')
               } catch(error){
                 console.error(`Error: ${error}`)
@@ -286,19 +329,50 @@ function NewPurchase() {
                     <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg'>
                         <div className='w-[96%] flex justify-between items-center'>
                             <div className=''>
-                              <h1 className='font-bold text-xl'>NEW STOCK PAGE </h1>
+                              <h1 className='font-bold text-lg'> 
+                                <Link 
+                                    to='/stock'
+                                    className='text-blue-800 hover:text-black'>
+                                    Stock
+                                </Link> / <span className=''>New Stock </span>
+                              </h1>
                             </div>
                             <div className=''>
-                                <h2 className='font-semibold text-xl'>
+                                <h2 className='font-semibold text-lg'>
                                   <CurrentUser />
                                 </h2>
                             </div>
-                            <div className='text-xl font-semibold'>
+                            <div className='text-lg font-semibold'>
                               Rate:
                               <span className='ml-2 text-blue-800'>
                               1 : {(zwlRate / 100).toFixed(2)}</span>
                             </div>
                             <div className='flex items-center justify-between gap-3'>
+                                
+                                {/*  */}
+                                <select 
+                                  name='mode'
+                                  onChange={(e) => stockDispatch({type: 'CHANGE_MODE', payload: e.target.value})}
+                                  className='text-lg border-none outline-none'>
+                                    {/*  */}
+                                    {stockDispatch.mode == 'SearchByBarcode' ?
+                                        <option value='SearchByBarcode' selected="selected"> 
+                                            Scan Mode </option>
+                                    :
+                                        <option value='SearchByBarcode'> 
+                                            Scan Mode </option>
+                                     }
+                                     {/* s */}
+                                    { stockDispatch.mode == 'SearchByName' ?
+                                        <option value='SearchByName' selected="selected"> 
+                                            Search Mode </option>
+                                    : 
+                                        <option value='SearchByName'> 
+                                            Search Mode </option>
+                                    }
+                                    
+                                </select>
+                                
                                 <select 
                                 name='currency'
                                 ref={currencyRef}
@@ -317,45 +391,70 @@ function NewPurchase() {
                     <div className='w-full h-[20vh] flex justify-center items-center'>
                       
                       {/* SEARCHBYNAME */}
-                      { (
-                        <form onSubmit={(e) => e.preventDefault()} className='h-[12vh] w-full flex justify-center'>
+                      { stockState.mode == 'SearchByName' && (
+                          <form onSubmit={(e) => e.preventDefault()} className='h-[12vh] w-full flex justify-center'>
                           <div className='relative bg-white w-[96%] shadow-lg flex flex-col justify-center items-center'>
-                            <input type='text' 
+                              <input type='text' 
                               name='searchname'
-                              ref={searchProductRef}
-                              onChange={(e) => handleProductSearch(e.target.value)} 
+                              ref={searchRef}
+                              onChange={(e) => {
+                                getProductBySearch(e.target.value)}} 
                               placeholder='Search by name...'
+                              autoFocus={stockState.mode == 'SearchByName' && true}
                               className='shadow appearance-none border rounded w-[94%] text-lg py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
-                            <div className={`${productSearchResults.length == 0 ? 'hidden' : 'absolute top-[110%] w-[100%] z-20 bg-slate-50 shadow-md'} `}>
-                              { productSearchResults.length > 0 &&
-                                  productSearchResults.map((item, i) => (
+                              <div className={`${searchResults.length == 0 ? 'hidden' : 'absolute top-[110%] w-[100%] z-20 bg-slate-50 shadow-md'} `}>
+                              { searchResults.length > 0 &&
+                                  searchResults.map((item, i) => (
                                   <div className='w-[94%] z-20 mx-auto py-3 px-2 my-1 cursor-pointer hover:bg-slate-100 hover:text-black text-slate-800' 
-                                    key={i}
-                                    onClick={() => {
-                                      stockDispatch({
-                                        type: 'ADD_PRODUCT', 
-                                        payload: {
-                                          id: item.id,
-                                          product_id: item.id,
-                                          product_name: item.name,
-                                          quantity: item.quantity,
-                                          quantity_bought: 1,
-                                          stock: item.quantity + 1,
-                                          currency: currencyRef.current.value,
-                                          unit_cost: item.unit_price,
-                                          total_cost: item.unit_price
-                                        }
-                                      })
-                                      searchProductRef.current.value = ''
-                                      setProductSearchResults([])  
-                                    }}>
-                                    {item.name}
+                                      key={i}
+                                      onClick={() => {
+                                        stockDispatch({
+                                          type: 'ADD_PRODUCT', 
+                                          payload: {
+                                            id: item.id,
+                                            product_id: item.id,
+                                            product_name: item.name,
+                                            product_stock: item.quantity + 1,
+                                            quantity: item.quantity,
+                                            quantity_bought: 1,
+                                            unit_cost: 0,
+                                            total_cost: 0,
+                                           }
+                                        })
+                                      searchRef.current.value = ''
+                                      setSearchResults([])  
+                                      }}>
+                                      {item.name}
                                   </div>
                               ))}
-                            </div>
+                              </div>
                           </div>   
-                        </form>
-                      )} 
+                          </form>
+                      )}
+
+                      {/* SEARCHBYBARCODE */}
+                      { stockState.mode == 'SearchByBarcode' && (
+                          <form className='h-[12vh] w-full flex justify-center' 
+                          onSubmit={(e) => {
+                              e.preventDefault()
+                              console.log(scanInput)
+                              getProductByBarcode(scanInput)
+                              }}>
+                          <div className='bg-white w-[96%] shadow-lg flex justify-center items-center'>
+                              <input type='number' 
+                              name='scanmode'
+                              value={scanInput}
+                              onChange={(e) => {
+                                setScanInput(e.target.value)}} 
+                              autoFocus={stockState.mode == 'SearchByBarcode' && true}
+                              ref={scanRef}
+                              placeholder='Search by Code...'
+                              className='shadow appearance-none border rounded w-[94%] text-lg py-3 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline' />
+                          </div>   
+                          </form>
+                      )}
+
+
                     </div>
                     {/* PosMainContentProductTitle */}
                     <div className='w-full h-[7vh] bg-white flex justify-center items-center shadow-lg'>
@@ -379,7 +478,8 @@ function NewPurchase() {
                           <div key={i} className='w-[96%] h-[100%] flex items-center justify-start  border-y border-slate-400 py-2 text-md'>
                             <div className='w-[35%] border-r border-slate-900 px-3'>
                               {item.product_name}
-                              <small className='block font-semibold text-red-600'>Stock: {item.stock}</small>
+                              <small className='block font-semibold text-red-600'>
+                                  Stock: {item.product_stock}</small>
                             </div>
                             <div className='w-[20%] border-r border-slate-900 px-3'> 
                               { currencyState.currency.name == 'ZWL' ?

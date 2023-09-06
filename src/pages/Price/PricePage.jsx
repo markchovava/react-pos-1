@@ -51,7 +51,7 @@ function PricePage() {
                            <div className='border border-blue-500 hover:border-blue-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
                               <AiFillFileAdd className='text-[5rem] text-blue-500 hover:text-blue-600' />
                               <div className='text-xl text-blue-500 hover:text-blue-600 font-semibold p-2 mx-auto text-center'>
-                                 Edit Price
+                                 Edit Prices
                               </div>
                            </div>
                         </Link>

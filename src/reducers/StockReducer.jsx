@@ -1,13 +1,16 @@
-/* export const stockInit = (stockInitialState) => {
+export const stockInit = (stockInitialState) => {
   const result = {
       ...stockInitialState, 
+      mode: 'SearchByBarcode',
       products: []
   }
   return result
-} */
+}
+
 
 
 export const stockInitialState = {
+ mode: '',
  products: [],
  supplier: {},
 };
@@ -15,6 +18,11 @@ export const stockInitialState = {
 
 export const stockReducer = (state, action) => {
     switch(action.type){
+        case 'CHANGE_MODE':
+            return {
+                ...state,
+                mode: action.payload
+            }
         case 'ADD_SUPPLIER':
             return {
                 ...state,
@@ -41,7 +49,7 @@ export const stockReducer = (state, action) => {
                 products: state.products.filter((item) => {
                     if(item.id === action.payload.id) {
                         item.quantity_bought = Number(action.payload.quantity_bought);
-                        item.stock = item.quantity + item.quantity_bought
+                        item.product_stock = parseInt(item.quantity) + item.quantity_bought
                         item.total_cost = item.quantity_bought * item.unit_cost
                         return item
                     }else{
@@ -92,6 +100,11 @@ export const stockReducer = (state, action) => {
                 return {
                     ...state,
                     products: [],
+                };
+        case 'REMOVE_SUPPLIER':
+                return {
+                    ...state,
+                    supplier: {},
                 };
         default:
             return state;
