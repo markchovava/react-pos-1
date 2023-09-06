@@ -10,15 +10,16 @@ import { ToastContainer,  toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import LogoutBtn from '../../components/LogoutBtn'
 import CurrentUser from '../../components/CurrentUser'
-import Loading from '../../components/Loading'
 
 
 
 
-
-function PriceAdd() {
+function NewPrice() {
+  const baseURL = 'product-price/'
   const [loading, setLoading] = useState(false)
-  const { getToken, priceState, priceDispatch } = MainContextState()
+  const [priceData, setPriceData] = useState([])
+  const {authUser, getToken, priceState, priceDispatch } = MainContextState()
+  const auth_id = authUser?.id;
   const navigate = useNavigate();
   const token = getToken();
   useEffect(()=>{
@@ -27,8 +28,6 @@ function PriceAdd() {
     }
   },[token])
 
-
- 
   const [searchResults, setSearchResults] = useState([])
   const searchRef = useRef()
   const scanRef = useRef()
@@ -41,14 +40,7 @@ function PriceAdd() {
     'Authorization': `JWT ${token}`
   };
   
-
-
   /* --------------------- */
- 
-
-
-
-
   const setInputUnique = (itemId, value) => {
     const newList = priceState.products.map((item) => {
       if (item.id === itemId) {
@@ -83,12 +75,10 @@ function PriceAdd() {
   
   /* SEARCH PRODUCT USING BARCODE */
   const getProductByBarcode = async (search) => {
-    console.log(search)
     if(search){
       try{
         const result = await AxiosClient.get(`product/?search=${search}`)
           .then((response) => {
-            //console.log(response.data.results)
             const result = response.data.results[0]
             if(response.data.results[0]){
                 priceDispatch({
@@ -98,11 +88,9 @@ function PriceAdd() {
                       product_id: result.id,
                       product_name: result.name,
                       quantity: result.quantity,
-                      currency: 'USD',
                       unit_price: result.unit_price,
-                      total_price: result.unit_price,
-                      barcode: result.barcode
-                    }
+                      barcode: result.barcode,
+                      description: result.description, }
                 })
               scanRef.current.value = '' 
               setScanInput('')
@@ -120,6 +108,68 @@ function PriceAdd() {
     } 
   }
 
+  /* PROCESS PRODUCTS */
+  const processPrice = async (e) => {
+    e.preventDefault()
+    const allItems = priceState.products;
+    let items = [];
+    if(allItems && allItems.length > 1){
+        items = allItems.map((item) => ({
+            id: item.product_id,
+            name: item.product_name,
+            unit_price: item.unit_price,
+            user_id: auth_id,
+        }))
+        console.log('multiple')
+    } else if(allItems.length === 1){
+        let item = allItems[0]
+        items = [{
+            unit_price: item.unit_price,
+            id: item.product_id,
+            name: item.product_name,
+            user_id: auth_id,
+        }]
+        console.log('single')
+    } else if(allItems.length === 0){
+        alert('Please add products to the Price List.');
+        return null;
+    } else{
+        alert('Something went wrong, please reload the page.');
+        return null;
+    }
+    /* CHECK IF ITEMS ARE ENTERED AND THEN SUBMITS */
+    if(items.length > 0){
+        setPriceData(items)   
+        setIsSubmit(true)
+    }
+
+  }
+  
+
+ useEffect(()=>{
+    if(isSubmit == true ){
+        /* ---------- SUBMITS PRICES ---------- */
+        const submitPrices = async () => {  
+          const result = await AxiosClient.put(`${baseURL + priceData[0].id}/`, {products: priceData})
+            .then((response) => {
+                try{ 
+                    priceDispatch({type: 'REMOVE_PRODUCT'})
+                    // Set Submit to false 
+                    setIsSubmit(false)
+                    alert('Products updated successfully...')
+                } catch(error) {
+                    // Error handling
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                }
+            }) 
+
+        }
+        submitPrices()
+    }
+  },[isSubmit]) 
+
 
    
   return (
@@ -135,7 +185,13 @@ function PriceAdd() {
                     <div className='w-full h-[10vh] bg-white flex items-center justify-center shadow-lg'>
                         <div className='w-[96%] flex justify-between items-center'>
                             <div className=''>
-                              <h1 className='font-bold text-xl'>PRICE PAGE </h1>
+                              <h1 className='font-bold text-lg'> 
+                                <Link 
+                                  to='/price'
+                                  className='text-blue-800 hover:text-black'>
+                                  Price
+                                </Link> / <span className=''>Edit Prices</span>
+                              </h1>
                             </div>
                        
                             {/* ---------------------------------------- */}
@@ -199,12 +255,7 @@ function PriceAdd() {
                                                 id: item.id,
                                                 product_id: item.id,
                                                 product_name: item.name,
-                                                quantity: item.quantity,
-                                                currency: 'USD',
-                                                unit_price: item.unit_price,
-                                                total_price: item.unit_price,
-                                                barcode: item.barcode
-                                                }
+                                                unit_price: item.unit_price,}
                                             })
                                             searchRef.current.value = ''
                                             setSearchResults([])  
@@ -237,9 +288,12 @@ function PriceAdd() {
                             )}
                         </section>
                         {/*  */}
-                        <section className='w-[20%] h-[12vh]  flex items-center justify-center pr-8'>
-                            <button className='w-full h-[100%] border border-white text-lg text-white transition bg-green-500 hover:bg-green-600 rounded-lg '>
-                                Submit</button>
+                        <section className='w-[20%] h-[12vh]  flex items-center justify-center pr-8 shadow-lg'>
+                            <button 
+                                onClick={processPrice}
+                                className='w-full h-[100%] text-lg text-white transition bg-blue-500 hover:bg-blue-600'>
+                                Submit
+                            </button>
                         </section>
 
                       
@@ -258,7 +312,7 @@ function PriceAdd() {
                   <section className='w-[90vw] top-[37vh] h-[63vh] fixed z-0 overflow-y-auto scroll__width py-3'>
                     {/* PosMainContentTable */}  
                     <div className='w-full bg-white flex flex-col items-center justify-center text-md '>
-                        {priceState.products && 
+                        { priceState.products && 
                             priceState.products?.map((item, i) => (
                             <div key={i} className='w-[96%] h-[100%] border-b border-slate-400 flex items-center justify-start py-2 mb-2 mr-2'>
                                 <div className='w-[30%] border-r border-slate-400 px-3 py-2'>{item.product_name}</div>
@@ -297,4 +351,4 @@ function PriceAdd() {
   )
 }
 
-export default PriceAdd
+export default NewPrice

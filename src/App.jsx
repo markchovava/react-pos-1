@@ -70,8 +70,9 @@ import PurchaseByDayZWL from './pages/Purchase/PurchaseByDayZWL'
 import NotFoundPage from './pages/NotFound/NotFoundPage'
 /* ------------------- PRICE ------------------- */
 import PricePage from './pages/Price/PricePage'
-import PriceAdd from './pages/Price/PriceAdd'
 import PriceList from './pages/Price/PriceList'
+import NewPrice from './pages/Price/NewPrice'
+import EditPrice from './pages/Price/EditPrice'
 
 
  
@@ -128,8 +129,9 @@ function App() {
         <Route path='/stock/edit/:id' element={<EditStock />} />
         {/* ------------------- PRICE ------------------- */}
         <Route path='/price' element={<PricePage />} />
-        <Route path='/price/add' element={<PriceAdd />} />
+        <Route path='/price/new' element={<NewPrice />} />
         <Route path='/price/list' element={<PriceList />} />
+        <Route path='/price/edit/:id' element={<EditPrice />} />
         {/* ------------------- PURCHASE ------------------- */}
         <Route path='/purchase/new' element={<NewPurchase />} />
         <Route path='/purchase/list' element={<ListPurchase />} />

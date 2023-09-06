@@ -255,7 +255,8 @@ function PosPage() {
                     : parseInt(item.total_price),
         user_id: parseInt(user_id),
       }))  
-    } else if(!allItems == []) {
+    //} else if(!allItems == []) {
+    } else if(allItems.length === 1) {
       items = [{
         product_id: parseInt(allItems[0].id),
         product_name: allItems[0].product_name,
@@ -301,8 +302,7 @@ function PosPage() {
         const result = await AxiosClient.post('sales/', sales)
         .then((response) => {
           try{
-            //console.log(response.data)
-            salesDispatch({type: 'ADD_SALES', payload: response.data})
+            //salesDispatch({type: 'ADD_SALES', payload: response.data})
             posDispatch({type: 'REMOVE_PRODUCT'})
             /* RECIEPT */
             setLatest(() => response.data)

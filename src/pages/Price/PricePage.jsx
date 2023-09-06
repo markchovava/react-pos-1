@@ -17,7 +17,7 @@ function PricePage() {
    const token = getToken();
    useEffect(() => {
       if(!token){
-         return navigate('/login');
+         return navigate('/');
       }
    }, [token])
    
@@ -47,11 +47,11 @@ function PricePage() {
                <div className='w-full h-[100%]'>
                   <section className='w-[96%] h-[80vh] my-[5vh] mx-auto'>
                      <div className='grid grid-cols-5'>
-                        <Link to='/price/add'>
+                        <Link to='/price/new'>
                            <div className='border border-blue-500 hover:border-blue-600 cursor-pointer transition flex flex-col items-center justify-center gap-3 py-8'> 
                               <AiFillFileAdd className='text-[5rem] text-blue-500 hover:text-blue-600' />
                               <div className='text-xl text-blue-500 hover:text-blue-600 font-semibold p-2 mx-auto text-center'>
-                                 Add Price
+                                 Edit Price
                               </div>
                            </div>
                         </Link>
