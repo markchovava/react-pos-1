@@ -7,7 +7,7 @@ Point of Sale \
 Stock Management \
 Stock Report \
 Sales Management \
-Sales Report \ 
+Sales Report \
 Reports in PDF Reports \
 Currency Conversion \
-Product Management Setup \
+Product Management Setup
